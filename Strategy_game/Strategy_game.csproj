@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="Data\Arm.cs" />
     <Compile Include="Data\BuildpartBuilder.cs" />
+    <Compile Include="Data\Leg.cs" />
     <Compile Include="Data\Part.cs" />
     <Compile Include="Func\BuildArmConcrete.cs" />
     <Compile Include="Func\BuildLegConcrete.cs" />

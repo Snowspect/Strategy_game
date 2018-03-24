@@ -11,9 +11,9 @@ namespace Strategy_game.Func
     {
         public override void BuildPart()
         {
-            /**
-             * Build leg info.
-             */
+            Leg n = new Leg();
+            n.HealthModify = 0;
+            n.NameModify = "";
         }
     }
 }
