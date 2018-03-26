@@ -63,11 +63,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Data\Arm.cs" />
-    <Compile Include="Data\BuildpartBuilder.cs" />
+    <Compile Include="Data\IRobotBuilder.cs" />
     <Compile Include="Data\Leg.cs" />
     <Compile Include="Data\Part.cs" />
-    <Compile Include="Func\BuildArmConcrete.cs" />
+    <Compile Include="Data\Robot.cs" />
+    <Compile Include="Func\ConcreteHeavyRobotBuilder.cs" />
     <Compile Include="Func\BuildLegConcrete.cs" />
+    <Compile Include="Func\PartDirector.cs" />
+    <Compile Include="Func\TestMain.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

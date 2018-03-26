@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data
 {
+    /**
+     * super class for leg and arm, ect. 
+     */
     class Part
     {
         private double health = 0;
@@ -13,7 +16,7 @@ namespace Strategy_game.Data
         public double HealthModify //special type of method that gets and sets
         {
             get { return health; }
-            set { health = value; } //can just do b = value; or do more advanced code as illustrated.
+            set { if (value < 1) { /*do nothing*/ } else { health = value; } } //can just do b = value; or do more advanced code as illustrated.
         }
         public String NameModify //special type of method that gets and sets
         {

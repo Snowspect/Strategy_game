@@ -23,6 +23,7 @@ namespace Strategy_game
         public MainWindow()
         {
             InitializeComponent();
+
         }
     }
 }

@@ -7,16 +7,14 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Func
 {
-    class BuildLegConcrete : IRobotBuilder
+    class ConcreteHeavyRobotBuilder : IRobotBuilder
     {
-        public override void BuildPart()
+        public void BuildRobot()
         {
-            Leg n = new Leg();
-            n.HealthModify = 0;
-            n.NameModify = "";
+            throw new NotImplementedException();
         }
 
-        public override Part GetInfo()
+        public Part GetInfo()
         {
             throw new NotImplementedException();
         }

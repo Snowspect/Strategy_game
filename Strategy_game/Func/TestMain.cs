@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Func
 {
-    class BuildArmConcrete : BuildpartBuilder
+    class TestMain
     {
-        public override void BuildPart()
+        public void RunThis()
         {
-            Arm a = new Arm();
-            a.HealthModify = 0;
-            a.NameModify = "";
+            PartDirector d = new PartDirector();
+
         }
     }
 }

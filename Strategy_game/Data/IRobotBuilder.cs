@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data
 {
-    abstract class BuildpartBuilder
+    interface IRobotBuilder
     {
-        public abstract void BuildPart();
+        void BuildRobot(Arm a, Leg l, int shield, String name);
+        Part GetInfo();
     }
 }
