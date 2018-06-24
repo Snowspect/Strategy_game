@@ -54,7 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
+    <Page Include="GUI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -62,16 +62,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data\Arm.cs" />
-    <Compile Include="Data\IRobotBuilder.cs" />
-    <Compile Include="Data\Leg.cs" />
-    <Compile Include="Data\Part.cs" />
-    <Compile Include="Data\Robot.cs" />
-    <Compile Include="Func\ConcreteHeavyRobotBuilder.cs" />
-    <Compile Include="Func\BuildLegConcrete.cs" />
-    <Compile Include="Func\PartDirector.cs" />
-    <Compile Include="Func\TestMain.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Data\Participant_DTO.cs" />
+    <Compile Include="GUI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -103,7 +95,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="GUI\" />
+    <Folder Include="Func\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
