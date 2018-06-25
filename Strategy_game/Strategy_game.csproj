@@ -62,7 +62,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data\Participant_DTO.cs" />
+    <Compile Include="Data\DAO\Participant_DAO.cs" />
+    <Compile Include="Data\DAO\Storage.cs" />
+    <Compile Include="Data\DTO\Participant_DTO.cs" />
     <Compile Include="Func\Participant_Impl.cs" />
     <Compile Include="GUI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

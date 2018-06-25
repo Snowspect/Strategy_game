@@ -24,6 +24,15 @@ namespace Strategy_game.Data
             this.VMove = 1;
             this.HMove = 1;
         }
+        public Participant_DTO(int h, int d, int o, int Vm, int Hm, String n)
+        {
+            this.Health = h;
+            this.Defence = d;
+            this.Offence = o;
+            this.name = n;
+            this.VMove = Vm;
+            this.HMove = Hm;
+        }
 
         public int VMoveGS { get => VMove; set => VMove = value; }
         public string NameGS { get => name; set => name = value; }

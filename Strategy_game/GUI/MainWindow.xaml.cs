@@ -13,7 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Shapes;    
 
 namespace Strategy_game
 {
@@ -24,12 +24,18 @@ namespace Strategy_game
     {
         public MainWindow()
         {
-            Console.WriteLine("helloooo");
-
             InitializeComponent();
-            Participant_DTO pDTO = new Participant_DTO();
-            Participant_Impl pImpl = new Participant_Impl(pDTO);
-            Console.WriteLine(pImpl.ToString); //
+            Participant_DTO pDTO = new Participant_DTO(100, 4, 4, 2, 2, "Destroyer");
+            Participant_DTO pDTO2 = new Participant_DTO(100, 4, 4, 2, 2, "Cooker");
+            Participant_Impl pImpl = new Participant_Impl(); //should not be neccesary, the DTO should have a constructor which sets its values
+            //Console.WriteLine(pImpl.ToString); //prints to screen
+            pImpl.AddToList(pDTO);
+            pImpl.AddToList(pDTO2);
+
+            foreach (var item in pImpl.GetCurrentList())
+            {
+                Console.WriteLine(item.ToString);
+            }
         }
     }
 }

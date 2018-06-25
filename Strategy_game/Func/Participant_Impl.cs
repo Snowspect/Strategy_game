@@ -7,20 +7,19 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Func
 {
-    
+
     class Participant_Impl
     {
-        Participant_DTO pDTO = null;
-        public Participant_Impl(Participant_DTO pDTO)
+        Participant_DAO pDAO;
+        public Participant_Impl()
         {
-            this.pDTO = pDTO;
-            pDTO.HealthGS = 100;
-            pDTO.DefenceGS = 4;
-            pDTO.OffenceGS = 4;
-            pDTO.NameGS = "Destroyer";
-            pDTO.HMoveGS = 2;   
-            pDTO.VMoveGS = 2;   
+            pDAO = new Participant_DAO();
         }
-        public string ToString => pDTO.ToString; //using getter on toString, so therefore not a method ()
+
+        //returns current Participant DTO
+
+        public void AddToList(Participant_DTO pDTO) => pDAO.AddToLayer(pDTO); //adds it to static layer in storage class
+
+        public List<Participant_DTO> GetCurrentList() => pDAO.GetParticipantList(); //gets from static layer in st
     }
 }
