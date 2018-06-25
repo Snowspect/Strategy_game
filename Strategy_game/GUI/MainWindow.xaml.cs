@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Strategy_game.Data;
+using Strategy_game.Func;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,8 +24,12 @@ namespace Strategy_game
     {
         public MainWindow()
         {
-            InitializeComponent();
+            Console.WriteLine("helloooo");
 
+            InitializeComponent();
+            Participant_DTO pDTO = new Participant_DTO();
+            Participant_Impl pImpl = new Participant_Impl(pDTO);
+            Console.WriteLine(pImpl.ToString); //
         }
     }
 }
