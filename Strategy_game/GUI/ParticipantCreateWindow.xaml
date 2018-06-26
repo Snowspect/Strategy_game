@@ -1,0 +1,26 @@
+﻿<Window x:Class="Strategy_game.GUI.ParticipantCreateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Strategy_game.GUI"
+        mc:Ignorable="d"
+        Title="ParticipantCreateWindow" Height="450" Width="800">
+	<Grid>
+
+		<Button x:Name="button" Content="To Menu" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="ToMenuWindow_Click"/>
+		<Button x:Name="button1" Content="Back To Previous" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="105" Click="ToPreviousWindow_Click"/>
+		<TextBox x:Name="NameTextBox" HorizontalAlignment="Left" Height="23" Margin="10,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="The name of your participant" TextChanged="NameTextChanged"/>
+		<TextBox x:Name="HealthTextBox" HorizontalAlignment="Left" Height="23" Margin="10,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="Between 10-15 (total health)" TextChanged="HealthTextBox_TextChanged"/>
+		<TextBox x:Name="OffenceTextBox" HorizontalAlignment="Left" Height="23" Margin="10,120,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="Between 3-6 (amount of damage it can do each hit)" TextChanged="OffenceTextBox_TextChanged"/>
+		<TextBox x:Name="DefenceTextBox" HorizontalAlignment="Left" Height="23" Margin="10,148,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="Between 3-6 (amount of damage it blocks in total)" TextChanged="DefenceTextBox_TextChanged"/>
+		<TextBox x:Name="HMoveTextBox" HorizontalAlignment="Left" Height="23" Margin="10,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)" TextChanged="HMoveTextBox_TextChanged"/>
+		<TextBox x:Name="VMoveTextBox" HorizontalAlignment="Left" Height="23" Margin="10,206,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)" TextChanged="VMoveTextBox_TextChanged"/>
+		<TextBlock x:Name="HintName" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="The name of your participant" Text="Name"/>
+		<TextBlock x:Name="HintHealth" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Between 10-15 (total health)" Text="Health"/>
+		<TextBlock x:Name="HintOffence" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,118,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Between 3-6 (amount of damage it can do each hit)" Text="Offence points"/>
+		<TextBlock x:Name="HintDefence" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,148,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Between 3-6 (amount of damage it blocks in total)" Text="Defence points"/>
+		<TextBlock x:Name="HintHMove" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Between 2-4 (the fields it can move up)" Text="Horizontal Movement points"/>
+		<TextBlock x:Name="HintVMove" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,206,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Between 2-4 (the fields it can move up)" Text="Vertical Movement points"/>
+	</Grid>
+</Window>

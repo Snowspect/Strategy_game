@@ -1,5 +1,6 @@
 ﻿using Strategy_game.Data;
 using Strategy_game.Func;
+using Strategy_game.GUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,16 @@ namespace Strategy_game
             {
                 Console.WriteLine(item.ToString);
             }
+        }
+
+        //Shows add user window and hides mainwindow
+        //Can't close mainwindow as that will bug the app out.
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ParticipantCreateWindow pcw = new ParticipantCreateWindow(this, this); //sends mainWindow to both parameters as we are in mainwindow
+            pcw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            pcw.Show();
+            this.Hide();
         }
     }
 }

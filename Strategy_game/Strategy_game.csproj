@@ -65,13 +65,22 @@
     <Compile Include="Data\DAO\Participant_DAO.cs" />
     <Compile Include="Data\DAO\Storage.cs" />
     <Compile Include="Data\DTO\Participant_DTO.cs" />
+    <Compile Include="Data\Interface_DAO\IParticipant_IntDAO_Generic.cs" />
+    <Compile Include="Data\Interface_Impl\IParticipant_IntImpl_Generic.cs" />
     <Compile Include="Func\Participant_Impl.cs" />
     <Compile Include="GUI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="GUI\ParticipantCreateWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI\ParticipantCreateWindow.xaml.cs">
+      <DependentUpon>ParticipantCreateWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
