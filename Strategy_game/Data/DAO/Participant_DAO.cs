@@ -1,4 +1,5 @@
 ﻿using Strategy_game.Data.DAO;
+using Strategy_game.Data.DTO;
 using Strategy_game.Data.Interface_DAO;
 using System;
 using System.Collections.Generic;
@@ -16,13 +17,20 @@ namespace Strategy_game.Data
         {
         }
 
+        //Adds participant to layer (currently only one storage class)
         public void AddToLayer(Participant_DTO pDTO)
         {            
             st.AddToLayer(pDTO);
         }
+        //gets lists of participants (currently just accessing storage class)
         public List<Participant_DTO> GetParticipantList()
         {
             return st.GetParticipantList();
+        }
+        //Adds field to a specific particpants (currently just accessing storage class
+        public void AddFieldToParticipant(Participant_DTO pDTO, FieldPoint_DTO fpDTO)
+        {
+            st.AddFieldToParticipant(pDTO, fpDTO);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Strategy_game.Data;
+using Strategy_game.Data.DTO;
 using Strategy_game.Func;
 using Strategy_game.GUI;
 using System;
@@ -26,16 +27,39 @@ namespace Strategy_game
         Participant_DTO pDTO;
         Participant_DTO pDTO2;
         Participant_Impl pImpl;
+        Game_Logic_Impl gImpl;
         public MainWindow()
         {
             InitializeComponent();
+            /**Test Section  START **/
             pDTO = new Participant_DTO(100, 4, 4, 2, 2, "Destroyer");
             pDTO2 = new Participant_DTO(100, 4, 4, 2, 2, "Cooker");
             pImpl = new Participant_Impl();
+            gImpl = new Game_Logic_Impl();
 
+            //sets points difference from 0,0
+            FieldPoint_DTO field = new FieldPoint_DTO();
+            field.XPoint = 2;
+            field.YPoint = 3;
+            pDTO.PointGS = field;
+
+            gImpl.AddParticipantToField(pDTO);
+            field.XPoint = 5;
+            pDTO2.PointGS = field;
+            gImpl.AddParticipantToField(pDTO2);
+            Dictionary<Participant_DTO, FieldPoint_DTO> tmp = gImpl.GetField();
+
+            foreach (var point in tmp)
+            {
+                Console.WriteLine(point.Key.ToString); //not a method since it is defined as a property within the DTO /FieldPoint_DTO
+                //Console.WriteLine(point.Value.ToString); //same here for Participant_DTO 
+                //only prints keys as value (possible use that sql thing to add or retrieve from a list using sql statements)
+            }
             //Console.WriteLine(pImpl.ToString); //prints to screen
             pImpl.AddToList(pDTO);
             pImpl.AddToList(pDTO2);
+
+            /**Test Section  END **/
         }
 
         //Shows add user window and hides mainwindow

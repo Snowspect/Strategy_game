@@ -1,4 +1,5 @@
 ﻿using Strategy_game.Data;
+using Strategy_game.Data.DTO;
 using Strategy_game.Data.Interface_Impl;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,17 @@ namespace Strategy_game.Func
             pDAO = new Participant_DAO();
         }
 
+        //Adds a participant to storage
         public void AddToList(Participant_DTO pDTO) //adds it to static layer in storage class
         {
             pDAO.AddToLayer(pDTO);
+        }
+
+        //adds a field to a participant
+        public void AddFieldToParticipant(FieldPoint_DTO fpDTO, Participant_DTO pDTO)
+        {
+            //Access DTO in database, add field information
+            pDAO.AddFieldToParticipant(pDTO, fpDTO);
         }
 
         //returns current Participant DTO

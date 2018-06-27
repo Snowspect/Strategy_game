@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Strategy_game.Data.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,21 +11,28 @@ namespace Strategy_game.Data
     {
         public Participant_DTO()
         {
-            this.HealthGS = 1;
-            this.DefenceGS = 1;
-            this.OffenceGS = 1;
-            this.NameGS = "test";
-            this.VMoveGS = 1;
-            this.HMoveGS = 1;
+            HealthGS = 1;
+            DefenceGS = 1;
+            OffenceGS = 1;
+            NameGS = "test";
+            VMoveGS = 1;
+            HMoveGS = 1;
+            PointGS = new FieldPoint_DTO();
+            PointGS.XPoint = 0;
+            PointGS.YPoint = 0;
+
         }
         public Participant_DTO(int h, int d, int o, int Vm, int Hm, String n)
         {
-            this.HealthGS = h;
-            this.DefenceGS = d;
-            this.OffenceGS = o;
-            this.NameGS = n;
-            this.VMoveGS = Vm;
-            this.HMoveGS = Hm;
+            HealthGS = h;
+            DefenceGS = d;
+            OffenceGS = o;
+            NameGS = n;
+            VMoveGS = Vm;
+            HMoveGS = Hm;
+            PointGS = new FieldPoint_DTO();
+            PointGS.XPoint = 0;
+            PointGS.YPoint = 0;
         }
 
         public int VMoveGS { get; set; }
@@ -33,9 +41,10 @@ namespace Strategy_game.Data
         public int DefenceGS { get; set; }
         public int HMoveGS { get; set; }
         public int HealthGS { get; set; }
+        public FieldPoint_DTO PointGS { get; set; }
 
         public string ToString => "Participant info: " + " Vertical Movement: " + VMoveGS + ", Horizontal Movement: " + HMoveGS + "\n" +
-            "Name: " + NameGS + ", Health: " + HealthGS + ", Offence: " + OffenceGS + ", Defence: " + DefenceGS;
+            "Name: " + NameGS + ", Health: " + HealthGS + ", Offence: " + OffenceGS + ", Defence: " + DefenceGS + ", Xpoint: " + PointGS.XPoint + ", Ypoint: " + PointGS.YPoint;
     }
 }
 
