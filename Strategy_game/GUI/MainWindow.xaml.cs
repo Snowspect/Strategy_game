@@ -23,30 +23,38 @@ namespace Strategy_game
     /// </summary>
     public partial class MainWindow : Window
     {
+        Participant_DTO pDTO;
+        Participant_DTO pDTO2;
+        Participant_Impl pImpl;
         public MainWindow()
         {
             InitializeComponent();
-            Participant_DTO pDTO = new Participant_DTO(100, 4, 4, 2, 2, "Destroyer");
-            Participant_DTO pDTO2 = new Participant_DTO(100, 4, 4, 2, 2, "Cooker");
-            Participant_Impl pImpl = new Participant_Impl(); //should not be neccesary, the DTO should have a constructor which sets its values
+            pDTO = new Participant_DTO(100, 4, 4, 2, 2, "Destroyer");
+            pDTO2 = new Participant_DTO(100, 4, 4, 2, 2, "Cooker");
+            pImpl = new Participant_Impl();
+
             //Console.WriteLine(pImpl.ToString); //prints to screen
             pImpl.AddToList(pDTO);
             pImpl.AddToList(pDTO2);
-
-            foreach (var item in pImpl.GetCurrentList())
-            {
-                Console.WriteLine(item.ToString);
-            }
         }
 
         //Shows add user window and hides mainwindow
         //Can't close mainwindow as that will bug the app out.
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Create_Click(object sender, RoutedEventArgs e)
         {
             ParticipantCreateWindow pcw = new ParticipantCreateWindow(this, this); //sends mainWindow to both parameters as we are in mainwindow
             pcw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             pcw.Show();
             this.Hide();
+        }
+
+        //Prints out user lists in console output.
+        private void GetList_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in pImpl.GetCurrentList())
+            {
+                Console.WriteLine(item.ToString);
+            }
         }
     }
 }

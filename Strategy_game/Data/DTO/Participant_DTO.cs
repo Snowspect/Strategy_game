@@ -8,41 +8,34 @@ namespace Strategy_game.Data
 {
     class Participant_DTO
     {
-        private int Health;
-        private int Defence;
-        private int Offence;
-        private String name;
-        private int VMove;
-        private int HMove;
-
         public Participant_DTO()
         {
-            this.Health = 1;
-            this.Defence = 1;
-            this.Offence = 1;
-            this.name = "test";
-            this.VMove = 1;
-            this.HMove = 1;
+            this.HealthGS = 1;
+            this.DefenceGS = 1;
+            this.OffenceGS = 1;
+            this.NameGS = "test";
+            this.VMoveGS = 1;
+            this.HMoveGS = 1;
         }
         public Participant_DTO(int h, int d, int o, int Vm, int Hm, String n)
         {
-            this.Health = h;
-            this.Defence = d;
-            this.Offence = o;
-            this.name = n;
-            this.VMove = Vm;
-            this.HMove = Hm;
+            this.HealthGS = h;
+            this.DefenceGS = d;
+            this.OffenceGS = o;
+            this.NameGS = n;
+            this.VMoveGS = Vm;
+            this.HMoveGS = Hm;
         }
 
-        public int VMoveGS { get => VMove; set => VMove = value; }
-        public string NameGS { get => name; set => name = value; }
-        public int OffenceGS { get => Offence; set => Offence = value; }
-        public int DefenceGS { get => Defence; set => Defence = value; }
-        public int HMoveGS { get => HMove; set => HMove = value; }
-        public int HealthGS { get => Health; set => Health = value; }
+        public int VMoveGS { get; set; }
+        public string NameGS { get; set; }
+        public int OffenceGS { get; set; }
+        public int DefenceGS { get; set; }
+        public int HMoveGS { get; set; }
+        public int HealthGS { get; set; }
 
-        public string ToString => "Participant info: " + " Vertical Movement: " + VMove + ", Horizontal Movement: " + HMove + "\n" +
-            "Name: " + name + ", Health: " + Health + ", Offence: " + Offence + ", Defence: " + Defence;
+        public string ToString => "Participant info: " + " Vertical Movement: " + VMoveGS + ", Horizontal Movement: " + HMoveGS + "\n" +
+            "Name: " + NameGS + ", Health: " + HealthGS + ", Offence: " + OffenceGS + ", Defence: " + DefenceGS;
     }
 }
 
