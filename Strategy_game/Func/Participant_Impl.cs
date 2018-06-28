@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Strategy_game.Func
 {
 
-    class Participant_Impl : IParticipant_IntImpl_Generic<Participant_DTO>
+    class Participant_Impl : IParticipant_IntImpl_Generic<Participant_DTO, string>
     {
         Participant_DAO pDAO;
         public Participant_Impl()
@@ -19,19 +19,26 @@ namespace Strategy_game.Func
         }
 
         //Adds a participant to storage
-        public void AddToList(Participant_DTO pDTO) //adds it to static layer in storage class
-        {
-            pDAO.AddToLayer(pDTO);
-        }
-
+        public void AddToList(Participant_DTO pDTO) /*adds it to static layer in storage class*/ { pDAO.AddToLayer(pDTO); }
+        
         //adds a field to a participant
-        public void AddFieldToParticipant(FieldPoint_DTO fpDTO, Participant_DTO pDTO)
-        {
-            //Access DTO in database, add field information
-            pDAO.AddFieldToParticipant(pDTO, fpDTO);
-        }
+        public void AddFieldToParticipant(FieldPoint_DTO fpDTO, Participant_DTO pDTO) { /*Access DTO in database, add field information*/ pDAO.AddFieldToParticipant(pDTO, fpDTO); }
 
         //returns current Participant DTO
         public List<Participant_DTO> GetCurrentList() => pDAO.GetParticipantList(); //gets from static layer in st
+
+        //Has the role of inserting into the participant and in that case also contacting database and changing participant information.
+        //also returns participant directly to call so the participant is ready for battle directly (could even be with a buff that lets you change that attribute)
+        public Participant_DTO AddStrongAgainst(string pName_StAgainst, Participant_DTO pDTO) { throw new NotImplementedException(); }
+        public Participant_DTO RemoveStrongAgainst(string pName_StAgainst, Participant_DTO pDTO) { throw new NotImplementedException(); }
+        public string GetStrongAgainst() { throw new NotImplementedException(); }
+
+        public Participant_DTO AddWeakAgainst(string pName_WkAgainst, Participant_DTO pDTO) { throw new NotImplementedException(); }
+        public Participant_DTO RemoveWeakAgainst(string pName_WkAgainst, Participant_DTO pDTO) { throw new NotImplementedException(); }
+        public string GetWeakAgainast() { throw new NotImplementedException(); }
+
+        public Participant_DTO AddImmuneAgainst(string pNameImmAgainast, Participant_DTO pDTO) { throw new NotImplementedException(); }
+        public Participant_DTO RemoveImmuneAgainst(string pNameImmAgainast, Participant_DTO pDTO) { throw new NotImplementedException(); }
+        public string GetImmuneAgainst() { throw new NotImplementedException(); }
     }
 }

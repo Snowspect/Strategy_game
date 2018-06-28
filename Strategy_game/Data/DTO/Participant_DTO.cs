@@ -20,9 +20,11 @@ namespace Strategy_game.Data
             PointGS = new FieldPoint_DTO();
             PointGS.XPoint = 0;
             PointGS.YPoint = 0;
-
+            StrongAgainstGS = new List<string>();
+            WeakAgainstGS = new List<string>();
+            ImmuneAgainstGS = new List<string>();
         }
-        public Participant_DTO(int h, int d, int o, int Vm, int Hm, String n)
+        public Participant_DTO(int h, int d, int o, int Vm, int Hm, string n)
         {
             HealthGS = h;
             DefenceGS = d;
@@ -33,6 +35,9 @@ namespace Strategy_game.Data
             PointGS = new FieldPoint_DTO();
             PointGS.XPoint = 0;
             PointGS.YPoint = 0;
+            StrongAgainstGS = new List<string>();
+            WeakAgainstGS = new List<string>();
+            ImmuneAgainstGS = new List<string>();
         }
 
         public int VMoveGS { get; set; }
@@ -41,6 +46,9 @@ namespace Strategy_game.Data
         public int DefenceGS { get; set; }
         public int HMoveGS { get; set; }
         public int HealthGS { get; set; }
+        public List<string> StrongAgainstGS { get; set; }
+        public List<string> WeakAgainstGS { get; set; }
+        public List<string> ImmuneAgainstGS { get; set; }
         public FieldPoint_DTO PointGS { get; set; }
 
         public string ToString => "Participant info: " + " Vertical Movement: " + VMoveGS + ", Horizontal Movement: " + HMoveGS + "\n" +
