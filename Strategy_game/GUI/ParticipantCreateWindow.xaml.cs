@@ -21,8 +21,9 @@ namespace Strategy_game.GUI
     /// </summary>
     public partial class ParticipantCreateWindow : Window
     {
-        MainWindow mw;
-        Window w;
+        private MainWindow mw;
+        private Window w;
+        private Boolean exitApp;
 
         public ParticipantCreateWindow()
         {
@@ -31,22 +32,22 @@ namespace Strategy_game.GUI
         //Constructor to take two kinds of windows
         public ParticipantCreateWindow(MainWindow mw, Window w)
         {
+            exitApp = true; //used for closing app
             this.w = w;
             this.mw = mw;
             InitializeComponent();
+            Closed += new EventHandler(App_exit); //subscribing to closed event
         }
+
+        //Triggers when window is closed.
+        void App_exit(object sender, EventArgs e) /*App_exit is my own defined method.*/ { if (exitApp == true) { w.Close(); } /*closes mainWindow*/ }
 
         // Accesses the previous window
         private void ToPreviousWindow_Click(object sender, RoutedEventArgs e)
-        {
-            //loads mainWindow
-            if(w is MainWindow) { this.w.Show(); this.Close(); }
-            //loads any other window
-            else { w = new Window(); w.Show(); this.Close(); }
-        }
+        { /*do not close mw.*/ exitApp = false; /*loads mainWindow*/ if (w is MainWindow) { this.w.Show(); this.Close(); } /*loads any other window */ else { w = new Window(); w.Show(); this.Close(); } }
 
         //Loads mainwindow
-        private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); this.Close(); }
+        private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
 
         //triggered when Text Changes within name box (all hide or show the hint box)
         private void NameTextChanged(object sender, TextChangedEventArgs e) { if (NameTextBox.Text.Length >0) HintName.Visibility = Visibility.Hidden; else HintName.Visibility = Visibility.Visible; }
