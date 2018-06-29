@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Strategy_game.GUI"
         mc:Ignorable="d"
         Title="FieldWindow" Height="450" Width="800">
-	<Grid>
+	<Grid Margin="0,-3,0,3">
 		<Canvas Margin="0,66,15,60" HorizontalAlignment="Right" Width="435">
 			<UniformGrid Rows="6" Columns="6" Height="290" Width="432" Canvas.Top="3">
 				<Border BorderThickness="1" BorderBrush="black">
@@ -119,12 +119,6 @@
 				</Border>
 			</UniformGrid>
 		</Canvas>
-		<Border BorderThickness="1" BorderBrush="black" Margin="292,86,497,57">
-			<Rectangle></Rectangle>
-		</Border>
-		<Border BorderThickness="1" BorderBrush="black" Margin="348,406,25,9" RenderTransformOrigin="0.5,0.5">
-			<Rectangle></Rectangle>
-		</Border>
 
 		<TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="316,86,0,0" TextWrapping="Wrap" Text="6" VerticalAlignment="Top" Width="11" Height="13"/>
 		<TextBlock x:Name="textBlock_Copy" HorizontalAlignment="Left" Margin="316,133,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="11" Height="13"/>
@@ -162,8 +156,17 @@
 				</Border>
 			</UniformGrid>
 		</Canvas>
-		<Border>
-		<TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="480,11,0,0" TextWrapping="Wrap" Text="Participants" VerticalAlignment="Top" Width="193"/>
+		<Border Margin="478,8,121,392">
+			<TextBlock x:Name="textBlock1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Participants" VerticalAlignment="Top" Width="193"/>
 		</Border>
+		<TextBox x:Name="xCoord" HorizontalAlignment="Left" Height="22" Margin="15,252,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="XCoord_TextChanged"/>
+		<TextBox x:Name="yCoord" HorizontalAlignment="Left" Height="22" Margin="140,252,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="YCoord_TextChanged"/>
+		<TextBlock x:Name="HintXCoord" Margin="15,252,685,145" IsHitTestVisible="False"><Run Text=" "/><Run Text="XCoord ex. = 1"/></TextBlock>
+		<TextBlock x:Name="HintYCoord" Margin="140,252,561,145" IsHitTestVisible="False"><Run Text=" "/><Run Text="YCoord ex. = 4"/></TextBlock>
+		<Canvas Margin="28,70,532,191">
+			<ListBox x:Name="ListOfParticipants" BorderThickness="1" BorderBrush="black" Height="157" Width="232"></ListBox>
+		</Canvas>
+		<Button x:Name="button" Content="MainWindow" HorizontalAlignment="Left" Margin="28,32,0,0" VerticalAlignment="Top" Width="76" Click="ToMenuWindow_Click"/>
+		<Button x:Name="Prev_window" Content="PreviousWindow" HorizontalAlignment="Left" Margin="122,32,0,0" VerticalAlignment="Top" Width="75" Click="ToPreviousWindow_Click"/>
 	</Grid>
 </Window>

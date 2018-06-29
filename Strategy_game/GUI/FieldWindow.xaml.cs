@@ -36,7 +36,7 @@ namespace Strategy_game.GUI
             this.w = w;
             Closed += new EventHandler(App_exit); //subscribing to closed event
             InitializeComponent();
-
+            
             // Inserts image into site. (not sure how the path works)
             string toop = "pack://application:,,/Strategy_game;component/Sources/SlimeBlack.png";
             Uri uri = new Uri(toop, UriKind.RelativeOrAbsolute);
@@ -45,9 +45,27 @@ namespace Strategy_game.GUI
             img = x1y6;
             img.Stretch = Stretch.Fill;
             img.Source = bitmap;
+
+            for (int i = 0; i < 10; i++)
+            {
+                TextBlock t = new TextBlock();
+                t.Text = "Participant" + i;
+                ListOfParticipants.Items.Add(t);
+            }
         }
 
         //Triggers when window is closed.
         void App_exit(object sender, EventArgs e) /*App_exit is my own defined method.*/ { if (exitApp == true) { w.Close(); } /*closes mainWindow*/ }
+
+        private void XCoord_TextChanged(object sender, TextChangedEventArgs e) { if (xCoord.Text.Length > 0) HintXCoord.Visibility = Visibility.Hidden; else HintXCoord.Visibility = Visibility.Visible; }
+
+        private void YCoord_TextChanged(object sender, TextChangedEventArgs e) { if (yCoord.Text.Length > 0) HintYCoord.Visibility = Visibility.Hidden; else HintYCoord.Visibility = Visibility.Visible; }
+
+        // Accesses the previous window
+        private void ToPreviousWindow_Click(object sender, RoutedEventArgs e)
+        { /*do not close mw.*/ exitApp = false; /*loads mainWindow*/ if (w is MainWindow) { this.w.Show(); this.Close(); } /*loads any other window */ else { w = new Window(); w.Show(); this.Close(); } }
+
+        //Loads mainwindow
+        private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
     }
 }
