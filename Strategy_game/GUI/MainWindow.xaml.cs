@@ -59,6 +59,8 @@ namespace Strategy_game
             pImpl.AddToList(pDTO);
             pImpl.AddToList(pDTO2);
 
+
+
             /**Test Section  END **/
         }
 
@@ -79,6 +81,14 @@ namespace Strategy_game
             {
                 Console.WriteLine(item.ToString);
             }
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            FieldWindow fw = new FieldWindow(this, this);
+            fw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            fw.Show();
+            this.Hide();
         }
     }
 }
