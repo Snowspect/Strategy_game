@@ -67,5 +67,20 @@ namespace Strategy_game.GUI
 
         //Loads mainwindow
         private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
+
+        private void SubmitMove_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if(xCoord.Text == "" || yCoord.Text == "")
+            { Console.WriteLine("The boxes was empty"); }
+            else
+            {
+            int x = int.Parse(xCoord.Text);
+            int y = int.Parse(yCoord.Text);
+            xCoord.Clear();
+            yCoord.Clear();
+            PlayingDisplayBox.Background = Brushes.Green;
+            }
+            //Call method that takes care of this
+        }
     }
 }
