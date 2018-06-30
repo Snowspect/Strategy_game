@@ -67,7 +67,13 @@ namespace Strategy_game.GUI
         {
             Participant_DTO pDTO = new Participant_DTO();
             Participant_Impl pImpl = new Participant_Impl();
-
+            if(NameTextBox.Text == "" || HealthTextBox.Text == "" || OffenceTextBox.Text == "" || DefenceTextBox.Text == ""
+            || HMoveTextBox.Text == "" || VMoveTextBox.Text == "")
+            {
+                Console.WriteLine("Please fill out all Boxes");
+            }
+            else
+            {
             pDTO.NameGS = NameTextBox.Text;
             pDTO.HealthGS = int.Parse(HealthTextBox.Text);
             pDTO.OffenceGS = int.Parse(OffenceTextBox.Text);
@@ -75,6 +81,12 @@ namespace Strategy_game.GUI
             pDTO.HMoveGS = int.Parse(HMoveTextBox.Text);
             pDTO.VMoveGS = int.Parse(VMoveTextBox.Text);
             pImpl.AddToList(pDTO);
+            }
+        }
+
+        private void NewTeam_Button(object sender, RoutedEventArgs e)
+        {
+            //TODO To show canvas that let's you create a new team
         }
     }
 }
