@@ -31,6 +31,7 @@ namespace Strategy_game
         public MainWindow()
         {
             InitializeComponent();
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             /**Test Section  START **/
             pDTO = new Participant_DTO(100, 4, 4, 2, 2, "Destroyer");
             pDTO2 = new Participant_DTO(100, 4, 4, 2, 2, "Cooker");

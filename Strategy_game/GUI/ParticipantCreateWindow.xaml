@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Strategy_game.GUI"
         mc:Ignorable="d"
-        Title="ParticipantCreateWindow" Height="450" Width="800">
+        Title="ParticipantCreateWindow" Height="500" Width="800">
 	<Grid>
 
 		<Button x:Name="ToMenubutton" Content="To Menu" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="ToMenuWindow_Click"/>
