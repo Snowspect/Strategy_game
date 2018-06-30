@@ -33,8 +33,8 @@ namespace Strategy_game
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             /**Test Section  START **/
-            pDTO = new Participant_DTO(100, 4, 4, 2, 2, "Destroyer");
-            pDTO2 = new Participant_DTO(100, 4, 4, 2, 2, "Cooker");
+            pDTO = new Participant_DTO(100, 4, 4, 2, 2, "Destroyer", "Tupac", "a", "b", "c","d", "e","f");
+            pDTO2 = new Participant_DTO(100, 4, 4, 2, 2, "Cooker", "Tupac", "a", "b", "c", "d", "e", "f");
             pImpl = new Participant_Impl();
             gImpl = new Game_Logic_Impl();
 
@@ -52,7 +52,7 @@ namespace Strategy_game
 
             foreach (var point in tmp)
             {
-                Console.WriteLine(point.Item1.ToString); //not a method since it is defined as a property within the DTO /FieldPoint_DTO
+                Console.WriteLine(point.Item1.GetToString()); //not a method since it is defined as a property within the DTO /FieldPoint_DTO
                 //Console.WriteLine(point.Item2.ToString); // prints out the field (but the field is also within the participant
                 //only prints keys as value (possible use that sql thing to add or retrieve from a list using sql statements)
             }
@@ -80,7 +80,7 @@ namespace Strategy_game
         {
             foreach (var item in pImpl.GetCurrentList())
             {
-                Console.WriteLine(item.ToString);
+                Console.WriteLine(item.GetToString());
             }
         }
 

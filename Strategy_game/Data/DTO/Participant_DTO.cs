@@ -25,7 +25,7 @@ namespace Strategy_game.Data
             WeakAgainstGS = new List<string>();
             ImmuneAgainstGS = new List<string>();
         }
-        public Participant_DTO(int h, int d, int o, int Vm, int Hm, string n)
+        public Participant_DTO(int h, int d, int o, int Vm, int Hm, string n, string teamName, string stA1, string stA2, string wkA1, string wkA2, string imA1, string imA2)
         {
             HealthGS = h;
             DefenceGS = d;
@@ -38,8 +38,11 @@ namespace Strategy_game.Data
             PointGS.XPoint = 0;
             PointGS.YPoint = 0;
             StrongAgainstGS = new List<string>();
+            StrongAgainstGS.Add(stA1); StrongAgainstGS.Add(stA2);
             WeakAgainstGS = new List<string>();
+            WeakAgainstGS.Add(wkA1); WeakAgainstGS.Add(wkA2);
             ImmuneAgainstGS = new List<string>();
+            ImmuneAgainstGS.Add(imA1); ImmuneAgainstGS.Add(imA2);
         }
 
         public int VMoveGS { get; set; }
@@ -54,9 +57,13 @@ namespace Strategy_game.Data
         public List<string> ImmuneAgainstGS { get; set; }
         public FieldPoint_DTO PointGS { get; set; }
 
-        public string ToString => "Participant info: " + " Vertical Movement: " + VMoveGS + ", Horizontal Movement: " + HMoveGS + "\n" +
-            "Name: " + NameGS + ", Health: " + HealthGS + ", Offence: " + OffenceGS + ", Defence: " + DefenceGS + ", Xpoint: " + PointGS.XPoint + ", Ypoint: " + PointGS.YPoint;
-
+        public string GetToString()
+        {
+            return "Participant info: " + " Vertical Movement: " + VMoveGS + ", Horizontal Movement: " + HMoveGS + "\n" +
+            "Name: " + NameGS + ", Health: " + HealthGS + ", Offence: " + OffenceGS + ", Defence: " + DefenceGS + ", Xpoint: " + PointGS.XPoint + ", Ypoint: " + PointGS.YPoint + "\n"
+            + "Team: " + TeamGS + ", Strong Against: " + StrongAgainstGS[0] + "," + StrongAgainstGS[1] + ", Weak Against: " +
+            WeakAgainstGS[0] + "," + WeakAgainstGS[1] + ", Immune Against: " + ImmuneAgainstGS[0] + "," + ImmuneAgainstGS[1];
+        }
     }
 }
 

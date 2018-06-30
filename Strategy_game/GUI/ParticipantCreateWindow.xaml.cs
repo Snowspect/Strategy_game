@@ -1,4 +1,5 @@
 ﻿using Strategy_game.Data;
+using Strategy_game.Exceptions;
 using Strategy_game.Func;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,13 @@ namespace Strategy_game.GUI
             this.mw = mw;
             InitializeComponent();
             Closed += new EventHandler(App_exit); //subscribing to closed event
+            StrongAgainstFirstChoice.Items.Add("test");
+            StrongAgainstSecondChoice.Items.Add("test");
+            WeakAgainstFirstChoice.Items.Add("test");
+            WeakAgainstSecondChoice.Items.Add("test");
+            ImmuneAgainstFirstChoice.Items.Add("test");
+            ImmuneAgainstSecondChoice.Items.Add("test");
+            TeamNameChoice.Items.Add("test");
         }
 
         //Triggers when window is closed.
@@ -65,28 +73,79 @@ namespace Strategy_game.GUI
         //retrieves content from boxes and adds to a DTO directly. 
         private void SubmitParticipant_Click(object sender, RoutedEventArgs e)
         {
+            List<string> tp = new List<string>();
+            tp.Add(HealthTextBox.Text);
+            tp.Add(OffenceTextBox.Text);
+            tp.Add(DefenceTextBox.Text);
+            tp.Add(VMoveTextBox.Text);
+            tp.Add(HMoveTextBox.Text);
             Participant_DTO pDTO = new Participant_DTO();
             Participant_Impl pImpl = new Participant_Impl();
-            if(NameTextBox.Text == "" || HealthTextBox.Text == "" || OffenceTextBox.Text == "" || DefenceTextBox.Text == ""
-            || HMoveTextBox.Text == "" || VMoveTextBox.Text == "")
+            if (NameTextBox.Text == "" || HealthTextBox.Text == "" || OffenceTextBox.Text == "" || DefenceTextBox.Text == ""
+            || HMoveTextBox.Text == "" || VMoveTextBox.Text == "" || StrongAgainstFirstChoice.SelectedIndex == -1 || StrongAgainstSecondChoice.SelectedIndex == -1
+            || WeakAgainstFirstChoice.SelectedIndex == -1 || WeakAgainstSecondChoice.SelectedIndex == -1 || ImmuneAgainstFirstChoice.SelectedIndex == -1
+            || ImmuneAgainstSecondChoice.SelectedIndex == -1 || TeamNameChoice.SelectedIndex == -1)
             {
                 Console.WriteLine("Please fill out all Boxes");
             }
             else
             {
-            pDTO.NameGS = NameTextBox.Text;
-            pDTO.HealthGS = int.Parse(HealthTextBox.Text);
-            pDTO.OffenceGS = int.Parse(OffenceTextBox.Text);
-            pDTO.DefenceGS = int.Parse(DefenceTextBox.Text);
-            pDTO.HMoveGS = int.Parse(HMoveTextBox.Text);
-            pDTO.VMoveGS = int.Parse(VMoveTextBox.Text);
-            pImpl.AddToList(pDTO);
+                Boolean nope = true;
+                //Tests if one of the items are not an integer
+                foreach (var item in tp)
+                {
+                    try
+                    { 
+                        int.Parse(item);
+                    } catch(Exception exception)
+                    {
+                        Console.WriteLine(exception);
+                        Console.WriteLine(exception.StackTrace.ToString());
+                        throw new NotInteger(item.ToString());
+                    }
+                }
+                if (nope == true) //retrieves data from window and inserts into Participant_DTO
+                {
+                    pDTO.NameGS = NameTextBox.Text;
+                    pDTO.HealthGS = int.Parse(HealthTextBox.Text);
+                    pDTO.OffenceGS = int.Parse(OffenceTextBox.Text);
+                    pDTO.DefenceGS = int.Parse(DefenceTextBox.Text);
+                    pDTO.HMoveGS = int.Parse(HMoveTextBox.Text);
+                    pDTO.VMoveGS = int.Parse(VMoveTextBox.Text);
+                    pDTO.TeamGS = TeamNameChoice.SelectedItem.ToString();
+                    pDTO.StrongAgainstGS.Add(StrongAgainstFirstChoice.SelectedItem.ToString());
+                    pDTO.StrongAgainstGS.Add(StrongAgainstSecondChoice.SelectedItem.ToString());
+                    pDTO.WeakAgainstGS.Add(WeakAgainstFirstChoice.SelectedItem.ToString());
+                    pDTO.WeakAgainstGS.Add(WeakAgainstSecondChoice.SelectedItem.ToString());
+                    pDTO.WeakAgainstGS.Add(ImmuneAgainstFirstChoice.SelectedItem.ToString());
+                    pDTO.WeakAgainstGS.Add(ImmuneAgainstSecondChoice.SelectedItem.ToString());
+                    pImpl.AddToList(pDTO);
+                    ClearFields();
+                }
             }
         }
 
         private void NewTeam_Button(object sender, RoutedEventArgs e)
         {
             //TODO To show canvas that let's you create a new team
+        }
+
+        //clear all fields after submitting
+        public void ClearFields()
+        {
+            NameTextBox.Clear();
+            HealthTextBox.Clear();
+            OffenceTextBox.Clear();
+            DefenceTextBox.Clear();
+            HMoveTextBox.Clear();
+            VMoveTextBox.Clear();
+            StrongAgainstFirstChoice.SelectedIndex = -1;
+            StrongAgainstSecondChoice.SelectedIndex = -1;
+            WeakAgainstFirstChoice.SelectedIndex = -1;
+            WeakAgainstSecondChoice.SelectedIndex = -1;
+            ImmuneAgainstFirstChoice.SelectedIndex = - 1;
+            ImmuneAgainstSecondChoice.SelectedIndex = -1;
+            TeamNameChoice.SelectedIndex = -1;
         }
     }
 }
