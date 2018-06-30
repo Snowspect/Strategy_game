@@ -48,12 +48,12 @@ namespace Strategy_game
             field.XPoint = 5;
             pDTO2.PointGS = field;
             gImpl.AddParticipantToField(pDTO2);
-            Dictionary<Participant_DTO, FieldPoint_DTO> tmp = gImpl.GetField();
+            List<Tuple<Participant_DTO, FieldPoint_DTO>> tmp = gImpl.GetField();
 
             foreach (var point in tmp)
             {
-                Console.WriteLine(point.Key.ToString); //not a method since it is defined as a property within the DTO /FieldPoint_DTO
-                //Console.WriteLine(point.Value.ToString); //same here for Participant_DTO 
+                Console.WriteLine(point.Item1.ToString); //not a method since it is defined as a property within the DTO /FieldPoint_DTO
+                //Console.WriteLine(point.Item2.ToString); // prints out the field (but the field is also within the participant
                 //only prints keys as value (possible use that sql thing to add or retrieve from a list using sql statements)
             }
             //Console.WriteLine(pImpl.ToString); //prints to screen

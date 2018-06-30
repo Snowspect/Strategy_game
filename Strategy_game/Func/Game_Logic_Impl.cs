@@ -23,11 +23,11 @@ namespace Strategy_game.Func
         // Adds a participant to the field
         public void AddParticipantToField(Participant_DTO pDTO)
         {
-            field.FieldGS.Add(pDTO,pDTO.PointGS);
+            field.FieldGS.Add(Tuple.Create(pDTO,pDTO.PointGS)); //using tuple due to dictionary only containing unique sets.
         }
 
         //returns field
-        public Dictionary<Participant_DTO, FieldPoint_DTO> GetField()
+        public List<Tuple<Participant_DTO, FieldPoint_DTO>> GetField()
         {
             return field.FieldGS;
         }

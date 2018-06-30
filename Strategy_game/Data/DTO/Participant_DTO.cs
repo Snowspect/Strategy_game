@@ -17,6 +17,7 @@ namespace Strategy_game.Data
             NameGS = "test";
             VMoveGS = 1;
             HMoveGS = 1;
+            TeamGS = "none";
             PointGS = new FieldPoint_DTO();
             PointGS.XPoint = 0;
             PointGS.YPoint = 0;
@@ -32,6 +33,7 @@ namespace Strategy_game.Data
             NameGS = n;
             VMoveGS = Vm;
             HMoveGS = Hm;
+            TeamGS = "none";
             PointGS = new FieldPoint_DTO();
             PointGS.XPoint = 0;
             PointGS.YPoint = 0;
@@ -46,6 +48,7 @@ namespace Strategy_game.Data
         public int DefenceGS { get; set; }
         public int HMoveGS { get; set; }
         public int HealthGS { get; set; }
+        public string TeamGS { get; set; }
         public List<string> StrongAgainstGS { get; set; }
         public List<string> WeakAgainstGS { get; set; }
         public List<string> ImmuneAgainstGS { get; set; }
@@ -53,6 +56,7 @@ namespace Strategy_game.Data
 
         public string ToString => "Participant info: " + " Vertical Movement: " + VMoveGS + ", Horizontal Movement: " + HMoveGS + "\n" +
             "Name: " + NameGS + ", Health: " + HealthGS + ", Offence: " + OffenceGS + ", Defence: " + DefenceGS + ", Xpoint: " + PointGS.XPoint + ", Ypoint: " + PointGS.YPoint;
+
     }
 }
 
