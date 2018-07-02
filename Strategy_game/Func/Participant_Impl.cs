@@ -13,19 +13,32 @@ namespace Strategy_game.Func
     class Participant_Impl : IParticipant_IntImpl_Generic<Participant_DTO, string>
     {
         Participant_DAO pDAO;
+        Participant_DTO pDTO;
         public Participant_Impl()
         {
             pDAO = new Participant_DAO();
+            pDTO = new Participant_DTO();
+        }
+        public Participant_DTO GetParticipant(string participant_name)
+        {
+            //Access DAO, return Participant.
+            pDTO = pDAO.GetParticipant_DTODB(participant_name);
+            return pDTO;
         }
 
         //Adds a participant to storage
         public void AddToList(Participant_DTO pDTO) /*adds it to static layer in storage class*/ { pDAO.AddToLayer(pDTO); }
         
         //adds a field to a participant
-        public void AddFieldToParticipant(FieldPoint_DTO fpDTO, Participant_DTO pDTO) { /*Access DTO in database, add field information*/ pDAO.AddFieldToParticipant(pDTO, fpDTO); }
+        public void UpdateFieldToParticipant(FieldPoint_DTO fpDTO, Participant_DTO pDTO) { /*Access DTO in database, add field information*/ pDAO.AddFieldToParticipant(pDTO, fpDTO); }
 
         //returns current Participant DTO
         public List<Participant_DTO> GetCurrentList() => pDAO.GetParticipantList(); //gets from static layer in st
+
+        public string getImageFromParticipant(string participant_name)
+        {
+            return pDAO.GetParticipant_DTODB(participant_name).ImageGS;
+        }
 
         //Has the role of inserting into the participant and in that case also contacting database and changing participant information.
         //also returns participant directly to call so the participant is ready for battle directly (could even be with a buff that lets you change that attribute)

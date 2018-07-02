@@ -8,7 +8,7 @@
         Title="FieldWindow" Height="500" Width="800">
     <Grid Margin="0,-3,0,3">
         <Canvas Margin="339,70,0,0" Width="435" HorizontalAlignment="Left" Height="290" VerticalAlignment="Top">
-            <UniformGrid Rows="6" Columns="6" Height="285" Width="435" Canvas.Top="3">
+            <UniformGrid x:Name="FieldGrid" Rows="6" Columns="6" Height="285" Width="435" Canvas.Top="3">
                 <Border BorderThickness="1" BorderBrush="black">
                     <Image x:Name="x1y6"/>
                 </Border>
@@ -161,9 +161,9 @@
         </Border>
         <TextBox x:Name="xCoord" HorizontalAlignment="Left" Height="22" Margin="15,252,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="XCoord_TextChanged"/>
         <TextBox x:Name="yCoord" HorizontalAlignment="Left" Height="22" Margin="140,252,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="YCoord_TextChanged"/>
-        <TextBlock x:Name="HintXCoord" Margin="15,252,685,145" IsHitTestVisible="False"><Run Text=" "/><Run Text="XCoord ex. = 1"/></TextBlock>
-        <TextBlock x:Name="HintYCoord" Margin="140,252,561,145" IsHitTestVisible="False"><Run Text=" "/><Run Text="YCoord ex. = 4"/></TextBlock>
-        <Canvas Margin="28,70,532,191">
+        <TextBlock x:Name="HintXCoord" Margin="15,252,688,195" IsHitTestVisible="False"><Run Text=" "/><Run Text="XCoord ex. = 1"/></TextBlock>
+        <TextBlock x:Name="HintYCoord" Margin="140,252,562,195" IsHitTestVisible="False"><Run Text=" "/><Run Text="YCoord ex. = 4"/></TextBlock>
+        <Canvas Margin="28,70,532,243">
             <ListBox x:Name="ListOfParticipants" BorderThickness="1" BorderBrush="black" Height="157" Width="232"></ListBox>
         </Canvas>
         <Button x:Name="MainMenu_Button" Content="MainWindow" HorizontalAlignment="Left" Margin="28,32,0,0" VerticalAlignment="Top" Width="76" Click="ToMenuWindow_Click"/>

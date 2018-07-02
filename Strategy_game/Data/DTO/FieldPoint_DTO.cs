@@ -16,6 +16,11 @@ namespace Strategy_game.Data.DTO
             XPoint = 0;
             YPoint = 0;
         }
+        public FieldPoint_DTO(int x, int y)
+        {
+            YPoint = y;
+            XPoint = x;
+        }
 
         public String ToString => "XPoint: " + XPoint + ", YPoint: " + YPoint;
     }

@@ -18,6 +18,7 @@ namespace Strategy_game.Data
             VMoveGS = 1;
             HMoveGS = 1;
             TeamGS = "none";
+            ImageGS = "pack://application:,,/Strategy_game;component/Sources/SlimeBlack.png";
             PointGS = new FieldPoint_DTO();
             PointGS.XPoint = 0;
             PointGS.YPoint = 0;
@@ -34,6 +35,7 @@ namespace Strategy_game.Data
             VMoveGS = Vm;
             HMoveGS = Hm;
             TeamGS = "none";
+            ImageGS = "pack://application:,,/Strategy_game;component/Sources/SlimeBlack.png";
             PointGS = new FieldPoint_DTO();
             PointGS.XPoint = 0;
             PointGS.YPoint = 0;
@@ -56,6 +58,7 @@ namespace Strategy_game.Data
         public List<string> WeakAgainstGS { get; set; }
         public List<string> ImmuneAgainstGS { get; set; }
         public FieldPoint_DTO PointGS { get; set; }
+        public string ImageGS { get; set; }
 
         public string GetToString()
         {

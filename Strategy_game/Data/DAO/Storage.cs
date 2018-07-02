@@ -26,5 +26,9 @@ namespace Strategy_game.Data.DAO
         {
             foreach (var element in StParticipant) if(element.Equals(pDTO)) element.PointGS = fpDTO;
         }
+        public Participant_DTO GetParticipant_DTOST()
+        {
+            return StParticipant[0];
+        }
     }
 }

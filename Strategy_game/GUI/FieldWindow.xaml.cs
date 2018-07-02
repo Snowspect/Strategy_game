@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Strategy_game.Data.DTO;
+using Strategy_game.Func;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +25,7 @@ namespace Strategy_game.GUI
         private MainWindow mw;
         private Window w;
         private Boolean exitApp;
+        Game_Logic_Impl gli;
 
         public FieldWindow()
         {
@@ -31,12 +34,15 @@ namespace Strategy_game.GUI
 
         public FieldWindow(MainWindow mw, Window w)
         {
-            exitApp = true; //used for closing app
-            this.mw = mw;
-            this.w = w;
-            Closed += new EventHandler(App_exit); //subscribing to closed event
-            InitializeComponent();
-            
+            gli = new Game_Logic_Impl(); 
+            exitApp = true; //used for closing app 
+            this.mw = mw; 
+            this.w = w; 
+            Closed += new EventHandler(App_exit); //subscribing to closed event 
+            InitializeComponent(); 
+
+            /* Test Section START */ 
+
             // Inserts image into site. (not sure how the path works)
             string toop = "pack://application:,,/Strategy_game;component/Sources/SlimeBlack.png";
             Uri uri = new Uri(toop, UriKind.RelativeOrAbsolute);
@@ -52,6 +58,7 @@ namespace Strategy_game.GUI
                 t.Text = "Participant" + i;
                 ListOfParticipants.Items.Add(t);
             }
+            /* Test Section END */
         }
 
         //Triggers when window is closed.
@@ -74,13 +81,56 @@ namespace Strategy_game.GUI
             { Console.WriteLine("The boxes was empty"); }
             else
             {
+                MoveToSpot();
+
+                xCoord.Clear();
+                yCoord.Clear();
+                PlayingDisplayBox.Background = Brushes.Green;
+            }
+        }
+
+        //Moves participant in fieldDTO List
+        public void MoveToSpot() 
+        {
+            Image img = new Image();
             int x = int.Parse(xCoord.Text);
             int y = int.Parse(yCoord.Text);
-            xCoord.Clear();
-            yCoord.Clear();
-            PlayingDisplayBox.Background = Brushes.Green;
-            }
-            //Call method that takes care of this
+            
+            string participantToMove = ListOfParticipants.SelectedItem.ToString();
+            string fieldCoord = gli.GetParticipantFieldCoord(participantToMove);
+            Console.WriteLine(fieldCoord);
+            img = (Image)FieldGrid.FindName(fieldCoord);
+
+
+            img.ClearValue(Image.SourceProperty); //clears the image //problem with null object 
+            //moves participant in storage and on field list
+            gli.MoveParticipant(x, y, participantToMove); //Updates participantDTO in storage 
+
+            //gets image from participant to move.
+            string image = gli.GetImage(participantToMove);
+            string uploadImage = image;
+            //prepares the image
+            Uri uri = new Uri(uploadImage, UriKind.RelativeOrAbsolute);
+            BitmapImage bitmap = new BitmapImage(uri);
+            
+            //finds the image field based on the coords
+            string fieldName = "x" + x +"y" + y;
+            img = (Image) FieldGrid.FindName(fieldName);
+
+            img.Stretch = Stretch.Fill; 
+            img.Source = bitmap; 
+
+            //TODO Change field DTO list 
+            //DELETE picture from original spot 
         }
-    }
-}
+        public static ImageSource BitmapFromUri(Uri source)
+        {
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = source;
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+            return bitmap;
+        }
+    } 
+} 
