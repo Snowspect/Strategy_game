@@ -100,8 +100,8 @@
                     <Image x:Name="x6y2"/>
                 </Border>
                 <Border BorderThickness="1" BorderBrush="black">
-
-                </Border>
+					<Image x:Name="x1y1"/>
+				</Border>
                 <Border BorderThickness="1" BorderBrush="black">
                     <Image x:Name="x2y1"/>
                 </Border>

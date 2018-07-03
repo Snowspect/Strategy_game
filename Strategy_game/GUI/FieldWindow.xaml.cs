@@ -32,9 +32,9 @@ namespace Strategy_game.GUI
             InitializeComponent();
         }
 
-        public FieldWindow(MainWindow mw, Window w)
+        public FieldWindow(MainWindow mw, Window w, Game_Logic_Impl gimpl)
         {
-            gli = new Game_Logic_Impl(); 
+            gli = gimpl;
             exitApp = true; //used for closing app 
             this.mw = mw; 
             this.w = w; 
@@ -52,11 +52,10 @@ namespace Strategy_game.GUI
             img.Stretch = Stretch.Fill;
             img.Source = bitmap;
 
-            for (int i = 0; i < 10; i++)
+
+            foreach (var item in gimpl.GetField())
             {
-                TextBlock t = new TextBlock();
-                t.Text = "Participant" + i;
-                ListOfParticipants.Items.Add(t);
+                ListOfParticipants.Items.Add(item.Item1.NameGS);
             }
             /* Test Section END */
         }
@@ -75,6 +74,7 @@ namespace Strategy_game.GUI
         //Loads mainwindow
         private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
 
+        //Activates player movement
         private void SubmitMove_Button_Click(object sender, RoutedEventArgs e)
         {
             if(xCoord.Text == "" || yCoord.Text == "")
@@ -90,47 +90,47 @@ namespace Strategy_game.GUI
         }
 
         //Moves participant in fieldDTO List
+        //sets and clears images as well
         public void MoveToSpot() 
         {
-            Image img = new Image();
             int x = int.Parse(xCoord.Text);
             int y = int.Parse(yCoord.Text);
-            
-            string participantToMove = ListOfParticipants.SelectedItem.ToString();
-            string fieldCoord = gli.GetParticipantFieldCoord(participantToMove);
-            Console.WriteLine(fieldCoord);
-            img = (Image)FieldGrid.FindName(fieldCoord);
+            string participantToMove = ListOfParticipants.SelectedItem.ToString(); //retrieves name
 
+            ClearsImage(x, y, participantToMove);
 
-            img.ClearValue(Image.SourceProperty); //clears the image //problem with null object 
             //moves participant in storage and on field list
-            gli.MoveParticipant(x, y, participantToMove); //Updates participantDTO in storage 
+            //Updates participantDTO in storage
+            gli.MoveParticipant(x, y, participantToMove);
 
+
+            SetsImage(x, y, participantToMove);
+        }
+        public void ClearsImage(int xCoord, int yCoord, string participant_name)
+        {
+            string fieldCoord = gli.GetParticipantFieldCoord(participant_name); //retrieves current Coords
+
+            Image ima = new Image(); 
+            ima = (Image)FieldGrid.FindName(fieldCoord); //finds image with x:Name that matches coords 
+            ima.ClearValue(Image.SourceProperty); //clears the image 
+        } 
+        public void SetsImage(int xCoord, int yCoord, string participant_name)
+        {
+            Image ima = new Image();
             //gets image from participant to move.
-            string image = gli.GetImage(participantToMove);
+            string image = gli.GetImage(participant_name);
             string uploadImage = image;
             //prepares the image
             Uri uri = new Uri(uploadImage, UriKind.RelativeOrAbsolute);
             BitmapImage bitmap = new BitmapImage(uri);
-            
+
             //finds the image field based on the coords
-            string fieldName = "x" + x +"y" + y;
-            img = (Image) FieldGrid.FindName(fieldName);
+            string fieldName = "x" + xCoord + "y" + yCoord;
+            ima = (Image)FieldGrid.FindName(fieldName);
 
-            img.Stretch = Stretch.Fill; 
-            img.Source = bitmap; 
-
-            //TODO Change field DTO list 
-            //DELETE picture from original spot 
-        }
-        public static ImageSource BitmapFromUri(Uri source)
-        {
-            var bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = source;
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.EndInit();
-            return bitmap;
+            //sets up image 
+            ima.Stretch = Stretch.Fill;
+            ima.Source = bitmap;
         }
     } 
 } 

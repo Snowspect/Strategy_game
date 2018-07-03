@@ -34,18 +34,18 @@ namespace Strategy_game
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             /**Test Section  START **/
             pDTO = new Participant_DTO(100, 4, 4, 2, 2, "Destroyer", "Tupac", "a", "b", "c","d", "e","f");
-            pDTO2 = new Participant_DTO(100, 4, 4, 2, 2, "Cooker", "Tupac", "a", "b", "c", "d", "e", "f");
+            pDTO2 = new Participant_DTO(100, 4, 4, 2, 2, "Creator", "Tupac", "a", "b", "c", "d", "e", "f");
             pImpl = new Participant_Impl();
             gImpl = new Game_Logic_Impl();
 
             //sets points difference from 0,0
             FieldPoint_DTO field = new FieldPoint_DTO();
-            field.XPoint = 2;
-            field.YPoint = 3;
+            field.XPoint = 1;
+            field.YPoint = 6;
             pDTO.PointGS = field;
 
             gImpl.AddParticipantToField(pDTO);
-            field.XPoint = 5;
+            field.XPoint = 1;
             pDTO2.PointGS = field;
             gImpl.AddParticipantToField(pDTO2);
             List<Tuple<Participant_DTO, FieldPoint_DTO>> tmp = gImpl.GetField();
@@ -86,7 +86,7 @@ namespace Strategy_game
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            FieldWindow fw = new FieldWindow(this, this);
+            FieldWindow fw = new FieldWindow(this, this, this.gImpl);
             fw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             fw.Show();
             this.Hide();

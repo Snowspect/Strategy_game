@@ -9,7 +9,7 @@ using Strategy_game.Data;
 
 namespace Strategy_game.Func
 {
-    class Game_Logic_Impl
+    public class Game_Logic_Impl
     {
         Field_DTO field;
         Participant_Impl pImpl;
@@ -18,12 +18,13 @@ namespace Strategy_game.Func
         { 
             pImpl = new Participant_Impl(); 
             field = new Field_DTO(); 
-        } 
+        }
 
         // Adds a participant to the field
         public void AddParticipantToField(Participant_DTO pDTO)
         { 
             field.FieldGS.Add(Tuple.Create(pDTO,pDTO.PointGS)); //using tuple due to dictionary only containing unique sets.
+            Console.WriteLine("bitches");
         } 
         
         //returns field
@@ -35,12 +36,12 @@ namespace Strategy_game.Func
         //handles contact between game logic and logic related to participants 
         //attempt to not have any objects created in this folder (allows for flexibility) 
         public void MoveParticipant(int xCoord, int yCoord, string Participant_name) 
-        { 
+        {
+            Console.WriteLine("GL Test: " + Participant_name);
             fp_DTO = new FieldPoint_DTO(); 
             fp_DTO.XPoint = xCoord; fp_DTO.YPoint = yCoord; 
             pImpl.UpdateFieldToParticipant(fp_DTO, pImpl.GetParticipant(Participant_name)); //directly throws participant object 
             AddParticipantToField(pImpl.GetParticipant(Participant_name)); //directly throws participant object
-
         }
 
         public string GetImage(string participant_name)
@@ -49,7 +50,20 @@ namespace Strategy_game.Func
         }
         public string GetParticipantFieldCoord(string participantToMove)
         {
-            return "x1y1";
+            //currently always accesses first participant on field
+            // Should be
+            foreach (var item in GetField())
+            {
+                Console.WriteLine(item.Item1.NameGS.ToString());
+                if (item.Item1.NameGS == participantToMove)
+                {
+                    return "x" + item.Item1.PointGS.XPoint + "y" + item.Item1.PointGS.YPoint;
+                }
+            }
+            //default return
+//            int x = field.FieldGS[0].Item1.PointGS.XPoint;
+//            int y = field.FieldGS[0].Item1.PointGS.YPoint;
+            return "x" + "2" + "y" + "6";
         }
     } 
 } 

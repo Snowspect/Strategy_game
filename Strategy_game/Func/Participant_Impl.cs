@@ -30,7 +30,9 @@ namespace Strategy_game.Func
         public void AddToList(Participant_DTO pDTO) /*adds it to static layer in storage class*/ { pDAO.AddToLayer(pDTO); }
         
         //adds a field to a participant
-        public void UpdateFieldToParticipant(FieldPoint_DTO fpDTO, Participant_DTO pDTO) { /*Access DTO in database, add field information*/ pDAO.AddFieldToParticipant(pDTO, fpDTO); }
+        public void UpdateFieldToParticipant(FieldPoint_DTO fpDTO, Participant_DTO pDTO) {
+            /*Access DTO in database, add field information*/
+            pDAO.AddFieldToParticipant(pDTO, fpDTO); }
 
         //returns current Participant DTO
         public List<Participant_DTO> GetCurrentList() => pDAO.GetParticipantList(); //gets from static layer in st

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data.DTO
 {
-    class Field_DTO
+    public class Field_DTO
     {
         private List<Tuple<Participant_DTO, FieldPoint_DTO>> field;
         public Field_DTO()

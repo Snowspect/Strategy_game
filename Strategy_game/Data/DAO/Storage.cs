@@ -24,11 +24,16 @@ namespace Strategy_game.Data.DAO
         //Adds field to a specific participant in storage
         public void AddFieldToParticipant(Participant_DTO pDTO, FieldPoint_DTO fpDTO)
         {
-            foreach (var element in StParticipant) if(element.Equals(pDTO)) element.PointGS = fpDTO;
+            foreach (var element in StParticipant) if(element.NameGS.Equals(pDTO.NameGS)) element.PointGS = fpDTO;
         }
-        public Participant_DTO GetParticipant_DTOST()
+        public Participant_DTO GetParticipant_DTOST(string participant_name)
         {
-            return StParticipant[0];
+            foreach (var item in StParticipant)
+            {
+                if (item.NameGS.Equals(participant_name))
+                    return item;
+            }
+            return null;
         }
     }
 }

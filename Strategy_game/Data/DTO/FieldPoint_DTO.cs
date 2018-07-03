@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data.DTO
 {
-    class FieldPoint_DTO
+    public class FieldPoint_DTO
     {
         public int XPoint { get; set; }
         public int YPoint { get; set; }

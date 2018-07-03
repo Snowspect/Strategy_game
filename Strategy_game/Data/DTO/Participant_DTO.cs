@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data
 {
-    class Participant_DTO
+    public class Participant_DTO
     {
         public Participant_DTO()
         {

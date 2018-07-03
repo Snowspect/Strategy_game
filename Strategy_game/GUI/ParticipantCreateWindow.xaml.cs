@@ -114,6 +114,7 @@ namespace Strategy_game.GUI
                     pDTO.VMoveGS = int.Parse(VMoveTextBox.Text);
                     pDTO.TeamGS = TeamNameChoice.SelectedItem.ToString();
                     pDTO.StrongAgainstGS.Add(StrongAgainstFirstChoice.SelectedItem.ToString());
+                    Console.WriteLine(StrongAgainstFirstChoice.SelectedItem.ToString());
                     pDTO.StrongAgainstGS.Add(StrongAgainstSecondChoice.SelectedItem.ToString());
                     pDTO.WeakAgainstGS.Add(WeakAgainstFirstChoice.SelectedItem.ToString());
                     pDTO.WeakAgainstGS.Add(WeakAgainstSecondChoice.SelectedItem.ToString());

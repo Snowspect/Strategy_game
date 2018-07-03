@@ -35,9 +35,9 @@ namespace Strategy_game.Data
             st.AddFieldToParticipant(pDTO, fpDTO);
         }
         //Gets participant from storage (ment to do database retrieval)
-        public Participant_DTO GetParticipant_DTODB(string Participant_name)
+        public Participant_DTO GetParticipant_DTODB(string participant_name)
         {
-            pDTO = st.GetParticipant_DTOST(); //placeholder for database access
+            pDTO = st.GetParticipant_DTOST(participant_name); //placeholder for database access
             return pDTO;
         }
     }
