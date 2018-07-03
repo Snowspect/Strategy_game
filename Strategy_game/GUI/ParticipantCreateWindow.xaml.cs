@@ -38,12 +38,12 @@ namespace Strategy_game.GUI
             this.mw = mw;
             InitializeComponent();
             Closed += new EventHandler(App_exit); //subscribing to closed event
-            StrongAgainstFirstChoice.Items.Add("test");
-            StrongAgainstSecondChoice.Items.Add("test");
-            WeakAgainstFirstChoice.Items.Add("test");
-            WeakAgainstSecondChoice.Items.Add("test");
-            ImmuneAgainstFirstChoice.Items.Add("test");
-            ImmuneAgainstSecondChoice.Items.Add("test");
+            StrongAgainstFirstChoice.Items.Add("st1");
+            StrongAgainstSecondChoice.Items.Add("st2");
+            WeakAgainstFirstChoice.Items.Add("wk1");
+            WeakAgainstSecondChoice.Items.Add("wk2");
+            ImmuneAgainstFirstChoice.Items.Add("imm1");
+            ImmuneAgainstSecondChoice.Items.Add("imm2");
             TeamNameChoice.Items.Add("test");
         }
 
@@ -118,8 +118,8 @@ namespace Strategy_game.GUI
                     pDTO.StrongAgainstGS.Add(StrongAgainstSecondChoice.SelectedItem.ToString());
                     pDTO.WeakAgainstGS.Add(WeakAgainstFirstChoice.SelectedItem.ToString());
                     pDTO.WeakAgainstGS.Add(WeakAgainstSecondChoice.SelectedItem.ToString());
-                    pDTO.WeakAgainstGS.Add(ImmuneAgainstFirstChoice.SelectedItem.ToString());
-                    pDTO.WeakAgainstGS.Add(ImmuneAgainstSecondChoice.SelectedItem.ToString());
+                    pDTO.ImmuneAgainstGS.Add(ImmuneAgainstFirstChoice.SelectedItem.ToString());
+                    pDTO.ImmuneAgainstGS.Add(ImmuneAgainstSecondChoice.SelectedItem.ToString());
                     pImpl.AddToList(pDTO);
                     ClearFields();
                 }
