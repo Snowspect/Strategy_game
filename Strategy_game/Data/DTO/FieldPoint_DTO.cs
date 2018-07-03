@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data.DTO
 {
+    /// <summary>
+    /// Holds information regarding one individual point.
+    /// </summary>
     public class FieldPoint_DTO
     {
         public int XPoint { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data.Interface_Impl
 {
-    interface IParticipant_IntImpl_Generic<T,E>
+    interface IParticipant_IntImpl_Generic<T,E,Z>
     {
         /// <summary>
         /// Replace T with desired parameter
@@ -18,17 +18,23 @@ namespace Strategy_game.Data.Interface_Impl
         /// </summary>
         List<T> GetCurrentList();
 
+        void UpdateFieldToParticipant(E fpDTO, T pDTO);
+
+        T GetParticipant(Z participant_name);
+
+        string getImageFromParticipant(Z participant_name);
+
         /// Replace T with desired parameter
         /// THe intended is a string
         /// Getters and setters for enemies
-        T AddStrongAgainst(E participant_name, T pDTO);
-        T RemoveStrongAgainst(E participant_name, T pDTO);
-        E GetStrongAgainst();
-        T AddWeakAgainst(E participant_name, T pDTO);
-        T RemoveWeakAgainst(E participant_name, T pDTO);
-        E GetWeakAgainast();
-        T AddImmuneAgainst(E participant_name , T pDTO);
-        T RemoveImmuneAgainst(E participant_name , T pDTO);
-        E GetImmuneAgainst();
+        T AddStrongAgainst(Z participant_name, T pDTO);
+        T RemoveStrongAgainst(Z participant_name, T pDTO);
+        Z GetStrongAgainst();
+        T AddWeakAgainst(Z participant_name, T pDTO);
+        T RemoveWeakAgainst(Z participant_name, T pDTO);
+        Z GetWeakAgainast();
+        T AddImmuneAgainst(Z participant_name , T pDTO);
+        T RemoveImmuneAgainst(Z participant_name , T pDTO);
+        Z GetImmuneAgainst();
     }
 }

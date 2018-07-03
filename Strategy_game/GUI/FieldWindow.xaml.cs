@@ -1,4 +1,5 @@
 ﻿using Strategy_game.Data.DTO;
+using Strategy_game.Data.Interface_windows;
 using Strategy_game.Func;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Strategy_game.GUI
     /// <summary>
     /// Interaction logic for FieldWindow.xaml
     /// </summary>
-    public partial class FieldWindow : Window
+    public partial class FieldWindow : Window, IFieldWindow_Impl<int, string>
     {
         private MainWindow mw;
         private Window w;

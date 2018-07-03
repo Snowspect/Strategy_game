@@ -59,9 +59,7 @@ namespace Strategy_game
             //Console.WriteLine(pImpl.ToString); //prints to screen
             pImpl.AddToList(pDTO);
             pImpl.AddToList(pDTO2);
-
-
-
+            
             /**Test Section  END **/
         }
 
@@ -84,7 +82,7 @@ namespace Strategy_game
             }
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void Field_Click(object sender, RoutedEventArgs e)
         {
             FieldWindow fw = new FieldWindow(this, this, this.gImpl);
             fw.WindowStartupLocation = WindowStartupLocation.CenterScreen;

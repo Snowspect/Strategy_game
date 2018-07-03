@@ -1,4 +1,5 @@
 ﻿using Strategy_game.Data;
+using Strategy_game.Data.Interface_windows;
 using Strategy_game.Exceptions;
 using Strategy_game.Func;
 using System;
@@ -20,7 +21,7 @@ namespace Strategy_game.GUI
     /// <summary>
     /// Interaction logic for ParticipantCreateWindow.xaml
     /// </summary>
-    public partial class ParticipantCreateWindow : Window
+    public partial class ParticipantCreateWindow : Window, ICreateParticipantWindow_Impl
     {
         private MainWindow mw;
         private Window w;

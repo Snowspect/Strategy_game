@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Func
 {
-
-    class Participant_Impl : IParticipant_IntImpl_Generic<Participant_DTO, string>
+    /// <summary>
+    /// Handles the implementation logic related to participants
+    /// </summary>
+    class Participant_Impl : IParticipant_IntImpl_Generic<Participant_DTO, FieldPoint_DTO, string> //generic
     {
         Participant_DAO pDAO;
         Participant_DTO pDTO;
@@ -27,7 +29,7 @@ namespace Strategy_game.Func
         }
 
         //Adds a participant to storage
-        public void AddToList(Participant_DTO pDTO) /*adds it to static layer in storage class*/ { pDAO.AddToLayer(pDTO); }
+        public void AddToList(Participant_DTO pDTO) /*adds it to static layer in storage class*/ { pDAO.AddToStorage(pDTO); }
         
         //adds a field to a participant
         public void UpdateFieldToParticipant(FieldPoint_DTO fpDTO, Participant_DTO pDTO) {

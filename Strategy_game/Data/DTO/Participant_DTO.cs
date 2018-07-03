@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data
 {
+    /// <summary>
+    /// Holds info regarding one participant
+    /// </summary>
     public class Participant_DTO
     {
         public Participant_DTO()

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data.DTO
 {
+    /// <summary>
+    /// is to hold account for a current battle
+    /// </summary>
     public class Field_DTO
     {
         private List<Tuple<Participant_DTO, FieldPoint_DTO>> field;

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data
 {  
-    class Participant_DAO : IParticipant_IntDAO_Generic<Participant_DTO>
+    class Participant_DAO : IParticipant_IntDAO_Generic<Participant_DTO, FieldPoint_DTO, string>
     {
         Participant_DTO pDTO;
         Storage st = new Storage();
@@ -20,7 +20,7 @@ namespace Strategy_game.Data
         }
 
         //Adds participant to layer (currently only one storage class)
-        public void AddToLayer(Participant_DTO pDTO)
+        public void AddToStorage(Participant_DTO pDTO)
         {            
             st.AddToLayer(pDTO);
         }

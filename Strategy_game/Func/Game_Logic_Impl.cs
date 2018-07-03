@@ -6,10 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Strategy_game.Data.DTO;
 using Strategy_game.Data;
+using Strategy_game.Data.Interface_Impl;
 
 namespace Strategy_game.Func
 {
-    public class Game_Logic_Impl
+    public class Game_Logic_Impl : IGameLogic_Impl<Participant_DTO, FieldPoint_DTO, int, string>
     {
         Field_DTO field;
         Participant_Impl pImpl;
@@ -48,22 +49,19 @@ namespace Strategy_game.Func
         { 
             return pImpl.getImageFromParticipant(participant_name);
         }
-        public string GetParticipantFieldCoord(string participantToMove)
+        public string GetParticipantFieldCoord(string participant_name)
         {
             //currently always accesses first participant on field
             // Should be
             foreach (var item in GetField())
             {
                 Console.WriteLine(item.Item1.NameGS.ToString());
-                if (item.Item1.NameGS == participantToMove)
+                if (item.Item1.NameGS == participant_name)
                 {
                     return "x" + item.Item1.PointGS.XPoint + "y" + item.Item1.PointGS.YPoint;
                 }
             }
-            //default return
-//            int x = field.FieldGS[0].Item1.PointGS.XPoint;
-//            int y = field.FieldGS[0].Item1.PointGS.YPoint;
-            return "x" + "2" + "y" + "6";
+            return null;
         }
     } 
 } 

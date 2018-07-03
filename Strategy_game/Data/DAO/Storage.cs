@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Temporary class (will be deleted once DB is implemented in Participant_DAO
+/// </summary>
 namespace Strategy_game.Data.DAO
 {
     class Storage
