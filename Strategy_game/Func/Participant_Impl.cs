@@ -59,5 +59,10 @@ namespace Strategy_game.Func
         public Participant_DTO AddImmuneAgainst(string pNameImmAgainast, Participant_DTO pDTO) { throw new NotImplementedException(); }
         public Participant_DTO RemoveImmuneAgainst(string pNameImmAgainast, Participant_DTO pDTO) { throw new NotImplementedException(); }
         public string GetImmuneAgainst() { throw new NotImplementedException(); }
+
+        public void AddTeam(string teamName, string imageName)
+        {
+
+        }
     }
 }

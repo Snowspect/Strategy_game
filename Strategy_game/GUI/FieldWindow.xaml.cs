@@ -40,19 +40,21 @@ namespace Strategy_game.GUI
             this.mw = mw; 
             this.w = w; 
             Closed += new EventHandler(App_exit); //subscribing to closed event 
-            InitializeComponent(); 
+            InitializeComponent();
 
-            /* Test Section START */ 
+            /* Test Section START */
 
             // Inserts image into site. (not sure how the path works)
-            string toop = "pack://application:,,/Strategy_game;component/Sources/SlimeBlack.png";
+            x1y6.Stretch = Stretch.Fill;
+            x1y6.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\SlimeBlack.png"));
+            /*string toop = "pack://application:,,/Strategy_game;component/Sources/SlimeBlack.png";
             Uri uri = new Uri(toop, UriKind.RelativeOrAbsolute);
             BitmapImage bitmap = new BitmapImage(uri);
             Image img = new Image();
             img = x1y6;
             img.Stretch = Stretch.Fill;
             img.Source = bitmap;
-
+            */
 
             foreach (var item in gimpl.GetField())
             {
@@ -120,18 +122,22 @@ namespace Strategy_game.GUI
             Image ima = new Image();
             //gets image from participant to move.
             string image = gli.GetImage(participant_name);
-            string uploadImage = image;
+            
             //prepares the image
-            Uri uri = new Uri(uploadImage, UriKind.RelativeOrAbsolute);
-            BitmapImage bitmap = new BitmapImage(uri);
+/*            Uri uri = new Uri(uploadImage, UriKind.RelativeOrAbsolute);
+            BitmapImage bitmap = new BitmapImage(uri); 
+*/
 
             //finds the image field based on the coords
             string fieldName = "x" + xCoord + "y" + yCoord;
             ima = (Image)FieldGrid.FindName(fieldName);
+            ima.Stretch = Stretch.Fill;
+            ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
 
             //sets up image 
-            ima.Stretch = Stretch.Fill;
+/*          ima.Stretch = Stretch.Fill;
             ima.Source = bitmap;
+*/
         }
     } 
 } 

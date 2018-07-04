@@ -21,7 +21,7 @@ namespace Strategy_game.Data
             VMoveGS = 1;
             HMoveGS = 1;
             TeamGS = "none";
-            ImageGS = "pack://application:,,/Strategy_game;component/Sources/SlimeBlack.png";
+            ImageGS = "SlimeBlack.png";
             PointGS = new FieldPoint_DTO();
             PointGS.XPoint = 0;
             PointGS.YPoint = 0;
@@ -38,7 +38,7 @@ namespace Strategy_game.Data
             VMoveGS = Vm;
             HMoveGS = Hm;
             TeamGS = "none";
-            ImageGS = "pack://application:,,/Strategy_game;component/Sources/SlimeBlack.png";
+            ImageGS = "SlimeBlack.png";
             PointGS = new FieldPoint_DTO();
             PointGS.XPoint = 0;
             PointGS.YPoint = 0;

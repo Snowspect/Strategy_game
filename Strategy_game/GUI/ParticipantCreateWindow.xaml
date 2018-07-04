@@ -40,7 +40,7 @@
 			<Border Height="54" Width="54" Canvas.Left="154" Canvas.Top="47" BorderThickness="1" BorderBrush="black">
 				<Image x:Name="teamImage"/>
 			</Border>
-			<Button x:Name="button" Content="Choose image" Canvas.Left="33" Canvas.Top="47" Width="82" Click="button_Click"/>
+			<Button x:Name="button" Content="Choose image" Canvas.Left="33" Canvas.Top="47" Width="82" Click="InsertImage_Click"/>
 			<Button x:Name="submitTeambutton" Content="Submit Team" Canvas.Left="33" Canvas.Top="72" Width="82" Click="SubmitTeam_Click"/>
 			<TextBlock x:Name="TeamNameHint" IsHitTestVisible="false" Canvas.Left="37" TextWrapping="Wrap" Text="Team Name" Canvas.Top="10" RenderTransformOrigin="0.388,-0.688" Width="135"/>
 		</Canvas>

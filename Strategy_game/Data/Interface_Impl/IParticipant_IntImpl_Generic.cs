@@ -36,5 +36,7 @@ namespace Strategy_game.Data.Interface_Impl
         T AddImmuneAgainst(Z participant_name , T pDTO);
         T RemoveImmuneAgainst(Z participant_name , T pDTO);
         Z GetImmuneAgainst();
+
+        void AddTeam(Z teamName, Z imageName);
     }
 }

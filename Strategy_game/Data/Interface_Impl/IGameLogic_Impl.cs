@@ -13,5 +13,6 @@ namespace Strategy_game.Data.Interface_Impl
         void MoveParticipant(S xCoord, S yCoord, Z Participant_name);
         string GetImage(Z participant_name);
         string GetParticipantFieldCoord(Z participant_name);
+        void AddTeam(Z teamName, Z imageName);
     }
 }

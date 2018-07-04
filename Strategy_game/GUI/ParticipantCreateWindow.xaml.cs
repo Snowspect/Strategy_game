@@ -30,6 +30,7 @@ namespace Strategy_game.GUI
         private Window w;
         private Boolean exitApp;
         Participant_Impl pImpl;
+        private string TeamImageName;
 
         public ParticipantCreateWindow()
         {
@@ -48,15 +49,12 @@ namespace Strategy_game.GUI
             /*Test section (new team box) START */
             CreateTeamBox.Visibility = Visibility.Hidden;
             // Inserts image into site. (not sure how the path works)
-            string toop = "pack://application:,,/Strategy_game;component/Sources/SlimeBlack.png";
-            Uri uri = new Uri(toop, UriKind.RelativeOrAbsolute);
-            BitmapImage bitmap = new BitmapImage(uri);
-            Image img = new Image();
-            img = CoverTeamCanvasImage;
-            img.Stretch = Stretch.Fill;
-            img.Source = bitmap;
+            
+            CoverTeamCanvasImage.Stretch = Stretch.Fill;
+            CoverTeamCanvasImage.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\SlimeBlack.png"));
             CoverTeamCanvasImage.Visibility = Visibility.Visible;
             CoverTeamCanvasImage.Margin = new Thickness(556,358,0,0);
+
             /*Test section (new team box) END */
 
             List<Participant_DTO> participantList =  pImpl.GetCurrentList();
@@ -184,12 +182,20 @@ namespace Strategy_game.GUI
             else TeamNameHint.Visibility = Visibility.Hidden;
         }
 
+        //submits the team name and an team image to storage
         private void SubmitTeam_Click(object sender, RoutedEventArgs e)
         {
-
+            if(TeamNameTextBox.Text == "" || teamImage.GetValue(Image.SourceProperty) == null)
+            {
+                MessageBoxResult result = MessageBox.Show("remember to insert a name and select an image");
+            } else
+            {
+                string teamName = TeamNameTextBox.Text;
+                pImpl.AddTeam(teamName, TeamImageName);
+            }
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void InsertImage_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog op = new OpenFileDialog();
             op.Title = "Select a picture";
@@ -200,16 +206,11 @@ namespace Strategy_game.GUI
             {
                 teamImage.Stretch = Stretch.Fill;
                 teamImage.Source = new BitmapImage(new Uri(op.FileName));
-                Console.WriteLine(op.FileName);
-                string endPath = System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" ;
-                Console.WriteLine(endPath);
-                System.IO.File.Copy(op.FileName, endPath + System.IO.Path.GetFileName(op.FileName));
-                                
+
+                string endPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" ;
+                File.Copy(op.FileName, endPath + System.IO.Path.GetFileName(op.FileName));
+                TeamImageName = System.IO.Path.GetFileNameWithoutExtension(op.FileName);
             }
-            /*Process process = new Process();
-            process.StartInfo.UseShellExecute = true;
-            process.StartInfo.FileName = @"C:\";
-            process.Start(); */
         }
     }
 }

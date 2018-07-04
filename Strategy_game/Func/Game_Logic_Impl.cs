@@ -62,5 +62,10 @@ namespace Strategy_game.Func
             }
             return null;
         }
+
+        public void AddTeam(string teamName, string imageName)
+        {
+
+        }
     } 
 } 
