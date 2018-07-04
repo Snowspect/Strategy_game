@@ -1,9 +1,12 @@
-﻿using Strategy_game.Data;
+﻿using Microsoft.Win32;
+using Strategy_game.Data;
 using Strategy_game.Data.Interface_windows;
 using Strategy_game.Exceptions;
 using Strategy_game.Func;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,7 +44,21 @@ namespace Strategy_game.GUI
             this.mw = mw;
             InitializeComponent();
             Closed += new EventHandler(App_exit); //subscribing to closed event
-            
+
+            /*Test section (new team box) START */
+            CreateTeamBox.Visibility = Visibility.Hidden;
+            // Inserts image into site. (not sure how the path works)
+            string toop = "pack://application:,,/Strategy_game;component/Sources/SlimeBlack.png";
+            Uri uri = new Uri(toop, UriKind.RelativeOrAbsolute);
+            BitmapImage bitmap = new BitmapImage(uri);
+            Image img = new Image();
+            img = CoverTeamCanvasImage;
+            img.Stretch = Stretch.Fill;
+            img.Source = bitmap;
+            CoverTeamCanvasImage.Visibility = Visibility.Visible;
+            CoverTeamCanvasImage.Margin = new Thickness(556,358,0,0);
+            /*Test section (new team box) END */
+
             List<Participant_DTO> participantList =  pImpl.GetCurrentList();
             foreach (var item in participantList)
             {
@@ -136,9 +153,11 @@ namespace Strategy_game.GUI
             ClearFields();
         }
 
+        //shows the box that let's you create a new team on the run
         private void NewTeam_Button(object sender, RoutedEventArgs e)
         {
-            //TODO To show canvas that let's you create a new team
+            CreateTeamBox.Visibility = Visibility.Visible;
+            CoverTeamCanvasImage.Visibility = Visibility.Hidden;
         }
 
         //clear all fields after submitting
@@ -157,6 +176,40 @@ namespace Strategy_game.GUI
             ImmuneAgainstFirstChoice.SelectedIndex = - 1;
             ImmuneAgainstSecondChoice.SelectedIndex = -1;
             TeamNameChoice.SelectedIndex = -1;
+        }
+
+        private void TeamNameBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (TeamNameTextBox.Text == "") TeamNameHint.Visibility = Visibility.Visible;
+            else TeamNameHint.Visibility = Visibility.Hidden;
+        }
+
+        private void SubmitTeam_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog op = new OpenFileDialog();
+            op.Title = "Select a picture";
+            op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
+              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+              "Portable Network Graphic (*.png)|*.png";
+            if (op.ShowDialog() == true)
+            {
+                teamImage.Stretch = Stretch.Fill;
+                teamImage.Source = new BitmapImage(new Uri(op.FileName));
+                Console.WriteLine(op.FileName);
+                string endPath = System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" ;
+                Console.WriteLine(endPath);
+                System.IO.File.Copy(op.FileName, endPath + System.IO.Path.GetFileName(op.FileName));
+                                
+            }
+            /*Process process = new Process();
+            process.StartInfo.UseShellExecute = true;
+            process.StartInfo.FileName = @"C:\";
+            process.Start(); */
         }
     }
 }

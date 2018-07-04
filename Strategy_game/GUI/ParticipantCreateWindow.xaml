@@ -6,36 +6,46 @@
         xmlns:local="clr-namespace:Strategy_game.GUI"
         mc:Ignorable="d"
         Title="ParticipantCreateWindow" Height="500" Width="800">
-    <Grid>
+	<Grid>
 
-        <Button x:Name="ToMenubutton" Content="To Menu" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="ToMenuWindow_Click"/>
-        <Button x:Name="ToPreviousWindowbutton" Content="Back To Previous" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="105" Click="ToPreviousWindow_Click"/>
-        <TextBox x:Name="NameTextBox" HorizontalAlignment="Left" Height="23" Margin="10,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="The name of your participant" TextChanged="NameTextChanged"/>
-        <TextBox x:Name="HealthTextBox" HorizontalAlignment="Left" Height="23" Margin="10,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="Between 10-15 (total health)" TextChanged="HealthTextBox_TextChanged"/>
-        <TextBox x:Name="OffenceTextBox" HorizontalAlignment="Left" Height="23" Margin="10,120,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="Between 3-6 (amount of damage it can do each hit)" TextChanged="OffenceTextBox_TextChanged"/>
-        <TextBox x:Name="DefenceTextBox" HorizontalAlignment="Left" Height="23" Margin="10,148,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="Between 3-6 (amount of damage it blocks in total)" TextChanged="DefenceTextBox_TextChanged"/>
-        <TextBox x:Name="HMoveTextBox" HorizontalAlignment="Left" Height="23" Margin="10,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)" TextChanged="HMoveTextBox_TextChanged"/>
-        <TextBox x:Name="VMoveTextBox" HorizontalAlignment="Left" Height="23" Margin="10,206,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)" TextChanged="VMoveTextBox_TextChanged"/>
-        <TextBlock x:Name="HintName" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="The name of your participant" Text="Name"/>
-        <TextBlock x:Name="HintHealth" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Between 10-15 (total health)" Text="Health"/>
-        <TextBlock x:Name="HintOffence" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,118,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Between 3-6 (amount of damage it can do each hit)" Text="Offence points"/>
-        <TextBlock x:Name="HintDefence" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,148,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Between 3-6 (amount of damage it blocks in total)" Text="Defence points"/>
-        <TextBlock x:Name="HintHMove" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Between 2-4 (the fields it can move up)" Text="Horizontal Movement points"/>
-        <TextBlock x:Name="HintVMove" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,206,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Between 2-4 (the fields it can move up)" Text="Vertical Movement points"/>
-        <Button x:Name="SubmitParticipantbutton" Content="Submit participant" HorizontalAlignment="Left" Margin="182,358,0,0" VerticalAlignment="Top" Width="339" Click="SubmitParticipant_Click"/>
-        <ListBox x:Name="TeamNameChoice" HorizontalAlignment="Left" Height="81" Margin="268,272,0,0" VerticalAlignment="Top" Width="168" ToolTip="Between 2-4 (the fields it can move up)"/>
-        <ListBox x:Name="StrongAgainstFirstChoice" HorizontalAlignment="Left" Height="49" Margin="182,122,0,0" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)"/>
-        <ListBox x:Name="StrongAgainstSecondChoice" HorizontalAlignment="Left" Height="51" Margin="182,178,0,0" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)"/>
-        <TextBlock HorizontalAlignment="Left" TextAlignment="center" TextWrapping="Wrap" Text="Strong Against: choose 2" VerticalAlignment="Top" Height="23" Width="167" Margin="182,90,0,0" Background="#FFECECEC"/>
-        <ListBox x:Name="WeakAgainstFirstChoice" HorizontalAlignment="Left" Height="49" Margin="354,122,0,0" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)"/>
-        <ListBox x:Name="WeakAgainstSecondChoice" HorizontalAlignment="Left" Height="51" Margin="354,178,0,0" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)"/>
-        <TextBlock HorizontalAlignment="Left" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="167" Margin="354,90,0,0" Background="#FFECECEC"><Run Text="Weak"/><Run Text=" Against: choose 2"/></TextBlock>
-        <ListBox x:Name="ImmuneAgainstFirstChoice" HorizontalAlignment="Left" Height="49" Margin="526,122,0,0" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)"/>
-        <ListBox x:Name="ImmuneAgainstSecondChoice" HorizontalAlignment="Left" Height="51" Margin="526,178,0,0" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)"/>
-        <TextBlock HorizontalAlignment="Left" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="167" Margin="526,90,0,0" Background="#FFECECEC"><Run Text="Immune"/><Run Text=" Against: choose 2"/></TextBlock>
-        <TextBox HorizontalAlignment="Left" TextAlignment="Center" IsReadOnly="True" Height="23" Margin="182,62,0,0" TextWrapping="Wrap" Text="Note: These will only be applied if play mode: 'FreeMode' is selected" VerticalAlignment="Top" Width="511"/>
-        <TextBox HorizontalAlignment="Left" TextAlignment="Center" Height="24" Margin="268,243,0,0" TextWrapping="Wrap" Text="Choose Team" VerticalAlignment="Top" Width="81" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-        <Canvas x:Name="CreateTeamBox"  HorizontalAlignment="Left" Height="197" Margin="552,272,0,0" VerticalAlignment="Top" Width="240"/>
-        <Button Content="New Team" HorizontalAlignment="Left" Margin="354,243,0,0" VerticalAlignment="Top" Width="82" Height="24" Click="NewTeam_Button"/>
-    </Grid>
+		<Button x:Name="ToMenubutton" Content="To Menu" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="ToMenuWindow_Click"/>
+		<Button x:Name="ToPreviousWindowbutton" Content="Back To Previous" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="105" Click="ToPreviousWindow_Click"/>
+		<TextBox x:Name="NameTextBox" HorizontalAlignment="Left" Height="23" Margin="10,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="The name of your participant" TextChanged="NameTextChanged"/>
+		<TextBox x:Name="HealthTextBox" HorizontalAlignment="Left" Height="23" Margin="10,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="Between 10-15 (total health)" TextChanged="HealthTextBox_TextChanged"/>
+		<TextBox x:Name="OffenceTextBox" HorizontalAlignment="Left" Height="23" Margin="10,120,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="Between 3-6 (amount of damage it can do each hit)" TextChanged="OffenceTextBox_TextChanged"/>
+		<TextBox x:Name="DefenceTextBox" HorizontalAlignment="Left" Height="23" Margin="10,148,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="Between 3-6 (amount of damage it blocks in total)" TextChanged="DefenceTextBox_TextChanged"/>
+		<TextBox x:Name="HMoveTextBox" HorizontalAlignment="Left" Height="23" Margin="10,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)" TextChanged="HMoveTextBox_TextChanged"/>
+		<TextBox x:Name="VMoveTextBox" HorizontalAlignment="Left" Height="23" Margin="10,206,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)" TextChanged="VMoveTextBox_TextChanged"/>
+		<TextBlock x:Name="HintName" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="The name of your participant" Text="Name"/>
+		<TextBlock x:Name="HintHealth" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Between 10-15 (total health)" Text="Health"/>
+		<TextBlock x:Name="HintOffence" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,118,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Between 3-6 (amount of damage it can do each hit)" Text="Offence points"/>
+		<TextBlock x:Name="HintDefence" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,148,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Between 3-6 (amount of damage it blocks in total)" Text="Defence points"/>
+		<TextBlock x:Name="HintHMove" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Between 2-4 (the fields it can move up)" Text="Horizontal Movement points"/>
+		<TextBlock x:Name="HintVMove" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="14,206,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Between 2-4 (the fields it can move up)" Text="Vertical Movement points"/>
+		<Button x:Name="SubmitParticipantbutton" Content="Submit participant" HorizontalAlignment="Left" Margin="182,358,0,0" VerticalAlignment="Top" Width="339" Click="SubmitParticipant_Click"/>
+		<ListBox x:Name="TeamNameChoice" HorizontalAlignment="Left" Height="81" Margin="268,272,0,0" VerticalAlignment="Top" Width="168" ToolTip="Between 2-4 (the fields it can move up)"/>
+		<ListBox x:Name="StrongAgainstFirstChoice" HorizontalAlignment="Left" Height="49" Margin="182,122,0,0" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)"/>
+		<ListBox x:Name="StrongAgainstSecondChoice" HorizontalAlignment="Left" Height="51" Margin="182,178,0,0" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)"/>
+		<TextBlock HorizontalAlignment="Left" TextAlignment="center" TextWrapping="Wrap" Text="Strong Against: choose 2" VerticalAlignment="Top" Height="23" Width="167" Margin="182,90,0,0" Background="#FFECECEC"/>
+		<ListBox x:Name="WeakAgainstFirstChoice" HorizontalAlignment="Left" Height="49" Margin="354,122,0,0" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)"/>
+		<ListBox x:Name="WeakAgainstSecondChoice" HorizontalAlignment="Left" Height="51" Margin="354,178,0,0" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)"/>
+		<TextBlock HorizontalAlignment="Left" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="167" Margin="354,90,0,0" Background="#FFECECEC"><Run Text="Weak"/><Run Text=" Against: choose 2"/></TextBlock>
+		<ListBox x:Name="ImmuneAgainstFirstChoice" HorizontalAlignment="Left" Height="49" Margin="526,122,0,0" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)"/>
+		<ListBox x:Name="ImmuneAgainstSecondChoice" HorizontalAlignment="Left" Height="51" Margin="526,178,0,0" VerticalAlignment="Top" Width="167" ToolTip="Between 2-4 (the fields it can move up)"/>
+		<TextBlock HorizontalAlignment="Left" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="167" Margin="526,90,0,0" Background="#FFECECEC"><Run Text="Immune"/><Run Text=" Against: choose 2"/></TextBlock>
+		<TextBox HorizontalAlignment="Left" TextAlignment="Center" IsReadOnly="True" Height="23" Margin="182,62,0,0" TextWrapping="Wrap" Text="Note: These will only be applied if play mode: 'FreeMode' is selected" VerticalAlignment="Top" Width="511"/>
+		<TextBox HorizontalAlignment="Left" TextAlignment="Center" Height="24" Margin="268,243,0,0" TextWrapping="Wrap" Text="Choose Team" VerticalAlignment="Top" Width="81" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+		<Canvas x:Name="CreateTeamBox" Background="Gray" HorizontalAlignment="Left" Height="111" Margin="556,358,0,0" VerticalAlignment="Top" Width="236">
+			<TextBox x:Name="TeamNameTextBox" Height="23" Canvas.Left="33" TextWrapping="Wrap" Canvas.Top="10" Width="175" TextChanged="TeamNameBox_TextChanged"/>
+			<Border Height="54" Width="54" Canvas.Left="154" Canvas.Top="47" BorderThickness="1" BorderBrush="black">
+				<Image x:Name="teamImage"/>
+			</Border>
+			<Button x:Name="button" Content="Choose image" Canvas.Left="33" Canvas.Top="47" Width="82" Click="button_Click"/>
+			<Button x:Name="submitTeambutton" Content="Submit Team" Canvas.Left="33" Canvas.Top="72" Width="82" Click="SubmitTeam_Click"/>
+			<TextBlock x:Name="TeamNameHint" IsHitTestVisible="false" Canvas.Left="37" TextWrapping="Wrap" Text="Team Name" Canvas.Top="10" RenderTransformOrigin="0.388,-0.688" Width="135"/>
+		</Canvas>
+		<Image x:Name="CoverTeamCanvasImage" HorizontalAlignment="Left" Height="111" Margin="797,358,-241,0" VerticalAlignment="Top" Width="236"/>
+		<Button Content="New Team" HorizontalAlignment="Left" Margin="354,243,0,0" VerticalAlignment="Top" Width="82" Height="24" Click="NewTeam_Button"/>
+
+	</Grid>
 </Window>
