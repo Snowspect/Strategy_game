@@ -21,6 +21,7 @@ namespace Strategy_game.Func
             pDAO = new Participant_DAO();
             pDTO = new Participant_DTO();
         }
+        //returns a participant based on a name
         public Participant_DTO GetParticipant(string participant_name)
         {
             //Access DAO, return Participant.
@@ -39,6 +40,7 @@ namespace Strategy_game.Func
         //returns current Participant DTO
         public List<Participant_DTO> GetCurrentList() => pDAO.GetParticipantList(); //gets from static layer in st
 
+        //calls DAO to get image filepath from participant
         public string getImageFromParticipant(string participant_name)
         {
             return pDAO.GetParticipant_DTODB(participant_name).ImageGS;

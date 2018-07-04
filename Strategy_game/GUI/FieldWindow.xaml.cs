@@ -61,7 +61,7 @@ namespace Strategy_game.GUI
             /* Test Section END */
         }
 
-        //Triggers when window is closed.
+        //Triggers when window is closed. (method added to event)
         void App_exit(object sender, EventArgs e) /*App_exit is my own defined method.*/ { if (exitApp == true) { w.Close(); } /*closes mainWindow*/ }
 
         private void XCoord_TextChanged(object sender, TextChangedEventArgs e) { if (xCoord.Text.Length > 0) HintXCoord.Visibility = Visibility.Hidden; else HintXCoord.Visibility = Visibility.Visible; }

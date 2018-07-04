@@ -25,7 +25,6 @@ namespace Strategy_game.Func
         public void AddParticipantToField(Participant_DTO pDTO)
         { 
             field.FieldGS.Add(Tuple.Create(pDTO,pDTO.PointGS)); //using tuple due to dictionary only containing unique sets.
-            Console.WriteLine("bitches");
         } 
         
         //returns field
@@ -44,18 +43,18 @@ namespace Strategy_game.Func
             pImpl.UpdateFieldToParticipant(fp_DTO, pImpl.GetParticipant(Participant_name)); //directly throws participant object 
             AddParticipantToField(pImpl.GetParticipant(Participant_name)); //directly throws participant object
         }
-
+        //Retrieves the image from a participant
         public string GetImage(string participant_name)
         { 
             return pImpl.getImageFromParticipant(participant_name);
         }
+        //Retrieves the x and y coordinates related to a participant and returns it as a string name
         public string GetParticipantFieldCoord(string participant_name)
         {
             //currently always accesses first participant on field
             // Should be
             foreach (var item in GetField())
             {
-                Console.WriteLine(item.Item1.NameGS.ToString());
                 if (item.Item1.NameGS == participant_name)
                 {
                     return "x" + item.Item1.PointGS.XPoint + "y" + item.Item1.PointGS.YPoint;
