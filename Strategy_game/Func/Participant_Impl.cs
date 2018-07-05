@@ -1,4 +1,5 @@
 ﻿using Strategy_game.Data;
+using Strategy_game.Data.DAO;
 using Strategy_game.Data.DTO;
 using Strategy_game.Data.Interface_Impl;
 using System;
@@ -16,10 +17,12 @@ namespace Strategy_game.Func
     {
         Participant_DAO pDAO;
         Participant_DTO pDTO;
+        Team_DAO team;
         public Participant_Impl()
         {
             pDAO = new Participant_DAO();
             pDTO = new Participant_DTO();
+            team = new Team_DAO();
         }
         //returns a participant based on a name
         public Participant_DTO GetParticipant(string participant_name)
@@ -62,7 +65,12 @@ namespace Strategy_game.Func
 
         public void AddTeam(string teamName, string imageName)
         {
+            team.CreateTeam(teamName, imageName);
+        }
 
+        public Dictionary<string, string> GetTeamList()
+        {
+            return team.ReadTeams();
         }
     }
 }

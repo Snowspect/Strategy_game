@@ -68,10 +68,12 @@
     </Compile>
     <Compile Include="Data\DAO\Participant_DAO.cs" />
     <Compile Include="Data\DAO\Storage.cs" />
+    <Compile Include="Data\DAO\Team_DAO.cs" />
     <Compile Include="Data\DTO\FieldPoint_DTO.cs" />
     <Compile Include="Data\DTO\Field_DTO.cs" />
     <Compile Include="Data\DTO\Participant_DTO.cs" />
     <Compile Include="Data\Interface_DAO\IParticipant_IntDAO_Generic.cs" />
+    <Compile Include="Data\Interface_DAO\ITeam_intDAO_generic.cs" />
     <Compile Include="Data\Interface_Impl\IGameLogic_Impl.cs" />
     <Compile Include="Data\Interface_Impl\IParticipant_IntImpl_Generic.cs" />
     <Compile Include="Data\Interface_windows\ICreateParticipantWindow_Impl.cs" />

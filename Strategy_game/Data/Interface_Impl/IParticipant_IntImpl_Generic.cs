@@ -38,5 +38,7 @@ namespace Strategy_game.Data.Interface_Impl
         Z GetImmuneAgainst();
 
         void AddTeam(Z teamName, Z imageName);
+
+        Dictionary<Z, Z> GetTeamList();
     }
 }

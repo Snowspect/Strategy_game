@@ -67,7 +67,10 @@ namespace Strategy_game.GUI
                 ImmuneAgainstFirstChoice.Items.Add(item.NameGS);
                 ImmuneAgainstSecondChoice.Items.Add(item.NameGS);
             }
-            TeamNameChoice.Items.Add("test");
+            foreach (var item in pImpl.GetTeamList())
+            {
+                TeamNameChoice.Items.Add(item.Key);
+            }
         }
 
         //Triggers when window is closed.
@@ -192,6 +195,11 @@ namespace Strategy_game.GUI
             {
                 string teamName = TeamNameTextBox.Text;
                 pImpl.AddTeam(teamName, TeamImageName);
+                TeamNameTextBox.Clear();
+                teamImage.ClearValue(Image.SourceProperty); //clears the image 
+                TeamNameChoice.Items.Add(teamName);
+                CreateTeamBox.Visibility = Visibility.Hidden;
+                CoverTeamCanvasImage.Visibility = Visibility.Visible;
             }
         }
 

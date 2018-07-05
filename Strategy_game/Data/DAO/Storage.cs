@@ -13,6 +13,7 @@ namespace Strategy_game.Data.DAO
     class Storage
     {
         public static List<Participant_DTO> StParticipant = new List<Participant_DTO>();
+        public static Dictionary<string, string> teams = new Dictionary<string, string>();
 
         //adds a participant to the storage /participant represnet one fighter on the field"
         public void AddToLayer(Participant_DTO pDTO)
