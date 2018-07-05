@@ -89,5 +89,13 @@ namespace Strategy_game
             fw.Show();
             this.Hide();
         }
+
+        private void PreBattlebutton_Click(object sender, RoutedEventArgs e)
+        {
+            PreBattleFieldWindow pbw = new PreBattleFieldWindow();
+            pbw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            pbw.Show();
+            this.Close();
+        }
     }
 }
