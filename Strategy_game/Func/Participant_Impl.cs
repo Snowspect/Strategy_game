@@ -13,7 +13,7 @@ namespace Strategy_game.Func
     /// <summary>
     /// Handles the implementation logic related to participants
     /// </summary>
-    class Participant_Impl : IParticipant_IntImpl_Generic<Participant_DTO, FieldPoint_DTO, string> //generic
+    public class Participant_Impl : IParticipant_IntImpl_Generic<Participant_DTO, FieldPoint_DTO, string> //generic
     {
         Participant_DAO pDAO;
         Participant_DTO pDTO;

@@ -30,7 +30,7 @@ namespace Strategy_game.Func
         //returns field
         public List<Tuple<Participant_DTO, FieldPoint_DTO>> GetField() 
         { 
-            return field.FieldGS; 
+            return field.FieldGS;
         } 
 
         //handles contact between game logic and logic related to participants 
