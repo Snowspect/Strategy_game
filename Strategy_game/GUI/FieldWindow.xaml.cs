@@ -106,7 +106,6 @@ namespace Strategy_game.GUI
             //Updates participantDTO in storage
             gli.MoveParticipant(x, y, participantToMove);
 
-
             SetsImage(x, y, participantToMove);
         }
         public void ClearsImage(int xCoord, int yCoord, string participant_name)

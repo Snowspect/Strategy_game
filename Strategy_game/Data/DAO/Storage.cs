@@ -30,7 +30,7 @@ namespace Strategy_game.Data.DAO
         {
             foreach (var element in StParticipant) if(element.NameGS.Equals(pDTO.NameGS)) element.PointGS = fpDTO;
         }
-        public Participant_DTO GetParticipant_DTOST(string participant_name)
+        public Participant_DTO GetParticipant_DTOST(string participant_name) //ST = storage
         {
             foreach (var item in StParticipant)
             {

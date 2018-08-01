@@ -1,4 +1,5 @@
-﻿using Strategy_game.Func;
+﻿using Strategy_game.Data;
+using Strategy_game.Func;
 using System;
 using System.IO;
 using System.Windows;
@@ -46,6 +47,8 @@ namespace Strategy_game.GUI
         //Loads mainwindow
         private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
 
+        NameScope ScopeName = new NameScope();
+
         //Fills created grid
         public void CreatePreField()
         {
@@ -70,7 +73,8 @@ namespace Strategy_game.GUI
                     Image img = new Image();
                     img.Stretch = Stretch.Fill;
                     string image = "SlimeBlack.png";
-                    img.Name = xName;
+                    NameScope.SetNameScope(this, ScopeName); //only way to access the x:Name variable
+                    ScopeName.RegisterName(xName, img); //Only way to access the x:Name variable
                     img.Source = new BitmapImage(new Uri(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
                     b.Child = img;
 
@@ -132,10 +136,14 @@ namespace Strategy_game.GUI
         }
         public void MoveToSpot()
         {
-            int x = int.Parse(xCoord.Text);
-            int y = int.Parse(yCoord.Text);
             string participantToMove = MemberListBox.SelectedItem.ToString(); //retrieves name
 
+            Participant_DTO t = new Participant_DTO();
+            t = pImpl.GetParticipant(participantToMove);
+            gli.AddParticipantToField(t);
+            int x = int.Parse(xCoord.Text);
+            int y = int.Parse(yCoord.Text);
+            
             ClearsImage(x, y, participantToMove);
 
             //moves participant in storage and on field list
@@ -163,7 +171,10 @@ namespace Strategy_game.GUI
 
             //finds the image field based on the coords
             string fieldName = "x" + xCoord + "y" + yCoord;
-            ima = (Image)PreFieldBattle.FindName(fieldName);
+
+            Console.WriteLine(PreFieldBattle);
+
+            ima = (Image)ScopeName.FindName(fieldName);
             ima.Stretch = Stretch.Fill;
             ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
         }

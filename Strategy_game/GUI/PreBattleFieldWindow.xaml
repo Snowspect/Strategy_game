@@ -9,9 +9,9 @@
     <Grid>
 
         <TextBlock x:Name="TeamTexTBox" HorizontalAlignment="Left" Margin="10,48,0,0" TextWrapping="Wrap" Text="Choose team" VerticalAlignment="Top" Width="84"/>
-        <Border BorderBrush="Black" Height="350" Width="300" BorderThickness="1" Margin="406,36,86,33">
-            <Canvas HorizontalAlignment="Left" Height="350" VerticalAlignment="Top" Width="300">
-                <UniformGrid x:Name="PreFieldBattle" Height="350" Width="300">
+        <Border BorderBrush="Black" BorderThickness="1" Margin="406,36,78,25">
+            <Canvas HorizontalAlignment="Left" Height="349" VerticalAlignment="Top" Width="299" Margin="0,0,-1,-1">
+                <UniformGrid x:Name="PreFieldBattle" Height="349" Width="299">
 
                 </UniformGrid>
             </Canvas>
