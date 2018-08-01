@@ -25,7 +25,7 @@
         <TextBox x:Name="yCoord" HorizontalAlignment="Left" Height="22" Margin="174,228,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="YCoord_TextChanged"/>
         <TextBlock x:Name="HintXCoord" Margin="174,201,529,196" IsHitTestVisible="False"><Run Text=" "/><Run Text="XCoord ex. = 1"/></TextBlock>
         <TextBlock x:Name="HintYCoord" Margin="174,228,528,169" IsHitTestVisible="False"><Run Text=" "/><Run Text="YCoord ex. = 4"/></TextBlock>
-        <Button x:Name="SubmitMove_Button" Content="place member" HorizontalAlignment="Left" Margin="174,255,0,0" VerticalAlignment="Top" Width="120" Click="SubmitMove_Button"/>
+        <Button x:Name="SubmitMove" Content="place member" HorizontalAlignment="Left" Margin="174,255,0,0" VerticalAlignment="Top" Width="120" Click="SubmitMove_Button"/>
         <Button Content="Clear field" HorizontalAlignment="Left" Margin="267,366,0,0" VerticalAlignment="Top" Width="120" Click="ClearField_Button"/>
         <Button Content="Begin fight" HorizontalAlignment="Left" Margin="19,366,0,0" VerticalAlignment="Top" Width="75" Click="StartBattle_Button"/>
     </Grid>

@@ -23,11 +23,16 @@ namespace Strategy_game.GUI
     /// </summary>
     public partial class FieldWindow : Window, IFieldWindow_Impl<int, string>
     {
-        private MainWindow mw; 
-        private Window w; 
-        private Boolean exitApp, backtrack; 
-        Game_Logic_Impl gli; 
+        #region localVariables
+        NameScope ScopeName = new NameScope();
+        private MainWindow mw;
+        private Window w;
+        private Boolean exitApp, backtrack;
+        Game_Logic_Impl gli;
+        #endregion
 
+        #region constructors
+        //Not used either
         public FieldWindow()
         {
             InitializeComponent();
@@ -36,9 +41,8 @@ namespace Strategy_game.GUI
         public FieldWindow(Window w, Game_Logic_Impl gimpl)
         {
             gli = gimpl;
-            //exitApp = true; //used for closing app 
             this.w = w;
-            
+
             if (w is PreBattleFieldWindow)
             {
                 backtrack = true;
@@ -46,36 +50,9 @@ namespace Strategy_game.GUI
 
             InitializeComponent();
 
-            /* Test Section START */
+            CreatePreField();
 
-            // Inserts image into site. (not sure how the path works)
-            x1y6.Stretch = Stretch.Fill;
-            x1y6.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\SlimeBlack.png"));
-
-            foreach (var item in gimpl.GetField())
-            {
-                ListOfParticipants.Items.Add(item.Item1.NameGS);
-
-            }
-            /* Test Section END */
-        }
-
-        public FieldWindow(MainWindow mw, Window w, Game_Logic_Impl gimpl)
-        {
-            gli = gimpl; 
-            exitApp = true; //used for closing app 
-            this.mw = mw; 
-            this.w = w; 
-            Closed += new EventHandler(App_exit); //subscribing to closed event 
-            
-            InitializeComponent();
-
-            /* Test Section START */
-
-            // Inserts image into site. (not sure how the path works)
-            x1y6.Stretch = Stretch.Fill;
-            x1y6.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\SlimeBlack.png"));   
-
+            //Adds prefieldbattle team to list and adds them to their respective fields on the battleField
             foreach (var item in gimpl.GetField())
             {
                 ListOfParticipants.Items.Add(item.Item1.NameGS);
@@ -83,15 +60,38 @@ namespace Strategy_game.GUI
                 //gets image from participant to move.
                 string image = gli.GetImage(item.Item1.NameGS);
 
-                //finds the image field based on the coords
-                string fieldName = "x" + xCoord + "y" + yCoord;
+                //Gets fieldCoords from participant
+                string fieldName = gli.GetParticipantFieldCoord(item.Item1.NameGS);
+                //find designated spot on field
                 ima = (Image)FieldGrid.FindName(fieldName);
                 ima.Stretch = Stretch.Fill;
                 ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
             }
-            /* Test Section END */
         }
 
+        //this constructor will be removed in the future as it is used as a quick test access from mainwindow
+        public FieldWindow(MainWindow mw, Window w, Game_Logic_Impl gimpl)
+        {
+            gli = gimpl;
+            exitApp = true; //used for closing app 
+            this.mw = mw;
+            this.w = w;
+            Closed += new EventHandler(App_exit); //subscribing to closed event 
+
+            InitializeComponent();
+
+            /* Test Section START */
+
+
+            foreach (var item in gimpl.GetField())
+            {
+                ListOfParticipants.Items.Add(item.Item1.NameGS);
+            }
+            /* Test Section END */
+        }
+        #endregion
+
+        #region event triggered methods
         //Triggers when window is closed.
         void App_exit(object sender, EventArgs e) /*App_exit is my own defined method.*/ { if (exitApp == true) { w.Close(); } /*closes mainWindow*/ }
 
@@ -109,16 +109,18 @@ namespace Strategy_game.GUI
             if (backtrack == true)
             {
                 this.Close();
-                
+
                 //do nothing
             }
             else { mw.Show(); exitApp = false; this.Close(); }
         }
+        #endregion
 
+        #region buttons
         //Activates player movement
         private void SubmitMove_Button_Click(object sender, RoutedEventArgs e)
         {
-            if(xCoord.Text == "" || yCoord.Text == "")
+            if (xCoord.Text == "" || yCoord.Text == "")
             { Console.WriteLine("The boxes was empty"); }
             else
             {
@@ -129,31 +131,47 @@ namespace Strategy_game.GUI
                 PlayingDisplayBox.Background = Brushes.Green;
             }
         }
+        #endregion
 
+        #region Methods
         //Moves participant in fieldDTO List
         //sets and clears images as well
-        public void MoveToSpot() 
-        { 
-            int x = int.Parse(xCoord.Text); 
-            int y = int.Parse(yCoord.Text); 
+        public void MoveToSpot()
+        {
+            int x = int.Parse(xCoord.Text);
+            int y = int.Parse(yCoord.Text);
             string participantToMove = ListOfParticipants.SelectedItem.ToString(); //retrieves name 
 
-            ClearsImage(x, y, participantToMove); 
+            ClearsImage(x, y, participantToMove);
 
             //moves participant in storage and on field list 
             //Updates participantDTO in storage 
-            gli.MoveParticipant(x, y, participantToMove); 
+            gli.MoveParticipant(x, y, participantToMove);
 
-            SetsImage(x, y, participantToMove); 
+            SetsImage(x, y, participantToMove);
         }
-        public void ClearsImage(int xCoord, int yCoord, string participant_name) 
+        public void ClearsImage(int xCoord, int yCoord, string participant_name)
         {
             string fieldCoord = gli.GetParticipantFieldCoord(participant_name); //retrieves current Coords 
 
-            Image ima = new Image(); 
+            Image ima = new Image();
             ima = (Image)FieldGrid.FindName(fieldCoord); //finds image with x:Name that matches coords 
             ima.ClearValue(Image.SourceProperty); //clears the image 
-        } 
+                                                  
+            //do a if check to see what team they are on and then color the field specifically after that.
+            Participant_Impl t = new Participant_Impl();
+            string teamColor = t.GetParticipant(participant_name).TeamColorGS;
+            Console.WriteLine(teamColor);
+            if (teamColor == "purple")
+            {
+                string image = "purpleField.png";
+                ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
+            }
+            else if(teamColor == "blue")
+            {
+                string image = "blueField.png";
+            }
+        }
         public void SetsImage(int xCoord, int yCoord, string participant_name)
         {
             Image ima = new Image();
@@ -166,5 +184,40 @@ namespace Strategy_game.GUI
             ima.Stretch = Stretch.Fill;
             ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
         }
-    } 
-} 
+        public void CreatePreField()
+        {
+            UserControl u;
+            int j = 6;
+            int i = 6;
+            int h = 0;
+            FieldGrid.Rows = 6;
+            FieldGrid.Columns = 6;
+            h = j;
+            //Fills out a uniform grid with pictures of the same slime "currently", needs to fill out with a ground tile
+            for (int k = 1; k < j + 1; k++) //k is 1, increased to 6
+            {
+                for (int g = 1; g < i + 1; g++) // g is 1, increased to 3 
+                {
+                    u = new UserControl();
+                    Border b = new Border();
+                    b.BorderBrush = new SolidColorBrush(Colors.Black);
+                    b.BorderThickness = new Thickness(1);
+                    string xName = "x" + g + "y" + h; //g goes 1,2,3...  //h goes 6,5,4 repeatedly. (should go, 6,6,6 and then 5,5,5)
+
+                    Image img = new Image();
+                    img.Stretch = Stretch.Fill;
+                    string image = "UnoccupiedField.png";
+                    NameScope.SetNameScope(this, ScopeName); //only way to access the x:Name variable
+                    ScopeName.RegisterName(xName, img); //Only way to access the x:Name variable
+                    img.Source = new BitmapImage(new Uri(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
+                    b.Child = img;
+
+                    u.Content = b;
+                    FieldGrid.Children.Add(u);
+                }
+                h--;
+            }
+        }
+        #endregion
+    }
+}

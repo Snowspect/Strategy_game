@@ -167,13 +167,15 @@ namespace Strategy_game.GUI
         }
         public void ClearsImage(int xCoord, int yCoord, string participant_name)
         {
-            if (!gli.GetParticipantFieldCoord(participant_name).Equals("x0y0"))
+            if (!gli.GetParticipantFieldCoord(participant_name).Equals("x0y0")) //not sure what i ment to do here
             {
                 string fieldCoord = gli.GetParticipantFieldCoord(participant_name); //retrieves current Coords
 
                 Image ima = new Image();
                 ima = (Image)PreFieldBattle.FindName(fieldCoord); //finds image with x:Name that matches coords 
                 ima.ClearValue(Image.SourceProperty); //clears the image 
+                string image = "UnoccupiedField.png";
+                ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
             }
         }
         public void SetsImage(int xCoord, int yCoord, string participant_name)
@@ -213,6 +215,10 @@ namespace Strategy_game.GUI
         //Triggered when clicking "Start fight"
         private void StartBattle_Button(object sender, RoutedEventArgs e)
         {
+            foreach (var item in gli.GetField())
+            {
+                item.Item1.TeamColorGS = "purple";
+            }
             fw = new FieldWindow(this, gli);
             fw.Closed += new EventHandler(Reference);
             fw.WindowStartupLocation = WindowStartupLocation.CenterScreen;

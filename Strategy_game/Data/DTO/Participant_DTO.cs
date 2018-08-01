@@ -38,6 +38,7 @@ namespace Strategy_game.Data
             VMoveGS = Vm;
             HMoveGS = Hm;
             TeamGS = "none";
+            TeamColorGS = "none";
             ImageGS = "SlimeBlack.png";
             PointGS = new FieldPoint_DTO();
             PointGS.XPoint = 0;
@@ -62,6 +63,7 @@ namespace Strategy_game.Data
         public List<string> ImmuneAgainstGS { get; set; }
         public FieldPoint_DTO PointGS { get; set; }
         public string ImageGS { get; set; }
+        public string TeamColorGS { get; set; }
 
         public string GetToString()
         {
