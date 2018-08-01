@@ -23,23 +23,27 @@ namespace Strategy_game.GUI
     /// </summary>
     public partial class FieldWindow : Window, IFieldWindow_Impl<int, string>
     {
-        private MainWindow mw;
-        private Window w;
-        private Boolean exitApp;
-        Game_Logic_Impl gli;
+        private MainWindow mw; 
+        private Window w; 
+        private Boolean exitApp, backtrack; 
+        Game_Logic_Impl gli; 
 
         public FieldWindow()
         {
             InitializeComponent();
         }
 
-        public FieldWindow(MainWindow mw, Window w, Game_Logic_Impl gimpl)
+        public FieldWindow(Window w, Game_Logic_Impl gimpl)
         {
             gli = gimpl;
-            exitApp = true; //used for closing app 
-            this.mw = mw; 
-            this.w = w; 
-            Closed += new EventHandler(App_exit); //subscribing to closed event 
+            //exitApp = true; //used for closing app 
+            this.w = w;
+            
+            if (w is PreBattleFieldWindow)
+            {
+                backtrack = true;
+            }
+
             InitializeComponent();
 
             /* Test Section START */
@@ -47,18 +51,43 @@ namespace Strategy_game.GUI
             // Inserts image into site. (not sure how the path works)
             x1y6.Stretch = Stretch.Fill;
             x1y6.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\SlimeBlack.png"));
-            /*string toop = "pack://application:,,/Strategy_game;component/Sources/SlimeBlack.png";
-            Uri uri = new Uri(toop, UriKind.RelativeOrAbsolute);
-            BitmapImage bitmap = new BitmapImage(uri);
-            Image img = new Image();
-            img = x1y6;
-            img.Stretch = Stretch.Fill;
-            img.Source = bitmap;
-            */
 
             foreach (var item in gimpl.GetField())
             {
                 ListOfParticipants.Items.Add(item.Item1.NameGS);
+
+            }
+            /* Test Section END */
+        }
+
+        public FieldWindow(MainWindow mw, Window w, Game_Logic_Impl gimpl)
+        {
+            gli = gimpl; 
+            exitApp = true; //used for closing app 
+            this.mw = mw; 
+            this.w = w; 
+            Closed += new EventHandler(App_exit); //subscribing to closed event 
+            
+            InitializeComponent();
+
+            /* Test Section START */
+
+            // Inserts image into site. (not sure how the path works)
+            x1y6.Stretch = Stretch.Fill;
+            x1y6.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\SlimeBlack.png"));   
+
+            foreach (var item in gimpl.GetField())
+            {
+                ListOfParticipants.Items.Add(item.Item1.NameGS);
+                Image ima = new Image();
+                //gets image from participant to move.
+                string image = gli.GetImage(item.Item1.NameGS);
+
+                //finds the image field based on the coords
+                string fieldName = "x" + xCoord + "y" + yCoord;
+                ima = (Image)FieldGrid.FindName(fieldName);
+                ima.Stretch = Stretch.Fill;
+                ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
             }
             /* Test Section END */
         }
@@ -74,8 +103,17 @@ namespace Strategy_game.GUI
         private void ToPreviousWindow_Click(object sender, RoutedEventArgs e)
         { /*do not close mw.*/ exitApp = false; /*loads mainWindow*/ if (w is MainWindow) { this.w.Show(); this.Close(); } /*loads any other window */ else { w = new Window(); w.Show(); this.Close(); } }
 
-        //Loads mainwindow
-        private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
+        //Loads mainwindow if not coming from preField otherwize backtracks. ((refer to prefield closed event handler))
+        private void ToMenuWindow_Click(object sender, RoutedEventArgs e)
+        {
+            if (backtrack == true)
+            {
+                this.Close();
+                
+                //do nothing
+            }
+            else { mw.Show(); exitApp = false; this.Close(); }
+        }
 
         //Activates player movement
         private void SubmitMove_Button_Click(object sender, RoutedEventArgs e)
@@ -95,22 +133,22 @@ namespace Strategy_game.GUI
         //Moves participant in fieldDTO List
         //sets and clears images as well
         public void MoveToSpot() 
-        {
-            int x = int.Parse(xCoord.Text);
-            int y = int.Parse(yCoord.Text);
-            string participantToMove = ListOfParticipants.SelectedItem.ToString(); //retrieves name
+        { 
+            int x = int.Parse(xCoord.Text); 
+            int y = int.Parse(yCoord.Text); 
+            string participantToMove = ListOfParticipants.SelectedItem.ToString(); //retrieves name 
 
-            ClearsImage(x, y, participantToMove);
+            ClearsImage(x, y, participantToMove); 
 
-            //moves participant in storage and on field list
-            //Updates participantDTO in storage
-            gli.MoveParticipant(x, y, participantToMove);
+            //moves participant in storage and on field list 
+            //Updates participantDTO in storage 
+            gli.MoveParticipant(x, y, participantToMove); 
 
-            SetsImage(x, y, participantToMove);
+            SetsImage(x, y, participantToMove); 
         }
-        public void ClearsImage(int xCoord, int yCoord, string participant_name)
+        public void ClearsImage(int xCoord, int yCoord, string participant_name) 
         {
-            string fieldCoord = gli.GetParticipantFieldCoord(participant_name); //retrieves current Coords
+            string fieldCoord = gli.GetParticipantFieldCoord(participant_name); //retrieves current Coords 
 
             Image ima = new Image(); 
             ima = (Image)FieldGrid.FindName(fieldCoord); //finds image with x:Name that matches coords 
@@ -121,22 +159,12 @@ namespace Strategy_game.GUI
             Image ima = new Image();
             //gets image from participant to move.
             string image = gli.GetImage(participant_name);
-            
-            //prepares the image
-/*            Uri uri = new Uri(uploadImage, UriKind.RelativeOrAbsolute);
-            BitmapImage bitmap = new BitmapImage(uri); 
-*/
 
             //finds the image field based on the coords
             string fieldName = "x" + xCoord + "y" + yCoord;
             ima = (Image)FieldGrid.FindName(fieldName);
             ima.Stretch = Stretch.Fill;
             ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
-
-            //sets up image 
-/*          ima.Stretch = Stretch.Fill;
-            ima.Source = bitmap;
-*/
         }
     } 
 } 

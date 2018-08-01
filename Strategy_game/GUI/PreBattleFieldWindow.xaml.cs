@@ -14,12 +14,17 @@ namespace Strategy_game.GUI
     /// </summary>
     public partial class PreBattleFieldWindow : Window
     {
+        #region localVariables
         MainWindow mw;
         Window w;
         private Boolean exitApp;
         Participant_Impl pImpl = new Participant_Impl();
         Game_Logic_Impl gli;
+        FieldWindow fw;
+        NameScope ScopeName = new NameScope();
+        #endregion
 
+        #region constructors
         public PreBattleFieldWindow()
         {
             InitializeComponent();
@@ -30,25 +35,50 @@ namespace Strategy_game.GUI
             this.pImpl = pImpl;
             this.w = w;
             this.mw = mw;
+     
             Closed += new EventHandler(App_exit); //subscribing to closed event
             exitApp = true; //used for closing app
             InitializeComponent();
             CreatePreField();
             CreateTeamList();
         }
+        #endregion
 
+        /**
+         * app_exit, Reference
+         * SelectionChanged
+         * TextChanged
+         */
+        #region event triggered Methods
         //Triggers when window is closed.
         void App_exit(object sender, EventArgs e) /*App_exit is my own defined method.*/ { if (exitApp == true) { w.Close(); } /*closes mainWindow*/ }
 
-        // Accesses the previous window
-        private void ToPreviousWindow_Click(object sender, RoutedEventArgs e)
-        { /*do not close mw.*/ exitApp = false; /*loads mainWindow*/ if (w is MainWindow) { this.w.Show(); this.Close(); } /*loads any other window */ else { w = new Window(); w.Show(); this.Close(); } }
+        // Event related to fieldWindow Closed event.
+        //makes sure mainwindow doesn't gets closed when backtracking.
+        void Reference(object sender, EventArgs e) { mw.Show(); exitApp = false; this.Close(); }
 
-        //Loads mainwindow
-        private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
+        private void TeamListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string team = TeamListBox.SelectedItem.ToString();
+            CreateMemberLists(team);
+        }
 
-        NameScope ScopeName = new NameScope();
+        private void XCoord_TextChanged(object sender, TextChangedEventArgs e)
+        { if (xCoord.Text.Equals("")) { HintXCoord.Visibility = Visibility.Visible; } else HintXCoord.Visibility = Visibility.Hidden; }
+        private void YCoord_TextChanged(object sender, TextChangedEventArgs e)
+        { if (yCoord.Text.Equals("")) { HintYCoord.Visibility = Visibility.Visible; } else HintYCoord.Visibility = Visibility.Hidden; }
 
+        #endregion
+
+        /**
+         * CreatePreField
+         * CreateTeamList
+         * CreateMemberList
+         * MoveToSpot
+         * ClearsImage
+         * SetsImage
+         */
+        #region methods
         //Fills created grid
         public void CreatePreField()
         {
@@ -72,7 +102,7 @@ namespace Strategy_game.GUI
 
                     Image img = new Image();
                     img.Stretch = Stretch.Fill;
-                    string image = "SlimeBlack.png";
+                    string image = "UnoccupiedField.png";
                     NameScope.SetNameScope(this, ScopeName); //only way to access the x:Name variable
                     ScopeName.RegisterName(xName, img); //Only way to access the x:Name variable
                     img.Source = new BitmapImage(new Uri(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
@@ -84,13 +114,6 @@ namespace Strategy_game.GUI
                 h--;
             }
         }
-
-        private void TeamListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            string team = TeamListBox.SelectedItem.ToString();
-            CreateMemberLists(team);
-        }
-
         private void CreateTeamList()
         {
             foreach (var item in pImpl.GetTeamList())
@@ -106,44 +129,34 @@ namespace Strategy_game.GUI
             }
         }
 
-        private void XCoord_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if(xCoord.Text.Equals(""))
-            {
-                HintXCoord.Visibility = Visibility.Visible;
-            }
-            else HintXCoord.Visibility = Visibility.Hidden;
-
-        }
-
-        private void YCoord_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (yCoord.Text.Equals(""))
-            {
-                HintYCoord.Visibility = Visibility.Visible;
-            }
-            else HintYCoord.Visibility = Visibility.Hidden;
-        }
-
-        private void SubmitMove_Button_Click(object sender, RoutedEventArgs e)
-        {
-            MoveToSpot();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        //moves selected player to spot.
         public void MoveToSpot()
         {
             string participantToMove = MemberListBox.SelectedItem.ToString(); //retrieves name
 
             Participant_DTO t = new Participant_DTO();
             t = pImpl.GetParticipant(participantToMove);
-            gli.AddParticipantToField(t);
+
+            #region NotaddedToFieldTwice
+            //Makes sure participant isn't added to field twice.
+            bool addOrNot = true;
+            foreach (var item in gli.GetField())
+            {
+                if (item.Item1.NameGS.Equals(participantToMove))
+                {
+                    addOrNot = false;
+                }
+            }
+            if (addOrNot == true)
+            {
+
+                gli.AddParticipantToField(t);
+            }
+            #endregion
+
             int x = int.Parse(xCoord.Text);
             int y = int.Parse(yCoord.Text);
-            
+
             ClearsImage(x, y, participantToMove);
 
             //moves participant in storage and on field list
@@ -178,5 +191,42 @@ namespace Strategy_game.GUI
             ima.Stretch = Stretch.Fill;
             ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
         }
+        #endregion
+
+        /**
+         * SubmitMove
+         * ClearField
+         * StartBattle
+         * ToPreviousWindow
+         * ToMenuWindow
+         */
+        #region buttons
+        private void SubmitMove_Button(object sender, RoutedEventArgs e)
+        {
+            MoveToSpot();
+        }
+
+        private void ClearField_Button(object sender, RoutedEventArgs e)
+        {
+            //TODO Lock team select while one member from a team is placed on the field.
+        }
+        //Triggered when clicking "Start fight"
+        private void StartBattle_Button(object sender, RoutedEventArgs e)
+        {
+            fw = new FieldWindow(this, gli);
+            fw.Closed += new EventHandler(Reference);
+            fw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            fw.Show();
+            this.Hide();
+        }
+
+        // Accesses the previous window
+        private void ToPreviousWindow_Click(object sender, RoutedEventArgs e)
+        { /*do not close mw.*/ exitApp = false; /*loads mainWindow*/ if (w is MainWindow) { this.w.Show(); this.Close(); } /*loads any other window */ else { w = new Window(); w.Show(); this.Close(); } }
+
+        //Loads mainwindow
+        private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
+
+        #endregion
     }
 }

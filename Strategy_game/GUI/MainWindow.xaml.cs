@@ -28,13 +28,17 @@ namespace Strategy_game
         Participant_DTO pDTO2;
         Participant_Impl pImpl;
         Game_Logic_Impl gImpl;
+        
         public MainWindow()
         {
+            Application.Current.MainWindow = this;
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             /**Test Section  START **/
             pDTO = new Participant_DTO(100, 4, 4, 2, 2, "Destroyer", "Tupac", "a", "b", "c","d", "e","f");
             pDTO2 = new Participant_DTO(100, 4, 4, 2, 2, "Creator", "Tupac", "a", "b", "c", "d", "e", "f");
+            pDTO.ImageGS = "yellowPlayer.png";
+            pDTO2.ImageGS = "tealPlayer.png";
             pImpl = new Participant_Impl();
             gImpl = new Game_Logic_Impl();
 
@@ -44,10 +48,10 @@ namespace Strategy_game
             field.YPoint = 6;
             pDTO.PointGS = field;
 
-            gImpl.AddParticipantToField(pDTO);
-            field.XPoint = 1;
+            //gImpl.AddParticipantToField(pDTO);
+            field.XPoint = 1; 
             pDTO2.PointGS = field;
-            gImpl.AddParticipantToField(pDTO2);
+            //gImpl.AddParticipantToField(pDTO2);
             List<Tuple<Participant_DTO, FieldPoint_DTO>> tmp = gImpl.GetField();
 
             foreach (var point in tmp)

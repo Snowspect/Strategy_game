@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Strategy_game.GUI"
         mc:Ignorable="d"
         Title="FieldWindow" Height="500" Width="800">
+    
     <Grid Margin="0,-3,0,3">
         <Canvas Margin="339,70,0,0" Width="435" HorizontalAlignment="Left" Height="290" VerticalAlignment="Top">
             <UniformGrid x:Name="FieldGrid" Rows="6" Columns="6" Height="285" Width="435" Canvas.Top="3">

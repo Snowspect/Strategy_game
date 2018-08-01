@@ -41,7 +41,7 @@ namespace Strategy_game.Func
             fp_DTO = new FieldPoint_DTO(); 
             fp_DTO.XPoint = xCoord; fp_DTO.YPoint = yCoord; 
             pImpl.UpdateFieldToParticipant(fp_DTO, pImpl.GetParticipant(Participant_name)); //directly throws participant object 
-            AddParticipantToField(pImpl.GetParticipant(Participant_name)); //directly throws participant object
+            //AddParticipantToField(pImpl.GetParticipant(Participant_name)); //directly throws participant object
         }
         //Retrieves the image from a participant
         public string GetImage(string participant_name)
