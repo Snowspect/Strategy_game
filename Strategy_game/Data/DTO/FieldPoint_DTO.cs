@@ -25,6 +25,6 @@ namespace Strategy_game.Data.DTO
             XPoint = x;
         }
 
-        public String ToString => "XPoint: " + XPoint + ", YPoint: " + YPoint;
+        public new String ToString => "XPoint: " + XPoint + ", YPoint: " + YPoint;
     }
 }
