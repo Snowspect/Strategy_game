@@ -114,6 +114,7 @@ namespace Strategy_game.GUI
             }
             else if (parsedTP.Count < 5)
             {
+                Console.WriteLine(parsedTP.Count);
                 MessageBoxResult result = MessageBox.Show("Please fix the errors that was shown");
             }
             else
@@ -199,6 +200,10 @@ namespace Strategy_game.GUI
                     if (int.TryParse(item, out int result) == false) //result is not used, returns 0 since it fails.
                     {
                         throw new NotInteger("This is not a number: " + item);
+                    }
+                    else
+                    {
+                        parsedInts.Add(int.Parse(item));
                     }
                 }
                 catch (NotInteger b)

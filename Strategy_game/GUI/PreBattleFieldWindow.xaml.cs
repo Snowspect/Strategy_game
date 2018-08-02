@@ -40,7 +40,7 @@ namespace Strategy_game.GUI
             exitApp = true; //used for closing app
             InitializeComponent();
             CreatePreField();
-            CreateTeamList();
+            ShowTeamList();
         }
         #endregion
 
@@ -60,7 +60,7 @@ namespace Strategy_game.GUI
         private void TeamListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string team = TeamListBox.SelectedItem.ToString();
-            CreateMemberLists(team);
+            ShowTeamMemberLists(team);
         }
 
         private void XCoord_TextChanged(object sender, TextChangedEventArgs e)
@@ -72,8 +72,8 @@ namespace Strategy_game.GUI
 
         /**
          * CreatePreField
-         * CreateTeamList
-         * CreateMemberList
+         * ShowTeamList
+         * ShowTeamMemberList
          * MoveToSpot
          * ClearsImage
          * SetsImage
@@ -114,14 +114,14 @@ namespace Strategy_game.GUI
                 h--;
             }
         }
-        private void CreateTeamList()
+        private void ShowTeamList()
         {
             foreach (var item in pImpl.GetTeamList())
             {
                 TeamListBox.Items.Add(item.Key);
             } 
         }
-        private void CreateMemberLists(string team)
+        private void ShowTeamMemberLists(string team)
         {
             foreach (var item in pImpl.GetCurrentList())
             {
