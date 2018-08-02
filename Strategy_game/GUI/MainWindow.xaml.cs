@@ -24,11 +24,14 @@ namespace Strategy_game
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region localVariables
         Participant_DTO pDTO;
         Participant_DTO pDTO2;
         Participant_Impl pImpl;
         Game_Logic_Impl gImpl;
-        
+        #endregion
+
+        #region constructors
         public MainWindow()
         {
             Application.Current.MainWindow = this;
@@ -66,7 +69,9 @@ namespace Strategy_game
             
             /**Test Section  END **/
         }
+        #endregion
 
+        #region buttons
         //Shows add user window and hides mainwindow
         //Can't close mainwindow as that will bug the app out.
         private void Create_Click(object sender, RoutedEventArgs e)
@@ -101,5 +106,6 @@ namespace Strategy_game
             pbw.Show();
             this.Hide();
         }
+        #endregion
     }
 }

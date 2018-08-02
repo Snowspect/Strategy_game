@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Strategy_game.Exceptions
 {
@@ -10,7 +11,7 @@ namespace Strategy_game.Exceptions
     {
         public NotInteger(string message) : base(message)
         {
-            Console.WriteLine("This is not a number: " + message);
+            MessageBox.Show(message);
         }
     }
 }

@@ -51,8 +51,6 @@ namespace Strategy_game.Func
         //Retrieves the x and y coordinates related to a participant and returns it as a string name
         public string GetParticipantFieldCoord(string participant_name)
         {
-            //currently always accesses first participant on field
-            // Should be
             foreach (var item in GetField())
             {
                 if (item.Item1.NameGS == participant_name)

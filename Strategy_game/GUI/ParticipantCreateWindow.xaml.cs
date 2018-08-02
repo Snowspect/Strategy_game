@@ -18,16 +18,17 @@ namespace Strategy_game.GUI
     /// </summary>
     public partial class ParticipantCreateWindow : Window, ICreateParticipantWindow_Impl
     {
+        #region localVariables
         private MainWindow mw;
         private Window w;
         private Boolean exitApp;
         Participant_Impl pImpl;
         private string TeamImageName;
+        #endregion
 
-        public ParticipantCreateWindow()
-        {
-            InitializeComponent();
-        }
+        #region constructors
+        public ParticipantCreateWindow() => InitializeComponent();
+        
         //Constructor to take two kinds of windows
         public ParticipantCreateWindow(MainWindow mw, Window w)
         {
@@ -64,7 +65,9 @@ namespace Strategy_game.GUI
                 TeamNameChoice.Items.Add(item.Key);
             }
         }
+        #endregion
 
+        #region event triggered methods
         //Triggers when window is closed.
         void App_exit(object sender, EventArgs e) /*App_exit is my own defined method.*/ { if (exitApp == true) { w.Close(); } /*closes mainWindow*/ }
 
@@ -76,27 +79,31 @@ namespace Strategy_game.GUI
         private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
 
         //triggered when Text Changes within name box (all hide or show the hint box)
+        #region textChanged
+        private void TeamNameBox_TextChanged(object sender, TextChangedEventArgs e) { if (TeamNameTextBox.Text == "") TeamNameHint.Visibility = Visibility.Visible; else TeamNameHint.Visibility = Visibility.Hidden; }
         private void NameTextChanged(object sender, TextChangedEventArgs e) { if (NameTextBox.Text.Length >0) HintName.Visibility = Visibility.Hidden; else HintName.Visibility = Visibility.Visible; }
-
         private void HealthTextBox_TextChanged(object sender, TextChangedEventArgs e) { if(HealthTextBox.Text.Length > 0) HintHealth.Visibility = Visibility.Hidden; else HintHealth.Visibility = Visibility.Visible; }
-
         private void OffenceTextBox_TextChanged(object sender, TextChangedEventArgs e) { if (OffenceTextBox.Text.Length > 0) HintOffence.Visibility = Visibility.Hidden; else HintOffence.Visibility = Visibility.Visible; }
-
         private void DefenceTextBox_TextChanged(object sender, TextChangedEventArgs e) { if (DefenceTextBox.Text.Length > 0) HintDefence.Visibility = Visibility.Hidden; else HintDefence.Visibility = Visibility.Visible; }
-
         private void HMoveTextBox_TextChanged(object sender, TextChangedEventArgs e) { if (HMoveTextBox.Text.Length > 0) HintHMove.Visibility = Visibility.Hidden; else HintHMove.Visibility = Visibility.Visible; }
-
         private void VMoveTextBox_TextChanged(object sender, TextChangedEventArgs e) { if (VMoveTextBox.Text.Length > 0) HintVMove.Visibility = Visibility.Hidden; else HintVMove.Visibility = Visibility.Visible; }
+        #endregion
 
+        #endregion
+
+        #region buttons
         //retrieves content from boxes and adds to a DTO directly. 
         private void SubmitParticipant_Click(object sender, RoutedEventArgs e)
         {
-            List<string> tp = new List<string>();
+            List<int> parsedTP = new List<int>();
+            List<string> tp = new List<string>(); //tp = tryParse
             tp.Add(HealthTextBox.Text);
             tp.Add(OffenceTextBox.Text);
             tp.Add(DefenceTextBox.Text);
-            tp.Add(VMoveTextBox.Text);
             tp.Add(HMoveTextBox.Text);
+            tp.Add(VMoveTextBox.Text);
+
+            parsedTP = ParseInts(tp);
 
             if (NameTextBox.Text == "" || HealthTextBox.Text == "" || OffenceTextBox.Text == "" || DefenceTextBox.Text == ""
             || HMoveTextBox.Text == "" || VMoveTextBox.Text == "" || StrongAgainstFirstChoice.SelectedIndex == -1 || StrongAgainstSecondChoice.SelectedIndex == -1
@@ -105,36 +112,118 @@ namespace Strategy_game.GUI
             {
                 MessageBoxResult result = MessageBox.Show("Please fill out and pick something from all boxes");
             }
+            else if (parsedTP.Count < 5)
+            {
+                MessageBoxResult result = MessageBox.Show("Please fix the errors that was shown");
+            }
             else
             {
-                //Tests if one of the items are not an integer
-                foreach (var item in tp)
-                {
-                    try
-                    {
-                        int.Parse(item);
-                    }
-                    catch (Exception exception)
-                    {
-                        Console.WriteLine(exception);
-                        Console.WriteLine(exception.StackTrace.ToString());
-                        throw new NotInteger(item.ToString());
-                    }
-                }
                 Participant_DTO pDTO = new Participant_DTO(); //only needed here locally
-                RetrieveInput(pDTO);
+                RetrieveInput(pDTO, parsedTP);
+            }
+        }
+        
+        //shows the box that let's you create a new team on the run
+        private void NewTeamWindow_Button(object sender, RoutedEventArgs e)
+        {
+            CreateTeamBox.Visibility = Visibility.Visible;
+            CoverTeamCanvasImage.Visibility = Visibility.Hidden;
+        }
+
+        //submits the team name and an team image to storage
+        private void SubmitTeam_Click(object sender, RoutedEventArgs e)
+        {
+            if (TeamNameTextBox.Text == "" || teamImage.GetValue(Image.SourceProperty) == null)
+            {
+                MessageBoxResult result = MessageBox.Show("remember to insert a name and select an image");
+            }
+            else
+            {
+                string teamName = TeamNameTextBox.Text;
+                pImpl.AddTeam(teamName, TeamImageName);
+                TeamNameTextBox.Clear();
+                teamImage.ClearValue(Image.SourceProperty); //clears the image 
+                TeamNameChoice.Items.Add(teamName);
+                CreateTeamBox.Visibility = Visibility.Hidden;
+                CoverTeamCanvasImage.Visibility = Visibility.Visible;
             }
         }
 
+        // sets image into team window
+        private void InsertImage_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog op = new OpenFileDialog();
+            op.Title = "Select a picture";
+            op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
+              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+              "Portable Network Graphic (*.png)|*.png";
+            if (op.ShowDialog() == true)
+            {
+                try
+                {
+                    teamImage.Stretch = Stretch.Fill;
+                    string endPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\";
+                    File.Copy(op.FileName, endPath + Path.GetFileName(op.FileName));
+                    TeamImageName = System.IO.Path.GetFileNameWithoutExtension(op.FileName);
+                    teamImage.Source = new BitmapImage(new Uri(op.FileName));
+                }
+                //makes sure to throw custom exception
+                catch (Exception exc)
+                {
+                    if(exc is IOException)
+                    {
+                        try
+                        {
+                            throw new DuplicateImage("duplicate Image");
+                        }
+                        catch(DuplicateImage dpImg)
+                        {
+                            Console.WriteLine(dpImg.StackTrace.ToString());
+                        }
+                    }
+                }
+        }
+        }
+        #endregion
+
+        #region methods
+        //Parsings a list of strings to a list of ints, and throws exceptions if failed to do so
+        public List<int> ParseInts(List<string> tp)
+        {
+            List<int> parsedInts = new List<int>();
+            //Tests if one of the items are not an integer
+            foreach (var item in tp)
+            {
+                try
+                {
+                    if (int.TryParse(item, out int result) == false) //result is not used, returns 0 since it fails.
+                    {
+                        throw new NotInteger("This is not a number: " + item);
+                    }
+                }
+                catch (NotInteger b)
+                {
+                    Console.WriteLine(b);
+                    Console.WriteLine(b.StackTrace.ToString());
+                }
+                catch (Exception exec)
+                {
+                    Console.WriteLine(exec.StackTrace.ToString());
+                    MessageBox.Show("Exception not related to integerParsing");
+                }
+            }
+            return parsedInts;
+        }
+
         //Retrieves input and listbox fields from the create window
-        private void RetrieveInput(Participant_DTO pDTO)
+        private void RetrieveInput(Participant_DTO pDTO, List<int> parsedTP)
         {
             pDTO.NameGS = NameTextBox.Text;
-            pDTO.HealthGS = int.Parse(HealthTextBox.Text);
-            pDTO.OffenceGS = int.Parse(OffenceTextBox.Text);
-            pDTO.DefenceGS = int.Parse(DefenceTextBox.Text);
-            pDTO.HMoveGS = int.Parse(HMoveTextBox.Text);
-            pDTO.VMoveGS = int.Parse(VMoveTextBox.Text);
+            pDTO.HealthGS = parsedTP[0];
+            pDTO.OffenceGS = parsedTP[1];
+            pDTO.DefenceGS = parsedTP[2];
+            pDTO.HMoveGS = parsedTP[3];
+            pDTO.VMoveGS = parsedTP[4];
             pDTO.TeamGS = TeamNameChoice.SelectedItem.ToString();
             pDTO.StrongAgainstGS.Add(StrongAgainstFirstChoice.SelectedItem.ToString());
             pDTO.StrongAgainstGS.Add(StrongAgainstSecondChoice.SelectedItem.ToString());
@@ -144,13 +233,6 @@ namespace Strategy_game.GUI
             pDTO.ImmuneAgainstGS.Add(ImmuneAgainstSecondChoice.SelectedItem.ToString());
             pImpl.AddToList(pDTO);
             ClearFields();
-        }
-
-        //shows the box that let's you create a new team on the run
-        private void NewTeam_Button(object sender, RoutedEventArgs e)
-        {
-            CreateTeamBox.Visibility = Visibility.Visible;
-            CoverTeamCanvasImage.Visibility = Visibility.Hidden;
         }
 
         //clear all fields after submitting
@@ -170,47 +252,6 @@ namespace Strategy_game.GUI
             ImmuneAgainstSecondChoice.SelectedIndex = -1;
             TeamNameChoice.SelectedIndex = -1;
         }
-
-        private void TeamNameBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (TeamNameTextBox.Text == "") TeamNameHint.Visibility = Visibility.Visible;
-            else TeamNameHint.Visibility = Visibility.Hidden;
-        }
-
-        //submits the team name and an team image to storage
-        private void SubmitTeam_Click(object sender, RoutedEventArgs e)
-        {
-            if(TeamNameTextBox.Text == "" || teamImage.GetValue(Image.SourceProperty) == null)
-            {
-                MessageBoxResult result = MessageBox.Show("remember to insert a name and select an image");
-            } else
-            {
-                string teamName = TeamNameTextBox.Text;
-                pImpl.AddTeam(teamName, TeamImageName);
-                TeamNameTextBox.Clear();
-                teamImage.ClearValue(Image.SourceProperty); //clears the image 
-                TeamNameChoice.Items.Add(teamName);
-                CreateTeamBox.Visibility = Visibility.Hidden;
-                CoverTeamCanvasImage.Visibility = Visibility.Visible;
-            }
-        }
-
-        private void InsertImage_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog op = new OpenFileDialog();
-            op.Title = "Select a picture";
-            op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
-              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
-              "Portable Network Graphic (*.png)|*.png";
-            if (op.ShowDialog() == true)
-            {
-                teamImage.Stretch = Stretch.Fill;
-                teamImage.Source = new BitmapImage(new Uri(op.FileName));
-
-                string endPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" ;
-                File.Copy(op.FileName, endPath + System.IO.Path.GetFileName(op.FileName));
-                TeamImageName = System.IO.Path.GetFileNameWithoutExtension(op.FileName);
-            }
-        }
+        #endregion
     }
 }

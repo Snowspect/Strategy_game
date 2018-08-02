@@ -1,20 +1,11 @@
-﻿using Strategy_game.Data.DTO;
-using Strategy_game.Data.Interface_windows;
+﻿using Strategy_game.Data.Interface_windows;
 using Strategy_game.Func;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Strategy_game.GUI
 {
@@ -23,10 +14,6 @@ namespace Strategy_game.GUI
     /// </summary>
     public partial class FieldWindow : Window, IFieldWindow_Impl<int, string>
     {
-        //TODO Could change tuple to contain a coordinate and a participants,
-        //then change the coordinate to also have a field that tells whether it is occupied or not
-        //so if the field is occupied, check what participant it is, and if on 
-        //opposite team then battle, otherwize if on same field, deny move action, otherwize move to field.
         #region localVariables
         NameScope ScopeName = new NameScope();
         private MainWindow mw;
@@ -37,10 +24,7 @@ namespace Strategy_game.GUI
 
         #region constructors
         //Not used either
-        public FieldWindow()
-        {
-            InitializeComponent();
-        }
+        public FieldWindow() => InitializeComponent();
 
         public FieldWindow(Window w, Game_Logic_Impl gimpl)
         {

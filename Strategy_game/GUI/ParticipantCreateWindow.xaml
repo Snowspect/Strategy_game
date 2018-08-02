@@ -45,7 +45,6 @@
 			<TextBlock x:Name="TeamNameHint" IsHitTestVisible="false" Canvas.Left="37" TextWrapping="Wrap" Text="Team Name" Canvas.Top="10" RenderTransformOrigin="0.388,-0.688" Width="135"/>
 		</Canvas>
 		<Image x:Name="CoverTeamCanvasImage" HorizontalAlignment="Left" Height="111" Margin="797,358,-241,0" VerticalAlignment="Top" Width="236"/>
-		<Button Content="New Team" HorizontalAlignment="Left" Margin="354,243,0,0" VerticalAlignment="Top" Width="82" Height="24" Click="NewTeam_Button"/>
-
+		<Button Content="New Team" HorizontalAlignment="Left" Margin="354,243,0,0" VerticalAlignment="Top" Width="82" Height="24" Click="NewTeamWindow_Button"/>
 	</Grid>
 </Window>
