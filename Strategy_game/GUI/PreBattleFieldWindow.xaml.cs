@@ -1,6 +1,9 @@
 ﻿using Strategy_game.Data;
+using Strategy_game.Data.DAO;
+using Strategy_game.Data.DTO;
 using Strategy_game.Func;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,6 +25,7 @@ namespace Strategy_game.GUI
         Game_Logic_Impl gli;
         FieldWindow fw;
         NameScope ScopeName = new NameScope();
+        int skinCounter = 0;
         #endregion
 
         #region constructors
@@ -61,6 +65,10 @@ namespace Strategy_game.GUI
         {
             string team = TeamListBox.SelectedItem.ToString();
             ShowTeamMemberLists(team);
+            string image = pImpl.GetTeamImage(TeamListBox.SelectedValue.ToString());
+            TeamImage.Stretch = Stretch.Fill;
+            TeamImage.Source = (new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image + ".png")));
+
         }
 
         private void XCoord_TextChanged(object sender, TextChangedEventArgs e)
@@ -77,6 +85,7 @@ namespace Strategy_game.GUI
          * MoveToSpot
          * ClearsImage
          * SetsImage
+         * GenerateCoordsList
          */
         #region methods
         //Fills created grid
@@ -137,6 +146,9 @@ namespace Strategy_game.GUI
             Participant_DTO t = new Participant_DTO();
             t = pImpl.GetParticipant(participantToMove);
 
+            t.ImageGS = Storage.PlayerSkins[skinCounter];
+            skinCounter++;
+            
             #region NotaddedToFieldTwice
             //Makes sure participant isn't added to field twice.
             bool addOrNot = true;
@@ -193,6 +205,40 @@ namespace Strategy_game.GUI
             ima.Stretch = Stretch.Fill;
             ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
         }
+
+        public List<FieldPoint_DTO> GenerateCoordsList()
+        {
+            List<FieldPoint_DTO> tmpList = new List<FieldPoint_DTO>();
+            Random rand1 = new Random();
+            Random rand2 = new Random();
+            bool run = true, AllowedAdd = true;
+            int counter = 0;
+            
+            while (run)
+            {
+                FieldPoint_DTO fp = new FieldPoint_DTO();
+                fp.XPoint = rand1.Next(4, 6);
+                fp.YPoint = rand2.Next(0, 6);
+                if (tmpList.Count != 0)
+                {
+                    foreach (var item in tmpList)
+                    {
+                        if (item.XPoint == fp.XPoint && item.YPoint == fp.YPoint) //checks to see if the designated coord is already taken.
+                        {
+                            AllowedAdd = false;
+                        }
+                    }
+                    if (AllowedAdd == true) { tmpList.Add(fp); counter++; }
+                    if (counter == 6)
+                    {
+                        run = false;
+                    }
+                }
+                AllowedAdd = true;
+                if (counter == 0) { counter++; tmpList.Add(fp); }
+            }
+            return tmpList;
+        }
         #endregion
 
         /**
@@ -213,18 +259,42 @@ namespace Strategy_game.GUI
             //TODO Lock team select while one member from a team is placed on the field.
         }
         //Triggered when clicking "Start fight"
+        //configures team to be purple team and adds a skin to each of them
         private void StartBattle_Button(object sender, RoutedEventArgs e)
         {
-            foreach (var item in gli.GetField())
+            List<FieldPoint_DTO> tmpFPList = new List<FieldPoint_DTO>();
+            tmpFPList = GenerateCoordsList();
+
+            if (tmpFPList.Count != 0) //to make sure we don't go to next window.
             {
-                item.Item1.TeamColorGS = "purple";
+                string enemyTeam = pImpl.GetEnemyTeamName();
+                int coordCounter = 0;
+
+                foreach (var item in pImpl.GetEnemyTeam(enemyTeam))
+                {
+                    item.PointGS = tmpFPList[coordCounter];
+                    gli.AddParticipantToField(item);
+                    coordCounter++;
+                }
+                //test for team name and then color respectively, also here, find random enemy team.
+                foreach (var item in gli.GetField())
+                {
+                    if (item.Item1.TeamGS.Equals(TeamListBox.SelectedValue.ToString()))
+                    {
+                        item.Item1.TeamColorGS = "purple";
+                    }
+                    else
+                    {
+                        item.Item1.TeamColorGS = "blue";
+                    }
+                }
+                fw = new FieldWindow(this, gli);
+                fw.Closed += new EventHandler(Reference);
+                fw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                fw.Show();
+                this.Hide();
             }
-            fw = new FieldWindow(this, gli);
-            fw.Closed += new EventHandler(Reference);
-            fw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            fw.Show();
-            this.Hide();
-        }
+        } 
 
         // Accesses the previous window
         private void ToPreviousWindow_Click(object sender, RoutedEventArgs e)

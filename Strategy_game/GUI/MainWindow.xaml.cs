@@ -1,4 +1,5 @@
 ﻿using Strategy_game.Data;
+using Strategy_game.Data.DAO;
 using Strategy_game.Data.DTO;
 using Strategy_game.Func;
 using Strategy_game.GUI;
@@ -38,35 +39,52 @@ namespace Strategy_game
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             /**Test Section  START **/
-            pDTO = new Participant_DTO(100, 4, 4, 2, 2, "Destroyer", "Tupac", "a", "b", "c","d", "e","f");
-            pDTO2 = new Participant_DTO(100, 4, 4, 2, 2, "Creator", "Tupac", "a", "b", "c", "d", "e", "f");
-            pDTO.ImageGS = "yellowPlayer.png";
-            pDTO2.ImageGS = "tealPlayer.png";
+            
+
+
             pImpl = new Participant_Impl();
             gImpl = new Game_Logic_Impl();
+            for (int i = 0; i < 6; i++)
+            {
+                pDTO = new Participant_DTO(100, 4, 4, 2, 2, "Destroyer" + i, "Tupac", "a", "b", "c", "d", "e", "f");
+                pImpl.AddToList(pDTO);
+            }
+
+            pImpl.AddTeam("blue", "1");
+            #region skins
+            //Adds possible player images.
+            Storage.PlayerSkins.Add("pinkPlayer.png");
+            Storage.PlayerSkins.Add("tealPlayer.png");
+            Storage.PlayerSkins.Add("redPlayer.png");
+            Storage.PlayerSkins.Add("greenPlayer.png");
+            Storage.PlayerSkins.Add("orangePlayer.png");
+            Storage.PlayerSkins.Add("yellowPlayer.png");
+            #endregion
 
             //sets points difference from 0,0
-            FieldPoint_DTO field = new FieldPoint_DTO();
-            field.XPoint = 1;
-            field.YPoint = 6;
-            pDTO.PointGS = field;
+            /*            FieldPoint_DTO field = new FieldPoint_DTO();
+                        field.XPoint = 1;
+                        field.YPoint = 6;
+                        pDTO.PointGS = field;
 
-            //gImpl.AddParticipantToField(pDTO);
-            field.XPoint = 1; 
-            pDTO2.PointGS = field;
-            //gImpl.AddParticipantToField(pDTO2);
-            List<Tuple<Participant_DTO, FieldPoint_DTO>> tmp = gImpl.GetField();
+                        //gImpl.AddParticipantToField(pDTO);
+                        field.XPoint = 1; 
+                        pDTO2.PointGS = field;
+                        //gImpl.AddParticipantToField(pDTO2);
+                        List<Tuple<Participant_DTO, FieldPoint_DTO>> tmp = gImpl.GetField();
 
-            foreach (var point in tmp)
-            {
-                Console.WriteLine(point.Item1.GetToString()); //not a method since it is defined as a property within the DTO /FieldPoint_DTO
-                //Console.WriteLine(point.Item2.ToString); // prints out the field (but the field is also within the participant
-                //only prints keys as value (possible use that sql thing to add or retrieve from a list using sql statements)
-            }
-            //Console.WriteLine(pImpl.ToString); //prints to screen
-            pImpl.AddToList(pDTO);
-            pImpl.AddToList(pDTO2);
-            
+
+
+                        foreach (var point in tmp)
+                        {
+                            Console.WriteLine(point.Item1.GetToString()); //not a method since it is defined as a property within the DTO /FieldPoint_DTO
+                            //Console.WriteLine(point.Item2.ToString); // prints out the field (but the field is also within the participant
+                            //only prints keys as value (possible use that sql thing to add or retrieve from a list using sql statements)
+                        }
+                        //Console.WriteLine(pImpl.ToString); //prints to screen
+                        pImpl.AddToList(pDTO);
+                        pImpl.AddToList(pDTO2);
+                        */
             /**Test Section  END **/
         }
         #endregion

@@ -72,5 +72,17 @@ namespace Strategy_game.Func
         {
             return team.ReadTeams();
         }
+        public string GetTeamImage(string teamName)
+        {
+            return team.GetTeamImage(teamName);
+        }
+        public string GetEnemyTeamName()
+        {
+            return team.GetEnemyTeam();
+        }
+        public List<Participant_DTO> GetEnemyTeam(string enemyTeamName)
+        {
+            return team.GetEnemyTeamList(enemyTeamName);
+        }
     }
 }

@@ -81,6 +81,7 @@
     <Compile Include="Data\Interface_windows\IFieldWindow_Impl.cs" />
     <Compile Include="Data\Interface_windows\IPreBattleFieldWindow_Impl.cs" />
     <Compile Include="Exceptions\DuplicateImage.cs" />
+    <Compile Include="Exceptions\EmptyArray.cs" />
     <Compile Include="Exceptions\NotInteger.cs" />
     <Compile Include="Func\Field_Impl.cs" />
     <Compile Include="Func\Game_Logic_Impl.cs" />

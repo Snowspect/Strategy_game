@@ -28,5 +28,8 @@
         <Button x:Name="SubmitMove" Content="place member" HorizontalAlignment="Left" Margin="174,255,0,0" VerticalAlignment="Top" Width="120" Click="SubmitMove_Button"/>
         <Button Content="Clear field" HorizontalAlignment="Left" Margin="267,366,0,0" VerticalAlignment="Top" Width="120" Click="ClearField_Button"/>
         <Button Content="Begin fight" HorizontalAlignment="Left" Margin="19,366,0,0" VerticalAlignment="Top" Width="75" Click="StartBattle_Button"/>
+        <Border Margin="10,201,698,144" BorderBrush="black" BorderThickness="1">
+            <Image x:Name="TeamImage" HorizontalAlignment="Left" Height="74" Margin="-1" VerticalAlignment="Top" Width="84"/>
+        </Border>
     </Grid>
 </Window>

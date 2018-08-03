@@ -50,8 +50,8 @@ namespace Strategy_game.GUI
 
             /*Test section (new team box) END */
 
-            List<Participant_DTO> participantList =  pImpl.GetCurrentList();
-            foreach (var item in participantList)
+            //List<Participant_DTO> participantList = pImpl.GetCurrentList();
+            foreach (var item in pImpl.GetCurrentList())
             {
                 StrongAgainstFirstChoice.Items.Add(item.NameGS);
                 StrongAgainstSecondChoice.Items.Add(item.NameGS);
@@ -71,12 +71,15 @@ namespace Strategy_game.GUI
         //Triggers when window is closed.
         void App_exit(object sender, EventArgs e) /*App_exit is my own defined method.*/ { if (exitApp == true) { w.Close(); } /*closes mainWindow*/ }
 
-        // Accesses the previous window
-        private void ToPreviousWindow_Click(object sender, RoutedEventArgs e)
-        { /*do not close mw.*/ exitApp = false; /*loads mainWindow*/ if (w is MainWindow) { this.w.Show(); this.Close(); } /*loads any other window */ else { w = new Window(); w.Show(); this.Close(); } }
-
-        //Loads mainwindow
-        private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
+        private void TeamNameChoice_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(TeamNameChoice.SelectedIndex != -1)
+            {
+                string image = pImpl.GetTeamImage(TeamNameChoice.SelectedValue.ToString());
+                displayTeamImage.Stretch = Stretch.Fill;
+                displayTeamImage.Source = (new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image + ".png")));
+            }
+        }
 
         //triggered when Text Changes within name box (all hide or show the hint box)
         #region textChanged
@@ -121,6 +124,15 @@ namespace Strategy_game.GUI
             {
                 Participant_DTO pDTO = new Participant_DTO(); //only needed here locally
                 RetrieveInput(pDTO, parsedTP);
+                foreach (var item in pImpl.GetCurrentList())
+                {
+                    StrongAgainstFirstChoice.Items.Add(item.NameGS);
+                    StrongAgainstSecondChoice.Items.Add(item.NameGS);
+                    WeakAgainstFirstChoice.Items.Add(item.NameGS);
+                    WeakAgainstSecondChoice.Items.Add(item.NameGS);
+                    ImmuneAgainstFirstChoice.Items.Add(item.NameGS);
+                    ImmuneAgainstSecondChoice.Items.Add(item.NameGS);
+                }
             }
         }
         
@@ -134,7 +146,7 @@ namespace Strategy_game.GUI
         //submits the team name and an team image to storage
         private void SubmitTeam_Click(object sender, RoutedEventArgs e)
         {
-            if (TeamNameTextBox.Text == "" || teamImage.GetValue(Image.SourceProperty) == null)
+            if (TeamNameTextBox.Text == "" || NewTeamImage.GetValue(Image.SourceProperty) == null)
             {
                 MessageBoxResult result = MessageBox.Show("remember to insert a name and select an image");
             }
@@ -143,7 +155,7 @@ namespace Strategy_game.GUI
                 string teamName = TeamNameTextBox.Text;
                 pImpl.AddTeam(teamName, TeamImageName);
                 TeamNameTextBox.Clear();
-                teamImage.ClearValue(Image.SourceProperty); //clears the image 
+                NewTeamImage.ClearValue(Image.SourceProperty); //clears the image 
                 TeamNameChoice.Items.Add(teamName);
                 CreateTeamBox.Visibility = Visibility.Hidden;
                 CoverTeamCanvasImage.Visibility = Visibility.Visible;
@@ -162,11 +174,12 @@ namespace Strategy_game.GUI
             {
                 try
                 {
-                    teamImage.Stretch = Stretch.Fill;
+                    NewTeamImage.Stretch = Stretch.Fill;
                     string endPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\";
                     File.Copy(op.FileName, endPath + Path.GetFileName(op.FileName));
                     TeamImageName = System.IO.Path.GetFileNameWithoutExtension(op.FileName);
-                    teamImage.Source = new BitmapImage(new Uri(op.FileName));
+                    NewTeamImage.Source = new BitmapImage(new Uri(op.FileName));
+                    Console.WriteLine(op.FileName);
                 }
                 //makes sure to throw custom exception
                 catch (Exception exc)
@@ -185,6 +198,13 @@ namespace Strategy_game.GUI
                 }
         }
         }
+
+        // Accesses the previous window
+        private void ToPreviousWindow_Click(object sender, RoutedEventArgs e)
+        { /*do not close mw.*/ exitApp = false; /*loads mainWindow*/ if (w is MainWindow) { this.w.Show(); this.Close(); } /*loads any other window */ else { w = new Window(); w.Show(); this.Close(); } }
+
+        //Loads mainwindow
+        private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
         #endregion
 
         #region methods
@@ -258,5 +278,7 @@ namespace Strategy_game.GUI
             TeamNameChoice.SelectedIndex = -1;
         }
         #endregion
+
+
     }
 }

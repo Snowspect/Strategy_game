@@ -12,5 +12,12 @@ namespace Strategy_game.Data.Interface_DAO
         Dictionary<S,S> ReadTeams();
         void UpdateTeam(S oldTeamName, S newTeamName, S teamImage);
         void DeleteTeam(S teamName);
+        S GetTeam();
+        S GetTeamImage(S teamName);
+        void CreateEnemyTeam(S teamName, S teamImage);
+        void UpdateEnemyTeam(S oldTeamName, S newTeamName, S teamImage);
+        void DeleteEnemyTeam(S teamName);
+        S GetEnemyTeam();
+        S GetEnemyTeamImage(S teamName);
     }
 }
