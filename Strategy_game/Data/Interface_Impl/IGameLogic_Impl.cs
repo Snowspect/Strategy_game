@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data.Interface_Impl
 { 
-    interface IGameLogic_Impl<T,E,S,Z>
+    interface IGameLogic_Impl<P,FP,I,S>
     {
-        void AddParticipantToField(T pDTO);
-        List<Tuple<T, E>> GetField();
-        void MoveParticipant(S xCoord, S yCoord, Z Participant_name);
-        string GetImage(Z participant_name);
-        string GetParticipantFieldCoord(Z participant_name);
+        void AddParticipantToField(P pDTO);
+        List<FP> GetField();
+        void MoveParticipant(P pDTO);
+        void EmptyField();
+        void AddPointToField(FP fpDTO);
     }
 }

@@ -30,7 +30,6 @@ namespace Strategy_game.Func
         }
         #endregion
 
-
         /*
          * GetParticipant
          * AddParticipantToList
@@ -51,17 +50,18 @@ namespace Strategy_game.Func
         public void AddParticipantToList(Participant_DTO pDTO) /*adds it to static layer in storage class*/ { pDAO.AddToStorage(pDTO); }
         
         //adds a field to a participant
-        public void UpdateFieldToParticipant(FieldPoint_DTO fpDTO, Participant_DTO pDTO) {
+        public void UpdateFieldToParticipant(Participant_DTO pDTO) {
             /*Access DTO in database, add field information*/
-            pDAO.UpdateFieldToParticipant(pDTO, fpDTO); }
+            pDAO.UpdateFieldToParticipant(pDTO); }
 
         //returns current Participant DTO
         public List<Participant_DTO> GetCurrentList() => pDAO.GetParticipantList(); //gets from static layer in st
 
         //calls DAO to get image filepath from participant
-        public string getImageFromParticipant(string participant_name)
+        public string getImageFromParticipant(Participant_DTO pDTO)
         {
-            return pDAO.GetParticipant_DTODB(participant_name).ImageGS;
+            return pDTO.ImageGS;
+            //return pDAO.GetParticipant_DTODB(pDTO.NameGS).ImageGS;
         }
 
         #region subregion - wkA,stA,immA

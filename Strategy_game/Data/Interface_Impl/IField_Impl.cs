@@ -1,9 +1,9 @@
 ﻿namespace Strategy_game.Data.Interface_Impl
 {
-    interface IField_Impl<T>
+    interface IField_Impl<T, P, FP>
     {
-        T CheckFieldPoint();
-        T ChangeFieldPointStatus();
-        T GetParticipantOnFieldPoint();
+        void AddParticipantToField(P pDTO);
+        void AddPointToField(FP fpDTO);
+        void EmptyField();
     }
 }

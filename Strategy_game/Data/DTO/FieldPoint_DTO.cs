@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Strategy_game.Data.DTO
 {
     /// <summary>
@@ -12,21 +13,11 @@ namespace Strategy_game.Data.DTO
     public class FieldPoint_DTO : System.Attribute
     {
         #region localVariables
-
-        private string fieldPointStatus = FieldStatus.notOccupied.ToString();
-        public enum FieldStatus
-        {
-            selfOwned = 1,
-            selfOccupied = 2,
-            enemyOwned = 3,
-            enemyOccupied = 4,
-            notOccupied = 5
-        }
+        Participant_DTO pDTO = null;
+        private FieldStatus_DTO.FieldStatus FieldPointStatus = FieldStatus_DTO.FieldStatus.notOccupied;
         #endregion
 
-        #region propertyAccess
-        public int XPoint { get; set; }
-        public int YPoint { get; set; }
+        #region constructor
         public FieldPoint_DTO()
         {
             XPoint = 0;
@@ -37,11 +28,20 @@ namespace Strategy_game.Data.DTO
             YPoint = y;
             XPoint = x;
         }
-        
-        public new String ToString => "XPoint: " + XPoint + ", YPoint: " + YPoint;
-
-        public string FieldPointStatus { get => fieldPointStatus; set => fieldPointStatus = value; }
         #endregion
 
+        #region propertyAccess
+        public int XPoint { get; set; }
+        public int YPoint { get; set; }
+
+        
+        internal FieldStatus_DTO.FieldStatus FieldPointStatusGS { get => FieldPointStatus; set => FieldPointStatus = value; }
+        public Participant_DTO PDTO { get => pDTO; set => pDTO = value; }
+
+        public override string ToString()
+        {
+            return "x" + XPoint + "y" + YPoint;
+        }
+        #endregion
     }
 }

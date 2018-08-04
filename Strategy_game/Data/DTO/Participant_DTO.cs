@@ -13,6 +13,7 @@ namespace Strategy_game.Data
     public class Participant_DTO
     {
         #region constructors
+
         public Participant_DTO()
         {
             HealthGS = 1;
@@ -42,8 +43,6 @@ namespace Strategy_game.Data
             TeamColorGS = "none";
             ImageGS = "SlimeBlack.png";
             PointGS = new FieldPoint_DTO();
-            PointGS.XPoint = 0;
-            PointGS.YPoint = 0;
             StrongAgainstGS = new List<string>();
             StrongAgainstGS.Add(stA1); StrongAgainstGS.Add(stA2);
             WeakAgainstGS = new List<string>();

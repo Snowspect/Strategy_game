@@ -62,7 +62,7 @@ namespace Strategy_game.GUI
 
             foreach (var item in gli.GetField())
             {
-                ListOfParticipants.Items.Add(item.Item1.NameGS);
+              //  ListOfParticipants.Items.Add(item.NameGS);
             }
             /* Test Section END */
         }
@@ -140,16 +140,16 @@ namespace Strategy_game.GUI
 
             //moves participant in storage and on field list 
             //Updates participantDTO in storage 
-            gli.MoveParticipant(x, y, participantToMove);
+            //gli.MoveParticipant(x, y, participantToMove);
 
             SetsImage(x, y, participantToMove);
         }
         public void ClearsImage(int xCoord, int yCoord, string participant_name)
         {
-            string fieldCoord = gli.GetParticipantFieldCoord(participant_name); //retrieves current Coords 
+            //string fieldCoord = gli.GetParticipantFieldCoord(participant_name); //retrieves current Coords 
 
             Image ima = new Image();
-            ima = (Image)FieldGrid.FindName(fieldCoord); //finds image with x:Name that matches coords 
+            //ima = (Image)FieldGrid.FindName(fieldCoord); //finds image with x:Name that matches coords 
             ima.ClearValue(Image.SourceProperty); //clears the image 
                                                   
             //do a if check to see what team they are on and then color the field specifically after that.
@@ -171,13 +171,13 @@ namespace Strategy_game.GUI
         {
             Image ima = new Image();
             //gets image from participant to move.
-            string image = gli.GetImage(participant_name);
+            //string image = gli.GetImage(participant_name);
 
             //finds the image field based on the coords
             string fieldName = "x" + xCoord + "y" + yCoord;
             ima = (Image)FieldGrid.FindName(fieldName);
             ima.Stretch = Stretch.Fill;
-            ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
+            //ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
         }
         public void CreatePreField()
         {
@@ -215,20 +215,20 @@ namespace Strategy_game.GUI
         }
         public void InsertParticipantsToField()
         {
-            foreach (var item in gli.GetField())
+         /*   foreach (var item in gli.GetField())
             {
-                ListOfParticipants.Items.Add(item.Item1.NameGS);
+                ListOfParticipants.Items.Add(item.NameGS);
                 Image ima = new Image();
                 //gets image from participant to move.
-                string image = gli.GetImage(item.Item1.NameGS);
+                string image = gli.GetImage(item.NameGS);
 
                 //Gets fieldCoords from participant
-                string fieldName = gli.GetParticipantFieldCoord(item.Item1.NameGS);
+                string fieldName = gli.GetParticipantFieldCoord(item.NameGS);
                 //find designated spot on field
                 ima = (Image)FieldGrid.FindName(fieldName);
                 ima.Stretch = Stretch.Fill;
                 ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
-            }
+            }*/
         }
         #endregion
     }

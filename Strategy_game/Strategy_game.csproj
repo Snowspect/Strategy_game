@@ -70,6 +70,7 @@
     <Compile Include="Data\DAO\Storage.cs" />
     <Compile Include="Data\DAO\Team_DAO.cs" />
     <Compile Include="Data\DTO\FieldPoint_DTO.cs" />
+    <Compile Include="Data\DTO\FieldStatus_DTO.cs" />
     <Compile Include="Data\DTO\Field_DTO.cs" />
     <Compile Include="Data\DTO\Participant_DTO.cs" />
     <Compile Include="Data\Interface_DAO\IParticipant_IntDAO_Generic.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Exceptions\DuplicateImage.cs" />
     <Compile Include="Exceptions\EmptyArray.cs" />
     <Compile Include="Exceptions\NotInteger.cs" />
+    <Compile Include="Func\FieldPoint_Impl.cs" />
     <Compile Include="Func\Field_Impl.cs" />
     <Compile Include="Func\Game_Logic_Impl.cs" />
     <Compile Include="Func\Participant_Impl.cs" />

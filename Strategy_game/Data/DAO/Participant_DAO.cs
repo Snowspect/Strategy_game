@@ -30,9 +30,9 @@ namespace Strategy_game.Data
             return st.GetParticipantList();
         }
         //Adds field to a specific particpants (currently just accessing storage class
-        public void UpdateFieldToParticipant(Participant_DTO pDTO, FieldPoint_DTO fpDTO)
+        public void UpdateFieldToParticipant(Participant_DTO pDTO)
         {
-            st.UpdateFieldToParticipant(pDTO, fpDTO);
+            st.UpdateFieldToParticipant(pDTO, pDTO.PointGS);
         }
         //Gets participant from storage (ment to do database retrieval)
         public Participant_DTO GetParticipant_DTODB(string participant_name)

@@ -18,11 +18,11 @@ namespace Strategy_game.Data.Interface_Impl
         /// </summary>
         List<T> GetCurrentList();
 
-        void UpdateFieldToParticipant(E fpDTO, T pDTO);
+        void UpdateFieldToParticipant(T pDTO);
 
         T GetParticipant(Z participant_name);
 
-        string getImageFromParticipant(Z participant_name);
+        string getImageFromParticipant(T participant_name);
 
         /// Replace T with desired parameter
         /// THe intended is a string

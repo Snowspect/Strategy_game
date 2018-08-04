@@ -75,9 +75,9 @@ namespace Strategy_game.GUI
         }
 
         private void XCoord_TextChanged(object sender, TextChangedEventArgs e)
-        { if (xCoord.Text.Equals("")) { HintXCoord.Visibility = Visibility.Visible; } else HintXCoord.Visibility = Visibility.Hidden; }
+        { if (txtXCoord.Text.Equals("")) { HintXCoord.Visibility = Visibility.Visible; } else HintXCoord.Visibility = Visibility.Hidden; }
         private void YCoord_TextChanged(object sender, TextChangedEventArgs e)
-        { if (yCoord.Text.Equals("")) { HintYCoord.Visibility = Visibility.Visible; } else HintYCoord.Visibility = Visibility.Hidden; }
+        { if (txtYCoord.Text.Equals("")) { HintYCoord.Visibility = Visibility.Visible; } else HintYCoord.Visibility = Visibility.Hidden; }
 
         #endregion
 
@@ -97,12 +97,12 @@ namespace Strategy_game.GUI
             UserControl u;
             int j = 6;
             int i = 3;
-            int h = 0;
+
             PreFieldBattle.Rows = 6;
             PreFieldBattle.Columns = 3;
-            h = j;
-            //Fills out a uniform grid with pictures of the same slime "currently", needs to fill out with a ground tile
-            for (int k = 1; k < j + 1; k++) //k is 1, increased to 6
+
+            //Fills out a uniform grid with pictures of the same slime "currently", needs to fill out with a ground tile 
+            for (int h = j; h > 0; h--) //k is 1, increased to 6 
             {
                 for (int g = 1; g < i + 1; g++) // g is 1, increased to 3 
                 {
@@ -122,8 +122,13 @@ namespace Strategy_game.GUI
 
                     u.Content = b;
                     PreFieldBattle.Children.Add(u);
+
+                    //fills the pre arena with a full set of points
+                    FieldPoint_DTO fpDTO = new FieldPoint_DTO();
+                    fpDTO.XPoint = g;
+                    fpDTO.YPoint = h;
+                    gli.AddPointToField(fpDTO);
                 }
-                h--;
             }
         }
         private void ShowTeamList()
@@ -131,7 +136,7 @@ namespace Strategy_game.GUI
             foreach (var item in tImpl.GetAllyTeamList())
             {
                 TeamListBox.Items.Add(item.Key);
-            } 
+            }
         }
         private void ShowTeamMemberLists(string team)
         {
@@ -146,60 +151,51 @@ namespace Strategy_game.GUI
         {
             string participantToMove = MemberListBox.SelectedItem.ToString(); //retrieves name
 
-            Participant_DTO t = new Participant_DTO();
-            t = pImpl.GetParticipant(participantToMove);
+            Participant_DTO pDTO = new Participant_DTO();
+            pDTO = pImpl.GetParticipant(participantToMove);
 
             #region NotaddedToFieldTwice
+            int x = int.Parse(txtXCoord.Text);
+            int y = int.Parse(txtYCoord.Text);
+
             //Makes sure participant isn't added to field twice.
-            //That is to the list that will be transfered to the game
-            bool addOrNot = true;
-            foreach (var item in gli.GetField())
+            if (pDTO.PointGS.XPoint == 0 && pDTO.PointGS.YPoint == 0)
             {
-                if (item.Item1.NameGS.Equals(participantToMove))
-                {
-                    addOrNot = false;
-                }
-            }
-            if (addOrNot == true)
-            {
-                t.ImageGS = Storage.PlayerSkins[skinCounter];
+                pDTO.PointGS.XPoint = x;
+                pDTO.PointGS.YPoint = y;
+                pDTO.ImageGS = Storage.PlayerSkins[skinCounter];
                 skinCounter++;
-                gli.AddParticipantToField(t);
+                gli.AddParticipantToField(pDTO); //creates a reference binding between active participant and the field it is moving to
             }
-            #endregion
-
-            int x = int.Parse(xCoord.Text);
-            int y = int.Parse(yCoord.Text);
-
-            ClearsImage(x, y, participantToMove);
-
-            //moves participant in storage and on field list
-            //Updates participantDTO in storage
-            gli.MoveParticipant(x, y, participantToMove);
-
-            SetsImage(x, y, participantToMove);
-        }
-        public void ClearsImage(int xCoord, int yCoord, string participant_name)
-        {
-            if (!gli.GetParticipantFieldCoord(participant_name).Equals("x0y0")) //not sure what i ment to do here
+            else
             {
-                string fieldCoord = gli.GetParticipantFieldCoord(participant_name); //retrieves current Coords
+                ClearsImage(pDTO);
 
-                Image ima = new Image();
-                ima = (Image)PreFieldBattle.FindName(fieldCoord); //finds image with x:Name that matches coords 
-                ima.ClearValue(Image.SourceProperty); //clears the image 
-                string image = "UnoccupiedField.png";
-                ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
+                //moves participant in storage and on field list
+                //Updates participantDTO in storage
+                pDTO.PointGS.XPoint = x;
+                pDTO.PointGS.YPoint = y;
             }
+            SetsImage(pDTO);
+            #endregion
         }
-        public void SetsImage(int xCoord, int yCoord, string participant_name)
+        public void ClearsImage(Participant_DTO pDTO)
+        {
+            string fieldCoord = pDTO.PointGS.ToString();
+            Console.WriteLine(fieldCoord);
+            Image ima = (Image)PreFieldBattle.FindName(fieldCoord); //finds image with x:Name that matches coords 
+            ima.ClearValue(Image.SourceProperty); //clears the image 
+            string image = "UnoccupiedField.png";
+            ima.Source = new BitmapImage(new Uri(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
+        }
+        public void SetsImage(Participant_DTO pDTO)
         {
             Image ima = new Image();
             //gets image from participant to move.
-            string image = gli.GetImage(participant_name);
+            string image = pDTO.ImageGS;
 
             //finds the image field based on the coords
-            string fieldName = "x" + xCoord + "y" + yCoord;
+            string fieldName = "x" + pDTO.PointGS.XPoint + "y" + pDTO.PointGS.YPoint;
 
             Console.WriteLine(PreFieldBattle);
 
@@ -208,21 +204,20 @@ namespace Strategy_game.GUI
             ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
         }
 
+        //Generates list of coords for enemy team
         public List<FieldPoint_DTO> GenerateCoordsList()
         {
             List<FieldPoint_DTO> tmpList = new List<FieldPoint_DTO>();
-            Random rand1;
-            Random rand2;
+            Random rand;
             bool run = true, AllowedAdd = true;
             int counter = 0;
-            
+
             while (run)
             {
                 FieldPoint_DTO fp = new FieldPoint_DTO();
-                rand1 = new Random(DateTime.UtcNow.Millisecond);
-                rand2 = new Random(DateTime.UtcNow.Millisecond);
-                fp.XPoint = rand1.Next(4, 6);
-                fp.YPoint = rand2.Next(1, 6);
+                rand = new Random(); //DateTime.UtcNow.Millisecond
+                fp.XPoint = rand.Next(4, 6);
+                fp.YPoint = rand.Next(1, 6);
                 if (tmpList.Count != 0)
                 {
                     foreach (var item in tmpList)
@@ -240,7 +235,7 @@ namespace Strategy_game.GUI
                 }
                 AllowedAdd = true;
                 if (counter == 0) { counter++; tmpList.Add(fp); }
-                
+
             }
             return tmpList;
         }
@@ -261,6 +256,12 @@ namespace Strategy_game.GUI
 
         private void ClearField_Button(object sender, RoutedEventArgs e)
         {
+            foreach (var item in gli.GetField())
+            {
+                //  ClearsImage(item.Item1.PointGS.XPoint, item.Item1.PointGS.YPoint, item.Item1.NameGS);
+            }
+            gli.EmptyField();
+            skinCounter = 0;
             //TODO Lock team select while one member from a team is placed on the field.
         }
         //Triggered when clicking "Start fight"
@@ -269,10 +270,7 @@ namespace Strategy_game.GUI
         {
             List<FieldPoint_DTO> tmpFPList = new List<FieldPoint_DTO>();
             tmpFPList = GenerateCoordsList();
-            foreach (var item in tmpFPList)
-            {
-                Console.WriteLine("X: " + item.XPoint + "Y: " + item.YPoint);
-            }
+
             if (tmpFPList.Count != 0) //to make sure we don't go to next window.
             {
                 string enemyTeam = tImpl.GetEnemyTeamName();
@@ -289,14 +287,14 @@ namespace Strategy_game.GUI
                 //test for team name and then color respectively, also here, find random enemy team.
                 foreach (var item in gli.GetField())
                 {
-                    if (item.Item1.TeamGS.Equals(TeamListBox.SelectedValue.ToString()))
-                    {
-                        item.Item1.TeamColorGS = "purple";
-                    }
-                    else
-                    {
-                        item.Item1.TeamColorGS = "blue";
-                    }
+                    /*   if (item.Item1.TeamGS.Equals(TeamListBox.SelectedValue.ToString()))
+                       {
+                           item.Item1.TeamColorGS = "purple";
+                       }
+                       else
+                       {
+                           item.Item1.TeamColorGS = "blue";
+                       }*/
                 }
                 fw = new FieldWindow(this, gli);
                 fw.Closed += new EventHandler(Reference);
@@ -304,7 +302,7 @@ namespace Strategy_game.GUI
                 fw.Show();
                 this.Hide();
             }
-        } 
+        }
 
         // Accesses the previous window
         private void ToPreviousWindow_Click(object sender, RoutedEventArgs e)
@@ -323,6 +321,20 @@ namespace Strategy_game.GUI
             throw new NotImplementedException();
         }
 
+        public void ClearsImage(FieldPoint_DTO participant_name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetsImage(FieldPoint_DTO participant_name)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<int> IPreBattleFieldWindow_Impl<string, int, FieldPoint_DTO>.GenerateCoordsList()
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

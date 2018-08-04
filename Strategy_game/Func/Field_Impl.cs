@@ -1,4 +1,6 @@
-﻿using Strategy_game.Data.Interface_Impl;
+﻿using Strategy_game.Data;
+using Strategy_game.Data.DTO;
+using Strategy_game.Data.Interface_Impl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,21 +9,31 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Func
 {
-    class Field_Impl : IField_Impl<int>
+    class Field_Impl : IField_Impl<int, Participant_DTO, FieldPoint_DTO>
     {
-        public int ChangeFieldPointStatus()
+        Field_DTO fDTO;
+        FieldPoint_Impl fImpl;
+        public Field_Impl()
         {
-            return 0;
+            fDTO = new Field_DTO();
+            fImpl = new FieldPoint_Impl();
         }
 
-        public int CheckFieldPoint()
+        public void AddParticipantToField(Participant_DTO pDTO)
         {
-            throw new NotImplementedException();
+            pDTO.PointGS = fImpl.GetArenaField(pDTO.PointGS.XPoint, pDTO.PointGS.YPoint); //Adds correct point object to participant
+            pDTO.PointGS.PDTO = pDTO; //Adds participant to field
         }
 
-        public int GetParticipantOnFieldPoint()
+        public void AddPointToField(FieldPoint_DTO fpDTO)
         {
-            throw new NotImplementedException();
+            fDTO.FieldGS.Add(fpDTO);
+        }
+
+
+        public void EmptyField()
+        {
+            fDTO.FieldGS.Clear();
         }
     }
 }

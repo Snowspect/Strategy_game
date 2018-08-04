@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data.Interface_windows
 {
-    interface IPreBattleFieldWindow_Impl<Z,E,T>
+    interface IPreBattleFieldWindow_Impl<S,FP,P>
     {
         void CreatePreField();
         void ShowTeamList();
-        void ShowTeamMemberLists(Z teamName);
+        void ShowTeamMemberLists(S teamName);
         void MoveToSpot();
-        void ClearsImage(E xCoord, E yCoord, Z participant_name);
-        void SetsImage(E xCoord, E yCoord, Z participant_name);
-        List<T> GenerateCoordsList();
+        void ClearsImage(P participant_name);
+        void SetsImage(P participant_name);
+        List<FP> GenerateCoordsList();
     }
 }
