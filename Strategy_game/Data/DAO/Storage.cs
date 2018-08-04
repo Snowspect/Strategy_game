@@ -29,12 +29,12 @@ namespace Strategy_game.Data.DAO
             return StParticipant;
         }
         //Adds field to a specific participant in storage
-        public void AddFieldToParticipant(Participant_DTO pDTO, FieldPoint_DTO fpDTO)
+        public void AddFieldToParticipant(Participant_DTO pDTO, ArenaFieldPoint_DTO fpDTO)
         {
            
         }
 
-        internal void UpdateFieldToParticipant(Participant_DTO pDTO, FieldPoint_DTO fpDTO)
+        internal void UpdateFieldToParticipant(Participant_DTO pDTO, ArenaFieldPoint_DTO fpDTO)
         {
             foreach (var element in StParticipant) if (element.NameGS.Equals(pDTO.NameGS)) element.PointGS = fpDTO;
         }

@@ -10,7 +10,7 @@ namespace Strategy_game.Data.DTO
     /// <summary>
     /// Holds information regarding one individual point.
     /// </summary>
-    public class FieldPoint_DTO : System.Attribute
+    public class ArenaFieldPoint_DTO : System.Attribute
     {
         #region localVariables
         Participant_DTO pDTO = null;
@@ -18,12 +18,12 @@ namespace Strategy_game.Data.DTO
         #endregion
 
         #region constructor
-        public FieldPoint_DTO()
+        public ArenaFieldPoint_DTO()
         {
             XPoint = 0;
             YPoint = 0;
         }
-        public FieldPoint_DTO(int x, int y)
+        public ArenaFieldPoint_DTO(int x, int y)
         {
             YPoint = y;
             XPoint = x;
@@ -35,7 +35,7 @@ namespace Strategy_game.Data.DTO
         public int YPoint { get; set; }
 
         
-        internal FieldStatus_DTO.FieldStatus FieldPointStatusGS { get => FieldPointStatus; set => FieldPointStatus = value; }
+        public FieldStatus_DTO.FieldStatus FieldPointStatusGS { get => FieldPointStatus; set => FieldPointStatus = value; }
         public Participant_DTO PDTO { get => pDTO; set => pDTO = value; }
 
         public override string ToString()

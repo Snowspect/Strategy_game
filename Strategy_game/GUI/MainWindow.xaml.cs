@@ -28,7 +28,7 @@ namespace Strategy_game
         #region localVariables
         Participant_DTO pDTO;
         Participant_Impl pImpl;
-        Game_Logic_Impl gImpl;
+        
         Team_Impl tImpl;
         #endregion
 
@@ -40,7 +40,7 @@ namespace Strategy_game
 
             pImpl = new Participant_Impl();
             tImpl = new Team_Impl();
-            gImpl = new Game_Logic_Impl();
+           
             //Creates an enemy team of 6
             for (int i = 0; i < 6; i++)
             {
@@ -90,17 +90,9 @@ namespace Strategy_game
             }
         }
 
-        private void Fieldbutton_Click(object sender, RoutedEventArgs e)
-        {
-            FieldWindow fw = new FieldWindow(this, this, this.gImpl);
-            fw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            fw.Show();
-            this.Hide();
-        }
-
         private void PreBattlebutton_Click(object sender, RoutedEventArgs e)
         {
-            PreBattleFieldWindow pbw = new PreBattleFieldWindow(this,this, gImpl, pImpl);
+            PreBattleFieldWindow pbw = new PreBattleFieldWindow(this,this, pImpl);
             pbw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             pbw.Show();
             this.Hide();

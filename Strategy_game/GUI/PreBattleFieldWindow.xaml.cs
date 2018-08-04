@@ -17,16 +17,16 @@ namespace Strategy_game.GUI
     /// <summary>
     /// Interaction logic for PreBattleFieldWindow.xaml
     /// </summary>
-    public partial class PreBattleFieldWindow : Window, IPreBattleFieldWindow_Impl<string, int, FieldPoint_DTO>
+    public partial class PreBattleFieldWindow : Window, IPreBattleFieldWindow_Impl<string, ArenaFieldPoint_DTO, Participant_DTO>
     {
         #region localVariables
         MainWindow mw;
         Window w;
         private Boolean exitApp;
         Participant_Impl pImpl = new Participant_Impl();
-        Game_Logic_Impl gli;
+        Arena_Impl ArenaImpl;
         Team_Impl tImpl;
-        FieldWindow fw;
+        ArenaWindow fw;
         NameScope ScopeName = new NameScope();
         int skinCounter = 0;
         #endregion
@@ -36,9 +36,9 @@ namespace Strategy_game.GUI
         {
             InitializeComponent();
         }
-        public PreBattleFieldWindow(MainWindow mw, Window w, Game_Logic_Impl gli, Participant_Impl pImpl)
+        public PreBattleFieldWindow(MainWindow mw, Window w, Participant_Impl pImpl)
         {
-            this.gli = gli;
+            this.ArenaImpl = new Arena_Impl();
             this.pImpl = pImpl;
             this.w = w;
             this.mw = mw;
@@ -46,7 +46,7 @@ namespace Strategy_game.GUI
             Closed += new EventHandler(App_exit); //subscribing to closed event
             exitApp = true; //used for closing app
             InitializeComponent();
-            CreatePreField();
+            CreatePreArena();
             ShowTeamList();
         }
         #endregion
@@ -92,14 +92,14 @@ namespace Strategy_game.GUI
          */
         #region methods
         //Fills created grid
-        public void CreatePreField()
+        public void CreatePreArena()
         {
             UserControl u;
             int j = 6;
             int i = 3;
 
-            PreFieldBattle.Rows = 6;
-            PreFieldBattle.Columns = 3;
+            PreArena.Rows = 6;
+            PreArena.Columns = 3;
 
             //Fills out a uniform grid with pictures of the same slime "currently", needs to fill out with a ground tile 
             for (int h = j; h > 0; h--) //k is 1, increased to 6 
@@ -121,24 +121,24 @@ namespace Strategy_game.GUI
                     b.Child = img;
 
                     u.Content = b;
-                    PreFieldBattle.Children.Add(u);
+                    PreArena.Children.Add(u);
 
                     //fills the pre arena with a full set of points
-                    FieldPoint_DTO fpDTO = new FieldPoint_DTO();
+                    ArenaFieldPoint_DTO fpDTO = new ArenaFieldPoint_DTO();
                     fpDTO.XPoint = g;
                     fpDTO.YPoint = h;
-                    gli.AddPointToField(fpDTO);
+                    ArenaImpl.AddPointToField(fpDTO);
                 }
             }
         }
-        private void ShowTeamList()
+        public void ShowTeamList()
         {
             foreach (var item in tImpl.GetAllyTeamList())
             {
                 TeamListBox.Items.Add(item.Key);
             }
         }
-        private void ShowTeamMemberLists(string team)
+        public void ShowTeamMemberLists(string team)
         {
             foreach (var item in pImpl.GetCurrentList())
             {
@@ -146,47 +146,18 @@ namespace Strategy_game.GUI
             }
         }
 
-        //moves selected player to spot.
-        public void MoveToSpot()
-        {
-            string participantToMove = MemberListBox.SelectedItem.ToString(); //retrieves name
 
-            Participant_DTO pDTO = new Participant_DTO();
-            pDTO = pImpl.GetParticipant(participantToMove);
-
-            #region NotaddedToFieldTwice
-            int x = int.Parse(txtXCoord.Text);
-            int y = int.Parse(txtYCoord.Text);
-
-            //Makes sure participant isn't added to field twice.
-            if (pDTO.PointGS.XPoint == 0 && pDTO.PointGS.YPoint == 0)
-            {
-                pDTO.PointGS.XPoint = x;
-                pDTO.PointGS.YPoint = y;
-                pDTO.ImageGS = Storage.PlayerSkins[skinCounter];
-                skinCounter++;
-                gli.AddParticipantToField(pDTO); //creates a reference binding between active participant and the field it is moving to
-            }
-            else
-            {
-                ClearsImage(pDTO);
-
-                //moves participant in storage and on field list
-                //Updates participantDTO in storage
-                pDTO.PointGS.XPoint = x;
-                pDTO.PointGS.YPoint = y;
-            }
-            SetsImage(pDTO);
-            #endregion
-        }
         public void ClearsImage(Participant_DTO pDTO)
         {
-            string fieldCoord = pDTO.PointGS.ToString();
-            Console.WriteLine(fieldCoord);
-            Image ima = (Image)PreFieldBattle.FindName(fieldCoord); //finds image with x:Name that matches coords 
-            ima.ClearValue(Image.SourceProperty); //clears the image 
-            string image = "UnoccupiedField.png";
-            ima.Source = new BitmapImage(new Uri(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
+            if(pDTO.PointGS.XPoint != 0 && pDTO.PointGS.YPoint != 0)
+            {
+                string fieldCoord = pDTO.PointGS.ToString();
+                Image ima = (Image)PreArena.FindName(fieldCoord); //finds image with x:Name that matches coords 
+                ima.ClearValue(Image.SourceProperty); //clears the image 
+                string image = "UnoccupiedField.png";
+                ima.Source = new BitmapImage(new Uri(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
+            }
+
         }
         public void SetsImage(Participant_DTO pDTO)
         {
@@ -195,46 +166,44 @@ namespace Strategy_game.GUI
             string image = pDTO.ImageGS;
 
             //finds the image field based on the coords
-            string fieldName = "x" + pDTO.PointGS.XPoint + "y" + pDTO.PointGS.YPoint;
+            string arenaFieldName = pDTO.PointGS.ToString();
 
-            Console.WriteLine(PreFieldBattle);
-
-            ima = (Image)ScopeName.FindName(fieldName);
+            ima = (Image)ScopeName.FindName(arenaFieldName);
             ima.Stretch = Stretch.Fill;
             ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
         }
 
         //Generates list of coords for enemy team
-        public List<FieldPoint_DTO> GenerateCoordsList()
+        public List<ArenaFieldPoint_DTO> GenerateCoordsList()
         {
-            List<FieldPoint_DTO> tmpList = new List<FieldPoint_DTO>();
+            List<ArenaFieldPoint_DTO> tmpList = new List<ArenaFieldPoint_DTO>();
             Random rand;
             bool run = true, AllowedAdd = true;
             int counter = 0;
 
             while (run)
             {
-                FieldPoint_DTO fp = new FieldPoint_DTO();
-                rand = new Random(); //DateTime.UtcNow.Millisecond
-                fp.XPoint = rand.Next(4, 6);
-                fp.YPoint = rand.Next(1, 6);
+                ArenaFieldPoint_DTO AFP = new ArenaFieldPoint_DTO();
+                rand = new Random();
+                AFP.XPoint = rand.Next(4, 6);
+                AFP.YPoint = rand.Next(1, 6);
                 if (tmpList.Count != 0)
                 {
                     foreach (var item in tmpList)
                     {
-                        if (item.XPoint == fp.XPoint && item.YPoint == fp.YPoint) //checks to see if the designated coord is already taken.
+                        if (item.XPoint == AFP.XPoint && item.YPoint == AFP.YPoint) //checks to see if the designated coord is already taken.
                         {
                             AllowedAdd = false;
                         }
                     }
-                    if (AllowedAdd == true) { tmpList.Add(fp); counter++; }
+                    if (AllowedAdd == true) { tmpList.Add(AFP); counter++; }
                     if (counter == 6)
                     {
                         run = false;
                     }
                 }
                 AllowedAdd = true;
-                if (counter == 0) { counter++; tmpList.Add(fp); }
+                if (counter == 0) { counter++; tmpList.Add(AFP); }
 
             }
             return tmpList;
@@ -251,16 +220,25 @@ namespace Strategy_game.GUI
         #region buttons
         private void SubmitMove_Button(object sender, RoutedEventArgs e)
         {
-            MoveToSpot();
+            string participantToMove = MemberListBox.SelectedItem.ToString(); //retrieves name
+            Participant_DTO pDTO = pImpl.GetParticipant(participantToMove);
+
+            int x = int.Parse(txtXCoord.Text);
+            int y = int.Parse(txtYCoord.Text);
+            ClearsImage(pDTO);
+
+            pImpl.MoveParticipant(pDTO, x, y);
+
+            SetsImage(pDTO);
         }
 
         private void ClearField_Button(object sender, RoutedEventArgs e)
         {
-            foreach (var item in gli.GetField())
+            foreach (var item in ArenaImpl.GetField())
             {
                 //  ClearsImage(item.Item1.PointGS.XPoint, item.Item1.PointGS.YPoint, item.Item1.NameGS);
             }
-            gli.EmptyField();
+            ArenaImpl.EmptyField();
             skinCounter = 0;
             //TODO Lock team select while one member from a team is placed on the field.
         }
@@ -268,7 +246,7 @@ namespace Strategy_game.GUI
         //configures team to be purple team and adds a skin to each of them
         private void StartBattle_Button(object sender, RoutedEventArgs e)
         {
-            List<FieldPoint_DTO> tmpFPList = new List<FieldPoint_DTO>();
+            List<ArenaFieldPoint_DTO> tmpFPList = new List<ArenaFieldPoint_DTO>();
             tmpFPList = GenerateCoordsList();
 
             if (tmpFPList.Count != 0) //to make sure we don't go to next window.
@@ -280,12 +258,12 @@ namespace Strategy_game.GUI
                 {
                     item.PointGS = tmpFPList[coordCounter];
                     item.ImageGS = Storage.PlayerSkins[skinCounter];
-                    gli.AddParticipantToField(item);
+                    ArenaImpl.AddParticipantToField(item);
                     skinCounter++;
                     coordCounter++;
                 }
                 //test for team name and then color respectively, also here, find random enemy team.
-                foreach (var item in gli.GetField())
+                foreach (var item in ArenaImpl.GetField())
                 {
                     /*   if (item.Item1.TeamGS.Equals(TeamListBox.SelectedValue.ToString()))
                        {
@@ -296,7 +274,7 @@ namespace Strategy_game.GUI
                            item.Item1.TeamColorGS = "blue";
                        }*/
                 }
-                fw = new FieldWindow(this, gli);
+                fw = new ArenaWindow(this, ArenaImpl);
                 fw.Closed += new EventHandler(Reference);
                 fw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 fw.Show();
@@ -311,30 +289,6 @@ namespace Strategy_game.GUI
         //Loads mainwindow
         private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
 
-        void IPreBattleFieldWindow_Impl<string, int, FieldPoint_DTO>.ShowTeamList()
-        {
-            throw new NotImplementedException();
-        }
-
-        void IPreBattleFieldWindow_Impl<string, int, FieldPoint_DTO>.ShowTeamMemberLists(string teamName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ClearsImage(FieldPoint_DTO participant_name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetsImage(FieldPoint_DTO participant_name)
-        {
-            throw new NotImplementedException();
-        }
-
-        List<int> IPreBattleFieldWindow_Impl<string, int, FieldPoint_DTO>.GenerateCoordsList()
-        {
-            throw new NotImplementedException();
-        }
         #endregion
     }
 }

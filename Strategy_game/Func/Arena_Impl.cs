@@ -9,23 +9,23 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Func
 {
-    class Field_Impl : IField_Impl<int, Participant_DTO, FieldPoint_DTO>
+    public class Arena_Impl : IArena_Impl<int, Participant_DTO, ArenaFieldPoint_DTO>
     {
-        Field_DTO fDTO;
+        Arena_DTO fDTO;
         FieldPoint_Impl fImpl;
-        public Field_Impl()
+        public Arena_Impl()
         {
-            fDTO = new Field_DTO();
+            fDTO = new Arena_DTO();
             fImpl = new FieldPoint_Impl();
         }
 
         public void AddParticipantToField(Participant_DTO pDTO)
         {
             pDTO.PointGS = fImpl.GetArenaField(pDTO.PointGS.XPoint, pDTO.PointGS.YPoint); //Adds correct point object to participant
-            pDTO.PointGS.PDTO = pDTO; //Adds participant to field
+            pDTO.PointGS.PDTO = pDTO; //Adds participant to Arena
         }
 
-        public void AddPointToField(FieldPoint_DTO fpDTO)
+        public void AddPointToField(ArenaFieldPoint_DTO fpDTO)
         {
             fDTO.FieldGS.Add(fpDTO);
         }
@@ -34,6 +34,10 @@ namespace Strategy_game.Func
         public void EmptyField()
         {
             fDTO.FieldGS.Clear();
+        }
+        public List<ArenaFieldPoint_DTO> GetField()
+        {
+            return fDTO.FieldGS;
         }
     }
 }

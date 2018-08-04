@@ -12,23 +12,23 @@ namespace Strategy_game.GUI
     /// <summary>
     /// Interaction logic for FieldWindow.xaml
     /// </summary>
-    public partial class FieldWindow : Window, IFieldWindow_Impl<int, string>
+    public partial class ArenaWindow : Window, IFieldWindow_Impl<int, string>
     {
         #region localVariables
         NameScope ScopeName = new NameScope();
         private MainWindow mw;
         private Window w;
         private Boolean exitApp, backtrack;
-        Game_Logic_Impl gli;
+        Arena_Impl arenaImpl;
         #endregion
 
         #region constructors
         //Not used either
-        public FieldWindow() => InitializeComponent();
+        public ArenaWindow() => InitializeComponent();
 
-        public FieldWindow(Window w, Game_Logic_Impl gimpl)
+        public ArenaWindow(Window w, Arena_Impl arenaImpl)
         {
-            gli = gimpl;
+            this.arenaImpl = arenaImpl;
             this.w = w;
 
             //is triggered when coming from prefield window
@@ -44,27 +44,6 @@ namespace Strategy_game.GUI
 
             //Adds prefieldbattle team to list and adds them to their respective fields on the battleField
             InsertParticipantsToField();
-        }
-
-        //this constructor will be removed in the future as it is used as a quick test access from mainwindow
-        public FieldWindow(MainWindow mw, Window w, Game_Logic_Impl gimpl)
-        {
-            gli = gimpl;
-            exitApp = true; //used for closing app 
-            this.mw = mw;
-            this.w = w;
-            Closed += new EventHandler(App_exit); //subscribing to closed event 
-
-            InitializeComponent();
-
-            /* Test Section START */
-
-
-            foreach (var item in gli.GetField())
-            {
-              //  ListOfParticipants.Items.Add(item.NameGS);
-            }
-            /* Test Section END */
         }
         #endregion
 

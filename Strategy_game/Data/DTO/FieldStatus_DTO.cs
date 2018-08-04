@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data.DTO
 {
-    class FieldStatus_DTO
+    public class FieldStatus_DTO
     {
         public enum FieldStatus
         {

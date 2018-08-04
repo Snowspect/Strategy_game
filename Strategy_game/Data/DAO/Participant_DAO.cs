@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data
 {  
-    class Participant_DAO : IParticipant_IntDAO_Generic<Participant_DTO, FieldPoint_DTO, string>
+    class Participant_DAO : IParticipant_IntDAO_Generic<Participant_DTO, ArenaFieldPoint_DTO, string>
     {
         Participant_DTO pDTO;
         Storage st = new Storage();

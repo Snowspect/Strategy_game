@@ -9,14 +9,14 @@ namespace Strategy_game.Func
 {
     class FieldPoint_Impl
     {
-        Field_DTO fDTO;
+        Arena_DTO fDTO;
         public FieldPoint_Impl()
         {
-            fDTO = new Field_DTO();
+            fDTO = new Arena_DTO();
         }
-        public FieldPoint_DTO GetArenaField(int x, int y)
+        public ArenaFieldPoint_DTO GetArenaField(int x, int y)
         {
-            foreach (FieldPoint_DTO fpDTO in fDTO.FieldGS)
+            foreach (ArenaFieldPoint_DTO fpDTO in fDTO.FieldGS)
             {
                 if(fpDTO.XPoint == x && fpDTO.YPoint == y)
                 {

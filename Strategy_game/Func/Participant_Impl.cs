@@ -13,11 +13,12 @@ namespace Strategy_game.Func
     /// <summary>
     /// Handles the implementation logic related to participants
     /// </summary>
-    public class Participant_Impl : IParticipant_IntImpl_Generic<Participant_DTO, FieldPoint_DTO, string>
+    public class Participant_Impl : IParticipant_IntImpl_Generic<Participant_DTO, string>
     {
         #region localVariables
         Participant_DAO pDAO;
         Participant_DTO pDTO;
+        Arena_Impl ArenaImpl;
         Team_DAO team;
         #endregion
 
@@ -27,6 +28,7 @@ namespace Strategy_game.Func
             pDAO = new Participant_DAO();
             pDTO = new Participant_DTO();
             team = new Team_DAO();
+            ArenaImpl = new Arena_Impl();
         }
         #endregion
 
@@ -46,6 +48,14 @@ namespace Strategy_game.Func
             return pDTO;
         }
 
+        public void MoveParticipant(Participant_DTO pDTO, int x, int y)
+        {
+                pDTO.PointGS.XPoint = x;
+                pDTO.PointGS.YPoint = y;
+                pDTO.ImageGS = Storage.PlayerSkins[0];
+                //skinCounter++;
+                ArenaImpl.AddParticipantToField(pDTO); //creates a reference binding between active participant and the field it is moving to
+        }
         //Adds a participant to storage
         public void AddParticipantToList(Participant_DTO pDTO) /*adds it to static layer in storage class*/ { pDAO.AddToStorage(pDTO); }
         

@@ -24,7 +24,7 @@ namespace Strategy_game.Data
             HMoveGS = 1;
             TeamGS = "none";
             ImageGS = "SlimeBlack.png";
-            PointGS = new FieldPoint_DTO();
+            PointGS = new ArenaFieldPoint_DTO();
             PointGS.XPoint = 0;
             PointGS.YPoint = 0;
             StrongAgainstGS = new List<string>();
@@ -42,7 +42,7 @@ namespace Strategy_game.Data
             TeamGS = teamName;
             TeamColorGS = "none";
             ImageGS = "SlimeBlack.png";
-            PointGS = new FieldPoint_DTO();
+            PointGS = new ArenaFieldPoint_DTO();
             StrongAgainstGS = new List<string>();
             StrongAgainstGS.Add(stA1); StrongAgainstGS.Add(stA2);
             WeakAgainstGS = new List<string>();
@@ -63,7 +63,7 @@ namespace Strategy_game.Data
         public List<string> StrongAgainstGS { get; set; }
         public List<string> WeakAgainstGS { get; set; }
         public List<string> ImmuneAgainstGS { get; set; }
-        public FieldPoint_DTO PointGS { get; set; }
+        public ArenaFieldPoint_DTO PointGS { get; set; }
         public string ImageGS { get; set; }
         public string TeamColorGS { get; set; }
         #endregion
