@@ -218,7 +218,7 @@ namespace Strategy_game.GUI
             {
                 FieldPoint_DTO fp = new FieldPoint_DTO();
                 fp.XPoint = rand1.Next(4, 6);
-                fp.YPoint = rand2.Next(0, 6);
+                fp.YPoint = rand2.Next(1, 6);
                 if (tmpList.Count != 0)
                 {
                     foreach (var item in tmpList)

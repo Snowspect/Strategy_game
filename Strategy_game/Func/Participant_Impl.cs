@@ -84,5 +84,9 @@ namespace Strategy_game.Func
         {
             return team.GetEnemyTeamList(enemyTeamName);
         }
+        public void AddEnemyTeam(string enemyTeamName, string enemyTeamImage)
+        {
+            team.CreateEnemyTeam(enemyTeamName, enemyTeamImage);
+        }
     }
 }

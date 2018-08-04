@@ -50,7 +50,8 @@ namespace Strategy_game
                 pImpl.AddToList(pDTO);
             }
 
-            pImpl.AddTeam("blue", "1");
+            pImpl.AddTeam("Blue", "1");
+            pImpl.AddEnemyTeam("Tupac", "1");
             #region skins
             //Adds possible player images.
             Storage.PlayerSkins.Add("pinkPlayer.png");

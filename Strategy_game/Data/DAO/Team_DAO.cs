@@ -54,7 +54,7 @@ namespace Strategy_game.Data.DAO
 
         public void UpdateEnemyTeam(string oldTeamName, string newTeamName, string teamImage)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(); 
         }
 
         public void DeleteEnemyTeam(string teamName)

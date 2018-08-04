@@ -37,7 +37,7 @@ namespace Strategy_game.Data
             NameGS = n;
             VMoveGS = Vm;
             HMoveGS = Hm;
-            TeamGS = "none";
+            TeamGS = teamName;
             TeamColorGS = "none";
             ImageGS = "SlimeBlack.png";
             PointGS = new FieldPoint_DTO();
