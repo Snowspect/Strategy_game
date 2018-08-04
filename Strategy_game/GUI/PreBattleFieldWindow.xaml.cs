@@ -6,6 +6,7 @@ using Strategy_game.Func;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -148,8 +149,6 @@ namespace Strategy_game.GUI
             Participant_DTO t = new Participant_DTO();
             t = pImpl.GetParticipant(participantToMove);
 
-
-            
             #region NotaddedToFieldTwice
             //Makes sure participant isn't added to field twice.
             //That is to the list that will be transfered to the game
@@ -212,14 +211,16 @@ namespace Strategy_game.GUI
         public List<FieldPoint_DTO> GenerateCoordsList()
         {
             List<FieldPoint_DTO> tmpList = new List<FieldPoint_DTO>();
-            Random rand1 = new Random();
-            Random rand2 = new Random();
+            Random rand1;
+            Random rand2;
             bool run = true, AllowedAdd = true;
             int counter = 0;
             
             while (run)
             {
                 FieldPoint_DTO fp = new FieldPoint_DTO();
+                rand1 = new Random(DateTime.UtcNow.Millisecond);
+                rand2 = new Random(DateTime.UtcNow.Millisecond);
                 fp.XPoint = rand1.Next(4, 6);
                 fp.YPoint = rand2.Next(1, 6);
                 if (tmpList.Count != 0)
@@ -239,6 +240,7 @@ namespace Strategy_game.GUI
                 }
                 AllowedAdd = true;
                 if (counter == 0) { counter++; tmpList.Add(fp); }
+                
             }
             return tmpList;
         }
@@ -267,16 +269,21 @@ namespace Strategy_game.GUI
         {
             List<FieldPoint_DTO> tmpFPList = new List<FieldPoint_DTO>();
             tmpFPList = GenerateCoordsList();
-
+            foreach (var item in tmpFPList)
+            {
+                Console.WriteLine("X: " + item.XPoint + "Y: " + item.YPoint);
+            }
             if (tmpFPList.Count != 0) //to make sure we don't go to next window.
             {
                 string enemyTeam = tImpl.GetEnemyTeamName();
-                int coordCounter = 0;
-
+                int coordCounter = 0; //used to give each player a set of coords
+                skinCounter = 0;
                 foreach (var item in tImpl.GetEnemyTeam(enemyTeam))
                 {
                     item.PointGS = tmpFPList[coordCounter];
+                    item.ImageGS = Storage.PlayerSkins[skinCounter];
                     gli.AddParticipantToField(item);
+                    skinCounter++;
                     coordCounter++;
                 }
                 //test for team name and then color respectively, also here, find random enemy team.

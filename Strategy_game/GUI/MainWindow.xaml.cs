@@ -49,6 +49,8 @@ namespace Strategy_game
             }
             //creates ally team and enemy team
             tImpl.AddAllyTeam("Blue", "1");
+            pDTO = new Participant_DTO(100, 4, 4, 2, 2, "Dan", "Blue", "a", "b", "c", "d", "e", "f");
+            pImpl.AddParticipantToList(pDTO);
             tImpl.AddEnemyTeam("Tupac", "1");
 
             //add participantSkins to game
