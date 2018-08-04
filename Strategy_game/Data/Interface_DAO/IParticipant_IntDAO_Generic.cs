@@ -17,7 +17,7 @@ namespace Strategy_game.Data.Interface_DAO
         List<T> GetParticipantList();
 
         //Adds a fieldPoint_DTO to a participant dto.
-        void AddFieldToParticipant(T pDTO, E fpDTO);
+        void UpdateFieldToParticipant(T pDTO, E fpDTO);
 
         //returns a participant from storage
         Participant_DTO GetParticipant_DTODB(S participant_name);

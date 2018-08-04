@@ -31,6 +31,7 @@ namespace Strategy_game.GUI
             gli = gimpl;
             this.w = w;
 
+            //is triggered when coming from prefield window
             if (w is PreBattleFieldWindow)
             {
                 backtrack = true;
@@ -38,23 +39,11 @@ namespace Strategy_game.GUI
 
             InitializeComponent();
 
+            //Creates the playground (currently of 6,6)
             CreatePreField();
 
             //Adds prefieldbattle team to list and adds them to their respective fields on the battleField
-            foreach (var item in gimpl.GetField())
-            {
-                ListOfParticipants.Items.Add(item.Item1.NameGS);
-                Image ima = new Image();
-                //gets image from participant to move.
-                string image = gli.GetImage(item.Item1.NameGS);
-
-                //Gets fieldCoords from participant
-                string fieldName = gli.GetParticipantFieldCoord(item.Item1.NameGS);
-                //find designated spot on field
-                ima = (Image)FieldGrid.FindName(fieldName);
-                ima.Stretch = Stretch.Fill;
-                ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
-            }
+            InsertParticipantsToField();
         }
 
         //this constructor will be removed in the future as it is used as a quick test access from mainwindow
@@ -71,7 +60,7 @@ namespace Strategy_game.GUI
             /* Test Section START */
 
 
-            foreach (var item in gimpl.GetField())
+            foreach (var item in gli.GetField())
             {
                 ListOfParticipants.Items.Add(item.Item1.NameGS);
             }
@@ -79,6 +68,13 @@ namespace Strategy_game.GUI
         }
         #endregion
 
+        /*
+         * App_exit
+         * xCoord_TextChanged
+         * yCoord_TextChanged
+         * ToPreviousWindow
+         * ToMenu
+         */
         #region event triggered methods
         //Triggers when window is closed.
         void App_exit(object sender, EventArgs e) /*App_exit is my own defined method.*/ { if (exitApp == true) { w.Close(); } /*closes mainWindow*/ }
@@ -104,6 +100,9 @@ namespace Strategy_game.GUI
         }
         #endregion
 
+        /*
+         * SubmitMove_Button
+         */
         #region buttons
         //Activates player movement
         private void SubmitMove_Button_Click(object sender, RoutedEventArgs e)
@@ -121,6 +120,13 @@ namespace Strategy_game.GUI
         }
         #endregion
 
+        /*
+         * MoveToSpot
+         * ClearsImage
+         * SetsImage
+         * CreatePreField
+         * InsertParticipantsToField
+         */
         #region Methods
         //Moves participant in fieldDTO List
         //sets and clears images as well
@@ -205,6 +211,23 @@ namespace Strategy_game.GUI
                     FieldGrid.Children.Add(u);
                 }
                 h--;
+            }
+        }
+        public void InsertParticipantsToField()
+        {
+            foreach (var item in gli.GetField())
+            {
+                ListOfParticipants.Items.Add(item.Item1.NameGS);
+                Image ima = new Image();
+                //gets image from participant to move.
+                string image = gli.GetImage(item.Item1.NameGS);
+
+                //Gets fieldCoords from participant
+                string fieldName = gli.GetParticipantFieldCoord(item.Item1.NameGS);
+                //find designated spot on field
+                ima = (Image)FieldGrid.FindName(fieldName);
+                ima.Stretch = Stretch.Fill;
+                ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
             }
         }
         #endregion

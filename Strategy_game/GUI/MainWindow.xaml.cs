@@ -27,31 +27,31 @@ namespace Strategy_game
     {
         #region localVariables
         Participant_DTO pDTO;
-        Participant_DTO pDTO2;
         Participant_Impl pImpl;
         Game_Logic_Impl gImpl;
+        Team_Impl tImpl;
         #endregion
 
         #region constructors
         public MainWindow()
         {
-            Application.Current.MainWindow = this;
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            /**Test Section  START **/
-            
-
 
             pImpl = new Participant_Impl();
+            tImpl = new Team_Impl();
             gImpl = new Game_Logic_Impl();
+            //Creates an enemy team of 6
             for (int i = 0; i < 6; i++)
             {
                 pDTO = new Participant_DTO(100, 4, 4, 2, 2, "Destroyer" + i, "Tupac", "a", "b", "c", "d", "e", "f");
-                pImpl.AddToList(pDTO);
+                pImpl.AddParticipantToList(pDTO);
             }
+            //creates ally team and enemy team
+            tImpl.AddAllyTeam("Blue", "1");
+            tImpl.AddEnemyTeam("Tupac", "1");
 
-            pImpl.AddTeam("Blue", "1");
-            pImpl.AddEnemyTeam("Tupac", "1");
+            //add participantSkins to game
             #region skins
             //Adds possible player images.
             Storage.PlayerSkins.Add("pinkPlayer.png");
@@ -61,39 +61,17 @@ namespace Strategy_game
             Storage.PlayerSkins.Add("orangePlayer.png");
             Storage.PlayerSkins.Add("yellowPlayer.png");
             #endregion
-
-            //sets points difference from 0,0
-            /*            FieldPoint_DTO field = new FieldPoint_DTO();
-                        field.XPoint = 1;
-                        field.YPoint = 6;
-                        pDTO.PointGS = field;
-
-                        //gImpl.AddParticipantToField(pDTO);
-                        field.XPoint = 1; 
-                        pDTO2.PointGS = field;
-                        //gImpl.AddParticipantToField(pDTO2);
-                        List<Tuple<Participant_DTO, FieldPoint_DTO>> tmp = gImpl.GetField();
-
-
-
-                        foreach (var point in tmp)
-                        {
-                            Console.WriteLine(point.Item1.GetToString()); //not a method since it is defined as a property within the DTO /FieldPoint_DTO
-                            //Console.WriteLine(point.Item2.ToString); // prints out the field (but the field is also within the participant
-                            //only prints keys as value (possible use that sql thing to add or retrieve from a list using sql statements)
-                        }
-                        //Console.WriteLine(pImpl.ToString); //prints to screen
-                        pImpl.AddToList(pDTO);
-                        pImpl.AddToList(pDTO2);
-                        */
-            /**Test Section  END **/
         }
         #endregion
 
+        /*
+         * Create_Click (access participantCreateWindow)
+         * GetList (Prints out all participants in console.. for debugging))
+         * Field_Click (access fieldWindow)
+         * PreBattlebutton (access prefield window)
+         */
         #region buttons
-        //Shows add user window and hides mainwindow
-        //Can't close mainwindow as that will bug the app out.
-        private void Create_Click(object sender, RoutedEventArgs e)
+        private void CreateParticipantbutton_Click(object sender, RoutedEventArgs e)
         {
             ParticipantCreateWindow pcw = new ParticipantCreateWindow(this, this); //sends mainWindow to both parameters as we are in mainwindow
             pcw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -102,7 +80,7 @@ namespace Strategy_game
         }
 
         //Prints out user lists in console output.
-        private void GetList_Click(object sender, RoutedEventArgs e)
+        private void GetListbutton_Click(object sender, RoutedEventArgs e)
         {
             foreach (var item in pImpl.GetCurrentList())
             {
@@ -110,7 +88,7 @@ namespace Strategy_game
             }
         }
 
-        private void Field_Click(object sender, RoutedEventArgs e)
+        private void Fieldbutton_Click(object sender, RoutedEventArgs e)
         {
             FieldWindow fw = new FieldWindow(this, this, this.gImpl);
             fw.WindowStartupLocation = WindowStartupLocation.CenterScreen;

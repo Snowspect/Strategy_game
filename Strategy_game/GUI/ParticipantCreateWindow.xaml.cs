@@ -16,13 +16,14 @@ namespace Strategy_game.GUI
     /// <summary>
     /// Interaction logic for ParticipantCreateWindow.xaml
     /// </summary>
-    public partial class ParticipantCreateWindow : Window, ICreateParticipantWindow_Impl
+    public partial class ParticipantCreateWindow : Window, ICreateParticipantWindow_Impl<string, int, Participant_DTO>
     {
         #region localVariables
         private MainWindow mw;
         private Window w;
         private Boolean exitApp;
         Participant_Impl pImpl;
+        Team_Impl tImpl;
         private string TeamImageName;
         #endregion
 
@@ -33,6 +34,7 @@ namespace Strategy_game.GUI
         public ParticipantCreateWindow(MainWindow mw, Window w)
         {
             pImpl = new Participant_Impl();
+            tImpl = new Team_Impl();
             exitApp = true; //used for closing app
             this.w = w;
             this.mw = mw;
@@ -60,13 +62,18 @@ namespace Strategy_game.GUI
                 ImmuneAgainstFirstChoice.Items.Add(item.NameGS);
                 ImmuneAgainstSecondChoice.Items.Add(item.NameGS);
             }
-            foreach (var item in pImpl.GetTeamList())
+            foreach (var item in tImpl.GetAllyTeamList())
             {
                 TeamNameChoice.Items.Add(item.Key);
             }
         }
         #endregion
 
+        /*
+         * App_exit
+         * TeamNameChoice_SelectionChanged (gets the image related to the selected team and displays it)
+         * A bunch of textChanged events that show/hides hints in input boxes
+         */
         #region event triggered methods
         //Triggers when window is closed.
         void App_exit(object sender, EventArgs e) /*App_exit is my own defined method.*/ { if (exitApp == true) { w.Close(); } /*closes mainWindow*/ }
@@ -75,7 +82,7 @@ namespace Strategy_game.GUI
         {
             if(TeamNameChoice.SelectedIndex != -1)
             {
-                string image = pImpl.GetTeamImage(TeamNameChoice.SelectedValue.ToString());
+                string image = tImpl.GetAllyTeamImage(TeamNameChoice.SelectedValue.ToString());
                 displayTeamImage.Stretch = Stretch.Fill;
                 displayTeamImage.Source = (new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image + ".png")));
             }
@@ -94,6 +101,14 @@ namespace Strategy_game.GUI
 
         #endregion
 
+        /*
+         * SubmitParticipant (submits participant to created participants through several checks and procedures)
+         * NewTeamWindow (shows a small window.. normally hidden behind a small picture.. that let's you create a new ally team
+         * SubmitTeam..creates the new ally team
+         * InsertImage (opens dialog window to choose image for team)
+         * ToPreviousWindow
+         * ToMenuWindow
+         */
         #region buttons
         //retrieves content from boxes and adds to a DTO directly. 
         private void SubmitParticipant_Click(object sender, RoutedEventArgs e)
@@ -153,7 +168,7 @@ namespace Strategy_game.GUI
             else
             {
                 string teamName = TeamNameTextBox.Text;
-                pImpl.AddTeam(teamName, TeamImageName);
+                tImpl.AddAllyTeam(teamName, TeamImageName);
                 TeamNameTextBox.Clear();
                 NewTeamImage.ClearValue(Image.SourceProperty); //clears the image 
                 TeamNameChoice.Items.Add(teamName);
@@ -207,6 +222,11 @@ namespace Strategy_game.GUI
         private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
         #endregion
 
+        /*
+         * ParseInts (parses a list of strings to a list of ints)
+         * RetrieveInput (Gets input from all relevant fields and clears fields
+         * ClearFields (clear input fields)
+         */
         #region methods
         //Parsings a list of strings to a list of ints, and throws exceptions if failed to do so
         public List<int> ParseInts(List<string> tp)
@@ -241,7 +261,7 @@ namespace Strategy_game.GUI
         }
 
         //Retrieves input and listbox fields from the create window
-        private void RetrieveInput(Participant_DTO pDTO, List<int> parsedTP)
+        public void RetrieveInput(Participant_DTO pDTO, List<int> parsedTP)
         {
             pDTO.NameGS = NameTextBox.Text;
             pDTO.HealthGS = parsedTP[0];
@@ -256,7 +276,7 @@ namespace Strategy_game.GUI
             pDTO.WeakAgainstGS.Add(WeakAgainstSecondChoice.SelectedItem.ToString());
             pDTO.ImmuneAgainstGS.Add(ImmuneAgainstFirstChoice.SelectedItem.ToString());
             pDTO.ImmuneAgainstGS.Add(ImmuneAgainstSecondChoice.SelectedItem.ToString());
-            pImpl.AddToList(pDTO);
+            pImpl.AddParticipantToList(pDTO);
             ClearFields();
         }
 

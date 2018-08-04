@@ -12,7 +12,7 @@ namespace Strategy_game.Data.Interface_Impl
         /// Replace T with desired parameter
         /// Use to access DAO in data layer (that then will add to storage
         /// </summary>
-        void AddToList(T pDTO);
+        void AddParticipantToList(T pDTO);
         /// <summary>
         /// Use to access DAO and data layer that will then retrieve from storage
         /// </summary>
@@ -36,9 +36,5 @@ namespace Strategy_game.Data.Interface_Impl
         T AddImmuneAgainst(Z participant_name , T pDTO);
         T RemoveImmuneAgainst(Z participant_name , T pDTO);
         Z GetImmuneAgainst();
-
-        void AddTeam(Z teamName, Z imageName);
-
-        Dictionary<Z, Z> GetTeamList();
     }
 }

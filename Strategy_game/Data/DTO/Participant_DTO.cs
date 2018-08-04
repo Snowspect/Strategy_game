@@ -12,6 +12,7 @@ namespace Strategy_game.Data
     /// </summary>
     public class Participant_DTO
     {
+        #region constructors
         public Participant_DTO()
         {
             HealthGS = 1;
@@ -50,7 +51,9 @@ namespace Strategy_game.Data
             ImmuneAgainstGS = new List<string>();
             ImmuneAgainstGS.Add(imA1); ImmuneAgainstGS.Add(imA2);
         }
+        #endregion
 
+        #region property accessers
         public int VMoveGS { get; set; }
         public string NameGS { get; set; }
         public int OffenceGS { get; set; }
@@ -64,6 +67,7 @@ namespace Strategy_game.Data
         public FieldPoint_DTO PointGS { get; set; }
         public string ImageGS { get; set; }
         public string TeamColorGS { get; set; }
+        #endregion
 
         public string GetToString()
         {

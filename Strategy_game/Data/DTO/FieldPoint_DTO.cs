@@ -12,8 +12,7 @@ namespace Strategy_game.Data.DTO
     public class FieldPoint_DTO : System.Attribute
     {
         #region localVariables
-        public int XPoint { get; set; }
-        public int YPoint { get; set; }
+
         private string fieldPointStatus = FieldStatus.notOccupied.ToString();
         public enum FieldStatus
         {
@@ -26,6 +25,8 @@ namespace Strategy_game.Data.DTO
         #endregion
 
         #region propertyAccess
+        public int XPoint { get; set; }
+        public int YPoint { get; set; }
         public FieldPoint_DTO()
         {
             XPoint = 0;

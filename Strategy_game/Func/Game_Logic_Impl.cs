@@ -12,15 +12,28 @@ namespace Strategy_game.Func
 {
     public class Game_Logic_Impl : IGameLogic_Impl<Participant_DTO, FieldPoint_DTO, int, string>
     {
+        #region localVariables
         Field_DTO field;
         Participant_Impl pImpl;
         FieldPoint_DTO fp_DTO;
+        #endregion
+
+        #region constructor
         public Game_Logic_Impl()
         { 
             pImpl = new Participant_Impl(); 
             field = new Field_DTO(); 
         }
+        #endregion
 
+        /*
+         * AddParticipantToField
+         * GetField
+         * MoveParticipant
+         * GetImage (asociated with participant)
+         * GetParticipantFieldCoord
+         */
+        #region methods
         // Adds a participant to the field
         public void AddParticipantToField(Participant_DTO pDTO)
         { 
@@ -60,10 +73,6 @@ namespace Strategy_game.Func
             }
             return null;
         }
-
-        public void AddTeam(string teamName, string imageName)
-        {
-
-        }
+        #endregion
     } 
 } 

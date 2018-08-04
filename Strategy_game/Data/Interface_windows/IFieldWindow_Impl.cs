@@ -5,5 +5,7 @@
         void MoveToSpot();
         void ClearsImage(S xCoord, S yCoord, Z participant_name);
         void SetsImage(S xCoord, S yCoord, Z participant_name);
+        void CreatePreField();
+        void InsertParticipantsToField();
     }
 }

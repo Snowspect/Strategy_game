@@ -13,17 +13,32 @@ namespace Strategy_game.Func
     /// <summary>
     /// Handles the implementation logic related to participants
     /// </summary>
-    public class Participant_Impl : IParticipant_IntImpl_Generic<Participant_DTO, FieldPoint_DTO, string> //generic
+    public class Participant_Impl : IParticipant_IntImpl_Generic<Participant_DTO, FieldPoint_DTO, string>
     {
+        #region localVariables
         Participant_DAO pDAO;
         Participant_DTO pDTO;
         Team_DAO team;
+        #endregion
+
+        #region constructor
         public Participant_Impl()
         {
             pDAO = new Participant_DAO();
             pDTO = new Participant_DTO();
             team = new Team_DAO();
         }
+        #endregion
+
+
+        /*
+         * GetParticipant
+         * AddParticipantToList
+         * UpdateFieldToParticipant
+         * GetCurrentList
+         * GetImageFromParticipant
+         */
+        #region methods
         //returns a participant based on a name
         public Participant_DTO GetParticipant(string participant_name)
         {
@@ -33,12 +48,12 @@ namespace Strategy_game.Func
         }
 
         //Adds a participant to storage
-        public void AddToList(Participant_DTO pDTO) /*adds it to static layer in storage class*/ { pDAO.AddToStorage(pDTO); }
+        public void AddParticipantToList(Participant_DTO pDTO) /*adds it to static layer in storage class*/ { pDAO.AddToStorage(pDTO); }
         
         //adds a field to a participant
         public void UpdateFieldToParticipant(FieldPoint_DTO fpDTO, Participant_DTO pDTO) {
             /*Access DTO in database, add field information*/
-            pDAO.AddFieldToParticipant(pDTO, fpDTO); }
+            pDAO.UpdateFieldToParticipant(pDTO, fpDTO); }
 
         //returns current Participant DTO
         public List<Participant_DTO> GetCurrentList() => pDAO.GetParticipantList(); //gets from static layer in st
@@ -49,6 +64,7 @@ namespace Strategy_game.Func
             return pDAO.GetParticipant_DTODB(participant_name).ImageGS;
         }
 
+        #region subregion - wkA,stA,immA
         //Has the role of inserting into the participant and in that case also contacting database and changing participant information.
         //also returns participant directly to call so the participant is ready for battle directly (could even be with a buff that lets you change that attribute)
         public Participant_DTO AddStrongAgainst(string pName_StAgainst, Participant_DTO pDTO) { throw new NotImplementedException(); }
@@ -62,31 +78,7 @@ namespace Strategy_game.Func
         public Participant_DTO AddImmuneAgainst(string pNameImmAgainast, Participant_DTO pDTO) { throw new NotImplementedException(); }
         public Participant_DTO RemoveImmuneAgainst(string pNameImmAgainast, Participant_DTO pDTO) { throw new NotImplementedException(); }
         public string GetImmuneAgainst() { throw new NotImplementedException(); }
-
-        public void AddTeam(string teamName, string imageName)
-        {
-            team.CreateTeam(teamName, imageName);
-        }
-
-        public Dictionary<string, string> GetTeamList()
-        {
-            return team.ReadTeams();
-        }
-        public string GetTeamImage(string teamName)
-        {
-            return team.GetTeamImage(teamName);
-        }
-        public string GetEnemyTeamName()
-        {
-            return team.GetEnemyTeam();
-        }
-        public List<Participant_DTO> GetEnemyTeam(string enemyTeamName)
-        {
-            return team.GetEnemyTeamList(enemyTeamName);
-        }
-        public void AddEnemyTeam(string enemyTeamName, string enemyTeamImage)
-        {
-            team.CreateEnemyTeam(enemyTeamName, enemyTeamImage);
-        }
+        #endregion
+        #endregion 
     }
 }

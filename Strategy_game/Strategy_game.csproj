@@ -77,6 +77,7 @@
     <Compile Include="Data\Interface_Impl\IField_Impl.cs" />
     <Compile Include="Data\Interface_Impl\IGameLogic_Impl.cs" />
     <Compile Include="Data\Interface_Impl\IParticipant_IntImpl_Generic.cs" />
+    <Compile Include="Data\Interface_Impl\ITeam_Impl.cs" />
     <Compile Include="Data\Interface_windows\ICreateParticipantWindow_Impl.cs" />
     <Compile Include="Data\Interface_windows\IFieldWindow_Impl.cs" />
     <Compile Include="Data\Interface_windows\IPreBattleFieldWindow_Impl.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Func\Field_Impl.cs" />
     <Compile Include="Func\Game_Logic_Impl.cs" />
     <Compile Include="Func\Participant_Impl.cs" />
+    <Compile Include="Func\Team_Impl.cs" />
     <Compile Include="GUI\FieldWindow.xaml.cs">
       <DependentUpon>FieldWindow.xaml</DependentUpon>
     </Compile>

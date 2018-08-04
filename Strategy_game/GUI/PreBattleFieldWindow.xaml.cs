@@ -1,6 +1,7 @@
 ﻿using Strategy_game.Data;
 using Strategy_game.Data.DAO;
 using Strategy_game.Data.DTO;
+using Strategy_game.Data.Interface_windows;
 using Strategy_game.Func;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Strategy_game.GUI
     /// <summary>
     /// Interaction logic for PreBattleFieldWindow.xaml
     /// </summary>
-    public partial class PreBattleFieldWindow : Window
+    public partial class PreBattleFieldWindow : Window, IPreBattleFieldWindow_Impl<string, int, FieldPoint_DTO>
     {
         #region localVariables
         MainWindow mw;
@@ -23,6 +24,7 @@ namespace Strategy_game.GUI
         private Boolean exitApp;
         Participant_Impl pImpl = new Participant_Impl();
         Game_Logic_Impl gli;
+        Team_Impl tImpl;
         FieldWindow fw;
         NameScope ScopeName = new NameScope();
         int skinCounter = 0;
@@ -39,7 +41,7 @@ namespace Strategy_game.GUI
             this.pImpl = pImpl;
             this.w = w;
             this.mw = mw;
-     
+            tImpl = new Team_Impl();
             Closed += new EventHandler(App_exit); //subscribing to closed event
             exitApp = true; //used for closing app
             InitializeComponent();
@@ -65,7 +67,7 @@ namespace Strategy_game.GUI
         {
             string team = TeamListBox.SelectedItem.ToString();
             ShowTeamMemberLists(team);
-            string image = pImpl.GetTeamImage(TeamListBox.SelectedValue.ToString());
+            string image = tImpl.GetAllyTeamImage(TeamListBox.SelectedValue.ToString());
             TeamImage.Stretch = Stretch.Fill;
             TeamImage.Source = (new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image + ".png")));
 
@@ -125,7 +127,7 @@ namespace Strategy_game.GUI
         }
         private void ShowTeamList()
         {
-            foreach (var item in pImpl.GetTeamList())
+            foreach (var item in tImpl.GetAllyTeamList())
             {
                 TeamListBox.Items.Add(item.Key);
             } 
@@ -146,11 +148,11 @@ namespace Strategy_game.GUI
             Participant_DTO t = new Participant_DTO();
             t = pImpl.GetParticipant(participantToMove);
 
-            t.ImageGS = Storage.PlayerSkins[skinCounter];
-            skinCounter++;
+
             
             #region NotaddedToFieldTwice
             //Makes sure participant isn't added to field twice.
+            //That is to the list that will be transfered to the game
             bool addOrNot = true;
             foreach (var item in gli.GetField())
             {
@@ -161,7 +163,8 @@ namespace Strategy_game.GUI
             }
             if (addOrNot == true)
             {
-
+                t.ImageGS = Storage.PlayerSkins[skinCounter];
+                skinCounter++;
                 gli.AddParticipantToField(t);
             }
             #endregion
@@ -267,10 +270,10 @@ namespace Strategy_game.GUI
 
             if (tmpFPList.Count != 0) //to make sure we don't go to next window.
             {
-                string enemyTeam = pImpl.GetEnemyTeamName();
+                string enemyTeam = tImpl.GetEnemyTeamName();
                 int coordCounter = 0;
 
-                foreach (var item in pImpl.GetEnemyTeam(enemyTeam))
+                foreach (var item in tImpl.GetEnemyTeam(enemyTeam))
                 {
                     item.PointGS = tmpFPList[coordCounter];
                     gli.AddParticipantToField(item);
@@ -302,6 +305,16 @@ namespace Strategy_game.GUI
 
         //Loads mainwindow
         private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
+
+        void IPreBattleFieldWindow_Impl<string, int, FieldPoint_DTO>.ShowTeamList()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IPreBattleFieldWindow_Impl<string, int, FieldPoint_DTO>.ShowTeamMemberLists(string teamName)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
     }
