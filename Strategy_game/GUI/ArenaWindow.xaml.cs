@@ -1,6 +1,9 @@
-﻿using Strategy_game.Data.Interface_windows;
+﻿using Strategy_game.Data;
+using Strategy_game.Data.DTO;
+using Strategy_game.Data.Interface_windows;
 using Strategy_game.Func;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +23,8 @@ namespace Strategy_game.GUI
         private Window w;
         private Boolean exitApp, backtrack;
         Arena_Impl arenaImpl;
+        Participant_Impl pImpl;
+        FieldPoint_Impl fPImpl;
         #endregion
 
         #region constructors
@@ -28,6 +33,8 @@ namespace Strategy_game.GUI
 
         public ArenaWindow(Window w, Arena_Impl arenaImpl)
         {
+            pImpl = new Participant_Impl();
+            fPImpl = new FieldPoint_Impl();
             this.arenaImpl = arenaImpl;
             this.w = w;
 
@@ -39,8 +46,9 @@ namespace Strategy_game.GUI
 
             InitializeComponent();
 
+            //ALREADY CREATED ARENA IN PREARENA
             //Creates the playground (currently of 6,6)
-            CreatePreField();
+            //CreateArena();
 
             //Adds prefieldbattle team to list and adds them to their respective fields on the battleField
             InsertParticipantsToField();
@@ -113,52 +121,63 @@ namespace Strategy_game.GUI
         {
             int x = int.Parse(xCoord.Text);
             int y = int.Parse(yCoord.Text);
-            string participantToMove = ListOfParticipants.SelectedItem.ToString(); //retrieves name 
-
-            ClearsImage(x, y, participantToMove);
 
             //moves participant in storage and on field list 
-            //Updates participantDTO in storage 
-            //gli.MoveParticipant(x, y, participantToMove);
+            //Updates participantDTO in storage
+            string participantToMove = ListOfParticipants.SelectedItem.ToString(); //retrieves name 
+            Participant_DTO pDTO = pImpl.GetParticipant(participantToMove);
 
-            SetsImage(x, y, participantToMove);
+            /** MOVING **/
+            bool run = fPImpl.CheckField(x, y); //checks the field we are trying to go to
+
+            if (run)
+            {
+                ClearsImage(pDTO); //removes image
+
+                //updates the point we are leaving.
+                fPImpl.UpdateLeavingArenaFieldPoint(pDTO, "actualArena");  //Updating the fieldstatus since we are leaving to another field.
+
+                pImpl.MoveParticipant(pDTO, x, y);
+
+                fPImpl.UpdateMovingToArenaFieldStatus(x, y);
+
+                SetsImage(pDTO);
+            }
+            /** MOVING ENDS **/
         }
-        public void ClearsImage(int xCoord, int yCoord, string participant_name)
+        public void ClearsImage(Participant_DTO pDTO)
         {
-            //string fieldCoord = gli.GetParticipantFieldCoord(participant_name); //retrieves current Coords 
-
             Image ima = new Image();
-            //ima = (Image)FieldGrid.FindName(fieldCoord); //finds image with x:Name that matches coords 
+            ima = (Image)FieldGrid.FindName(pDTO.PointGS.ToString()); //finds image with x:Name that matches coords 
             ima.ClearValue(Image.SourceProperty); //clears the image 
                                                   
             //do a if check to see what team they are on and then color the field specifically after that.
-            Participant_Impl t = new Participant_Impl();
-            string teamColor = t.GetParticipant(participant_name).TeamColorGS;
-            Console.WriteLine(teamColor);
+            string teamColor = pDTO.TeamColorGS;
             if (teamColor == "purple")
             {
                 string image = "purpleField.png";
                 ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
+
             }
-            else if(teamColor == "blue")
+            else if(teamColor == "Blue")
             {
                 string image = "blueField.png";
                 ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
             }
         }
-        public void SetsImage(int xCoord, int yCoord, string participant_name)
+        public void SetsImage(Participant_DTO pDTO)
         {
             Image ima = new Image();
             //gets image from participant to move.
-            //string image = gli.GetImage(participant_name);
+            string image = pDTO.ImageGS;
 
             //finds the image field based on the coords
-            string fieldName = "x" + xCoord + "y" + yCoord;
+            string fieldName = pDTO.PointGS.ToString();
             ima = (Image)FieldGrid.FindName(fieldName);
             ima.Stretch = Stretch.Fill;
-            //ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
+            ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
         }
-        public void CreatePreField()
+        public void CreateArena()
         {
             UserControl u;
             int j = 6;
@@ -194,20 +213,41 @@ namespace Strategy_game.GUI
         }
         public void InsertParticipantsToField()
         {
-         /*   foreach (var item in gli.GetField())
+            foreach (ArenaFieldPoint_DTO AFP_DTO in arenaImpl.GetField())
             {
-                ListOfParticipants.Items.Add(item.NameGS);
-                Image ima = new Image();
-                //gets image from participant to move.
-                string image = gli.GetImage(item.NameGS);
+                if(AFP_DTO.PDTO != null)
+                {
+                    //this should be the line when the enemy can move itself
+                    //if(AFP_DTO.PDTO.TeamGS.Equals("purple")) ListOfParticipants.Items.Add(AFP_DTO.PDTO.NameGS);
+                    ListOfParticipants.Items.Add(AFP_DTO.PDTO.NameGS);
 
-                //Gets fieldCoords from participant
-                string fieldName = gli.GetParticipantFieldCoord(item.NameGS);
-                //find designated spot on field
-                ima = (Image)FieldGrid.FindName(fieldName);
-                ima.Stretch = Stretch.Fill;
-                ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
-            }*/
+                    //gets image from participant to move.
+                    string image = AFP_DTO.PDTO.ImageGS;
+
+                    //Gets fieldCoords from AFP_DTO that has a participant
+                    string fieldName = AFP_DTO.ToString();
+                    //find designated spot on field
+                    Image ima = (Image)FieldGrid.FindName(fieldName);
+                    ima.Stretch = Stretch.Fill;
+                    ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
+                }
+            }
+        }
+
+
+
+        public void ClearsImage(int xCoord, int yCoord, string participant_name)
+        {
+            throw new NotImplementedException();
+        }
+        public void SetsImage(int xCoord, int yCoord, string participant_name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreateArena()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

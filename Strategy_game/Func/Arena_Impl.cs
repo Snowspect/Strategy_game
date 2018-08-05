@@ -6,16 +6,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Strategy_game.Func
 {
     public class Arena_Impl : IArena_Impl<int, Participant_DTO, ArenaFieldPoint_DTO>
     {
-        Arena_DTO fDTO;
+        
         FieldPoint_Impl fImpl;
         public Arena_Impl()
         {
-            fDTO = new Arena_DTO();
             fImpl = new FieldPoint_Impl();
         }
 
@@ -27,17 +27,38 @@ namespace Strategy_game.Func
 
         public void AddPointToField(ArenaFieldPoint_DTO fpDTO)
         {
-            fDTO.FieldGS.Add(fpDTO);
+            Arena_DTO.field.Add(fpDTO);
         }
+
+        public void CreateFullArena()
+        {
+            int height = 6;
+            int length = 6;
+
+            for (int y = height; y > 0; y--) //x is 6, decreased to 1
+            {
+                for (int x = 1; x < length + 1; x++) // y is 1, increased to 6 
+                {
+                    ArenaFieldPoint_DTO AFP_DTO = new ArenaFieldPoint_DTO();
+                    AFP_DTO.XPoint = x;
+                    AFP_DTO.YPoint = y;
+                    AFP_DTO.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.notOccupied;
+                    AddPointToField(AFP_DTO);
+                }
+            }
+            Arena_Impl tmp1 = new Arena_Impl();
+            tmp1.GetField();
+        }
+
 
 
         public void EmptyField()
         {
-            fDTO.FieldGS.Clear();
+            Arena_DTO.field.Clear();
         }
         public List<ArenaFieldPoint_DTO> GetField()
         {
-            return fDTO.FieldGS;
+            return Arena_DTO.field;
         }
     }
 }

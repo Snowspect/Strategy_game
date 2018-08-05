@@ -29,6 +29,7 @@ namespace Strategy_game.GUI
         ArenaWindow fw;
         NameScope ScopeName = new NameScope();
         int skinCounter = 0;
+        FieldPoint_Impl fPImpl;
         #endregion
 
         #region constructors
@@ -39,6 +40,7 @@ namespace Strategy_game.GUI
         public PreBattleFieldWindow(MainWindow mw, Window w, Participant_Impl pImpl)
         {
             this.ArenaImpl = new Arena_Impl();
+            fPImpl = new FieldPoint_Impl();
             this.pImpl = pImpl;
             this.w = w;
             this.mw = mw;
@@ -122,14 +124,10 @@ namespace Strategy_game.GUI
 
                     u.Content = b;
                     PreArena.Children.Add(u);
-
-                    //fills the pre arena with a full set of points
-                    ArenaFieldPoint_DTO fpDTO = new ArenaFieldPoint_DTO();
-                    fpDTO.XPoint = g;
-                    fpDTO.YPoint = h;
-                    ArenaImpl.AddPointToField(fpDTO);
                 }
             }
+
+            ArenaImpl.CreateFullArena();
         }
         public void ShowTeamList()
         {
@@ -156,8 +154,8 @@ namespace Strategy_game.GUI
                 ima.ClearValue(Image.SourceProperty); //clears the image 
                 string image = "UnoccupiedField.png";
                 ima.Source = new BitmapImage(new Uri(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
-            }
 
+            }
         }
         public void SetsImage(Participant_DTO pDTO)
         {
@@ -222,14 +220,28 @@ namespace Strategy_game.GUI
         {
             string participantToMove = MemberListBox.SelectedItem.ToString(); //retrieves name
             Participant_DTO pDTO = pImpl.GetParticipant(participantToMove);
-
+            pDTO.TeamColorGS = "purple";
             int x = int.Parse(txtXCoord.Text);
             int y = int.Parse(txtYCoord.Text);
-            ClearsImage(pDTO);
 
-            pImpl.MoveParticipant(pDTO, x, y);
 
-            SetsImage(pDTO);
+            /** MOVING **/
+            bool run = fPImpl.CheckField(x, y); //checks the field we are trying to go to
+
+            if(run)
+            {
+                ClearsImage(pDTO); //removes image
+
+                //updates the point we are leaving.
+                fPImpl.UpdateLeavingArenaFieldPoint(pDTO, "preArena");  //Updating the fieldstatus since we are leaving to another field.
+
+                pImpl.MoveParticipant(pDTO, x, y);
+
+                fPImpl.UpdateMovingToArenaFieldStatus(x, y);
+
+                SetsImage(pDTO);
+            }
+            /** MOVING ENDS **/
         }
 
         private void ClearField_Button(object sender, RoutedEventArgs e)
@@ -247,7 +259,7 @@ namespace Strategy_game.GUI
         private void StartBattle_Button(object sender, RoutedEventArgs e)
         {
             List<ArenaFieldPoint_DTO> tmpFPList = new List<ArenaFieldPoint_DTO>();
-            tmpFPList = GenerateCoordsList();
+            tmpFPList = GenerateCoordsList(); //should still work
 
             if (tmpFPList.Count != 0) //to make sure we don't go to next window.
             {
@@ -263,16 +275,21 @@ namespace Strategy_game.GUI
                     coordCounter++;
                 }
                 //test for team name and then color respectively, also here, find random enemy team.
-                foreach (var item in ArenaImpl.GetField())
-                {
-                    /*   if (item.Item1.TeamGS.Equals(TeamListBox.SelectedValue.ToString()))
-                       {
-                           item.Item1.TeamColorGS = "purple";
-                       }
-                       else
-                       {
-                           item.Item1.TeamColorGS = "blue";
-                       }*/
+                List<ArenaFieldPoint_DTO> tmp = ArenaImpl.GetField(); //DEBUGGING
+                foreach (ArenaFieldPoint_DTO AFP_DTO in ArenaImpl.GetField())
+                { 
+                    if(AFP_DTO.PDTO != null)
+                    {
+                        if (AFP_DTO.PDTO.TeamGS.Equals(TeamListBox.SelectedValue.ToString()))
+                        {
+                            AFP_DTO.PDTO.TeamColorGS = "purple";
+                        }
+                        else
+                        {
+                            AFP_DTO.PDTO.TeamColorGS = "Blue";
+                            AFP_DTO.PDTO.PointGS.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.enemyOccupied;
+                        }
+                    }
                 }
                 fw = new ArenaWindow(this, ArenaImpl);
                 fw.Closed += new EventHandler(Reference);

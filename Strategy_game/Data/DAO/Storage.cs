@@ -12,6 +12,7 @@ namespace Strategy_game.Data.DAO
 {
     class Storage
     {
+        public static int skinCounter = 0;
         public static List<Participant_DTO> StParticipant = new List<Participant_DTO>();
         public static Dictionary<string, string> teams = new Dictionary<string, string>();
         private static List<string> playerSkins = new List<string>();

@@ -19,6 +19,7 @@ namespace Strategy_game.Func
         Participant_DAO pDAO;
         Participant_DTO pDTO;
         Arena_Impl ArenaImpl;
+        FieldPoint_Impl fPImpl;
         Team_DAO team;
         #endregion
 
@@ -29,6 +30,7 @@ namespace Strategy_game.Func
             pDTO = new Participant_DTO();
             team = new Team_DAO();
             ArenaImpl = new Arena_Impl();
+            fPImpl = new FieldPoint_Impl();
         }
         #endregion
 
@@ -50,11 +52,19 @@ namespace Strategy_game.Func
 
         public void MoveParticipant(Participant_DTO pDTO, int x, int y)
         {
-                pDTO.PointGS.XPoint = x;
-                pDTO.PointGS.YPoint = y;
-                pDTO.ImageGS = Storage.PlayerSkins[0];
-                //skinCounter++;
-                ArenaImpl.AddParticipantToField(pDTO); //creates a reference binding between active participant and the field it is moving to
+            pDTO.PointGS.XPoint = x;
+            pDTO.PointGS.YPoint = y;
+            AssignPicture(pDTO);
+            ArenaImpl.AddParticipantToField(pDTO); //creates a reference binding between active participant and the field it is moving to
+        }
+
+        public void AssignPicture(Participant_DTO pDTO)
+        {
+            if (pDTO.ImageGS.Equals("NoPicture"))
+            {
+                pDTO.ImageGS = Storage.PlayerSkins[Storage.skinCounter];
+                Storage.skinCounter++;
+            }
         }
         //Adds a participant to storage
         public void AddParticipantToList(Participant_DTO pDTO) /*adds it to static layer in storage class*/ { pDAO.AddToStorage(pDTO); }

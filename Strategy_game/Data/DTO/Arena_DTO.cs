@@ -11,12 +11,12 @@ namespace Strategy_game.Data.DTO
     /// </summary>
     public class Arena_DTO
     {
-        private static List<ArenaFieldPoint_DTO> field;
+        public static List<ArenaFieldPoint_DTO> field = new List<ArenaFieldPoint_DTO>();
         private static List<Participant_DTO> participantsInField;
 
         public Arena_DTO()
         {
-            FieldGS = new List<ArenaFieldPoint_DTO>();
+//            FieldGS = new List<ArenaFieldPoint_DTO>();
         }
 
         #region property accessers

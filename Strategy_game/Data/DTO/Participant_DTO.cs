@@ -23,7 +23,7 @@ namespace Strategy_game.Data
             VMoveGS = 1;
             HMoveGS = 1;
             TeamGS = "none";
-            ImageGS = "SlimeBlack.png";
+            ImageGS = "NoPicture";
             PointGS = new ArenaFieldPoint_DTO();
             PointGS.XPoint = 0;
             PointGS.YPoint = 0;
@@ -41,7 +41,7 @@ namespace Strategy_game.Data
             HMoveGS = Hm;
             TeamGS = teamName;
             TeamColorGS = "none";
-            ImageGS = "SlimeBlack.png";
+            ImageGS = "NoPicture";
             PointGS = new ArenaFieldPoint_DTO();
             StrongAgainstGS = new List<string>();
             StrongAgainstGS.Add(stA1); StrongAgainstGS.Add(stA2);

@@ -69,7 +69,7 @@
     <Compile Include="Data\DAO\Participant_DAO.cs" />
     <Compile Include="Data\DAO\Storage.cs" />
     <Compile Include="Data\DAO\Team_DAO.cs" />
-    <Compile Include="Data\DTO\ArenaField_DTO.cs" />
+    <Compile Include="Data\DTO\ArenaFieldPoint_DTO.cs" />
     <Compile Include="Data\DTO\FieldStatus_DTO.cs" />
     <Compile Include="Data\DTO\Arena_DTO.cs" />
     <Compile Include="Data\DTO\Participant_DTO.cs" />
@@ -128,6 +128,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

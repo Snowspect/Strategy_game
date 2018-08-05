@@ -1,9 +1,11 @@
-﻿using Strategy_game.Data.DTO;
+﻿using Strategy_game.Data;
+using Strategy_game.Data.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Strategy_game.Func
 {
@@ -24,6 +26,108 @@ namespace Strategy_game.Func
                 }
             }
             return null;
+        }
+
+        //Takes two coords, gets the field to those coords
+        //checks if it has participant object pointed at it
+        //removes active participant by replacing with new default one.
+        //When you leave a field, overwrite its status so that you own it.
+        public void UpdateLeavingArenaFieldPoint(Participant_DTO pDTO, string arena)
+        {
+            int xComingFrom = pDTO.PointGS.XPoint;
+            int yComingFrom = pDTO.PointGS.YPoint;
+            if (xComingFrom != 0 && yComingFrom != 0)
+            {
+                if (!arena.Equals("preArena"))// this is for the actual arena fight, so we actually own fields we have left.
+                {
+                    ArenaFieldPoint_DTO AFP_DTO = GetArenaField(xComingFrom, yComingFrom);
+                    if (AFP_DTO.PDTO != null)
+                    {
+                        if (AFP_DTO.PDTO.TeamColorGS.Equals("Blue"))
+                        {
+                            AFP_DTO.PDTO = null;
+                            AFP_DTO.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.enemyOwned;
+                            MessageBoxResult res = MessageBox.Show("The enemy now owns this field");
+                        }
+                        else if (AFP_DTO.PDTO.TeamColorGS.Equals("purple"))
+                        {
+                            AFP_DTO.PDTO = null;
+                            AFP_DTO.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.selfOwned;
+                            MessageBoxResult res = MessageBox.Show("You now owns this field");
+                        }
+                    }
+                }
+                else //So we don't occupy fields in the preArena window, but simply move our players around
+                {
+                    ArenaFieldPoint_DTO AFP_DTO = GetArenaField(xComingFrom, yComingFrom);
+                    if (AFP_DTO.PDTO != null)
+                    {
+                        AFP_DTO.PDTO = null;
+                        AFP_DTO.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.notOccupied;
+                    }
+                }
+            }
+        }
+
+        //When you move to a field, overwrite it's status so that you occupy it
+        public void UpdateMovingToArenaFieldStatus(int xMovingTo, int yMovingTo)
+        {
+            ArenaFieldPoint_DTO AFP_DTO = GetArenaField(xMovingTo, yMovingTo);
+            if(AFP_DTO.PDTO != null)
+            {
+                if (AFP_DTO.PDTO.TeamColorGS.Equals("Blue"))
+                {
+                    AFP_DTO.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.enemyOccupied;
+                    MessageBoxResult res = MessageBox.Show("The enemy is now on this field");
+                }
+                else if(AFP_DTO.PDTO.TeamColorGS.Equals("purple"))
+                {
+                    AFP_DTO.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.selfOccupied;
+                    MessageBoxResult res = MessageBox.Show("You are now on this field");
+                }
+            }
+        }
+
+        //Checks for what is on the field at this given time.
+        public bool CheckField(int x, int y)
+        {
+            foreach (ArenaFieldPoint_DTO AFP_DTO in Arena_DTO.field)
+            {
+                if (AFP_DTO.XPoint == x && AFP_DTO.YPoint == y)
+                {
+                    if (AFP_DTO.FieldPointStatusGS.Equals(FieldStatus_DTO.FieldStatus.notOccupied))
+                    {
+                        MessageBoxResult res = MessageBox.Show("You have moved");
+                        //The player can move here
+                        return true;
+                    }
+                    else if (AFP_DTO.FieldPointStatusGS.Equals(FieldStatus_DTO.FieldStatus.selfOccupied))
+                    {
+                        MessageBoxResult res = MessageBox.Show("An ally is already here");
+                        return false;
+                    }
+                    else if (AFP_DTO.FieldPointStatusGS.Equals(FieldStatus_DTO.FieldStatus.selfOwned))
+                    {
+                        MessageBoxResult res = MessageBox.Show("Moved to self-owned field");
+                        return true;
+                        //Just move to the coords
+                    }
+                    else if (AFP_DTO.FieldPointStatusGS.Equals(FieldStatus_DTO.FieldStatus.enemyOccupied))
+                    {
+
+                        MessageBoxResult result = MessageBox.Show("You destroyed the enemy");
+                        return true;
+                        //just move there
+
+                    }
+                    else if (AFP_DTO.FieldPointStatusGS.Equals(FieldStatus_DTO.FieldStatus.enemyOwned))
+                    {
+                        MessageBoxResult res = MessageBox.Show("You are getting a debuff by taking an enemies spot, but only for 1 turn.. Not yet impl");
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }
