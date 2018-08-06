@@ -183,14 +183,15 @@ namespace Strategy_game.GUI
             bool run = true, AllowedAdd = true;
             int counter = 0;
 
-            if (!arena.Equals("preArena"))
+            //the if statement = coords for horde team
+            if (!arena.Equals("preArena")) 
             {
                 while (run)
                 {
                     ArenaFieldPoint_DTO AFP = new ArenaFieldPoint_DTO();
                     rand = new Random();
                     AFP.XPoint = rand.Next(4,7);
-                    AFP.YPoint = rand.Next(1, 6);
+                    AFP.YPoint = rand.Next(1, 7);
                     if (tmpList.Count != 0)
                     {
                         foreach (var item in tmpList)
@@ -209,7 +210,8 @@ namespace Strategy_game.GUI
                     AllowedAdd = true;
                     if (counter == 0) { counter++; tmpList.Add(AFP); }
                 }
-            } //returns a set of arena coords for actualArena
+            }
+            //the else statement = coords for alliance team
             else
             {
                 while (run)
@@ -236,8 +238,8 @@ namespace Strategy_game.GUI
                     AllowedAdd = true;
                     if (counter == 0) { counter++; tmpList.Add(AFP); }
                 }
-            } //returns a set of arena coords for preArena
-            return tmpList;
+            } 
+            return tmpList; 
         }
         #endregion
 
@@ -355,11 +357,13 @@ namespace Strategy_game.GUI
                         if (AFP_DTO.PDTO.TeamGS.Equals(TeamListBox.SelectedValue.ToString()))
                         {
                             AFP_DTO.PDTO.TeamColorGS = "purple";
+                            Arena_DTO.allyTeam.Add(AFP_DTO.PDTO);
                         }
                         else
                         {
                             AFP_DTO.PDTO.TeamColorGS = "Blue";
                             AFP_DTO.PDTO.PointGS.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.enemyOccupied;
+                            Arena_DTO.enemyTeam.Add(AFP_DTO.PDTO);
                         }
                     }
                 }

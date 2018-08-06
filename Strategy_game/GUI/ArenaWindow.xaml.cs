@@ -53,7 +53,7 @@ namespace Strategy_game.GUI
 
             //Adds prefieldbattle team to list and adds them to their respective fields on the battleField
             InsertParticipantsToField();
-
+            
         }
         #endregion
 
@@ -306,6 +306,36 @@ namespace Strategy_game.GUI
             throw new NotImplementedException();
         }
 
+
+        public void StartTurnBasedBattle()
+        {
+            List<Participant_DTO> turnBasedMovementList = new List<Participant_DTO>();
+            foreach (ArenaFieldPoint_DTO AFP_DTO in arenaImpl.GetField())
+            {
+                if(AFP_DTO.PDTO != null)
+                {
+                    turnBasedMovementList.Add(AFP_DTO.PDTO); //list of participants in their "random order"
+                    //Get list of participants on battlefielda
+                }
+            }
+            turnBasedMovementList = Shuffle(turnBasedMovementList);
+
+        }
+        //Shuffles a list and returns it
+        public List<Participant_DTO> Shuffle(List<Participant_DTO> turnBasedMovementList)
+        {
+            Random rng = new Random();
+            int n = turnBasedMovementList.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                Participant_DTO value = turnBasedMovementList[k];
+                turnBasedMovementList[k] = turnBasedMovementList[n];
+                turnBasedMovementList[n] = value;
+            }
+            return turnBasedMovementList;
+        }
         #endregion
     }
 }
