@@ -20,8 +20,7 @@ namespace Strategy_game.Data
             DefenceGS = 1;
             OffenceGS = 1;
             NameGS = "test";
-            VMoveGS = 1;
-            HMoveGS = 1;
+            MoveGS = 1;
             TeamGS = "none";
             ImageGS = "NoPicture";
             PointGS = new ArenaFieldPoint_DTO();
@@ -31,14 +30,13 @@ namespace Strategy_game.Data
             WeakAgainstGS = new List<string>();
             ImmuneAgainstGS = new List<string>();
         }
-        public Participant_DTO(int h, int d, int o, int Vm, int Hm, string n, string teamName, string stA1, string stA2, string wkA1, string wkA2, string imA1, string imA2)
+        public Participant_DTO(int h, int d, int o, int movement, string n, string teamName, string stA1, string stA2, string wkA1, string wkA2, string imA1, string imA2)
         {
             HealthGS = h;
             DefenceGS = d;
             OffenceGS = o;
             NameGS = n;
-            VMoveGS = Vm;
-            HMoveGS = Hm;
+            MoveGS = movement;
             TeamGS = teamName;
             TeamColorGS = "none";
             ImageGS = "NoPicture";
@@ -53,11 +51,10 @@ namespace Strategy_game.Data
         #endregion
 
         #region property accessers
-        public int VMoveGS { get; set; }
+        public int MoveGS { get; set; }
         public string NameGS { get; set; }
         public int OffenceGS { get; set; }
         public int DefenceGS { get; set; }
-        public int HMoveGS { get; set; }
         public int HealthGS { get; set; }
         public string TeamGS { get; set; }
         public List<string> StrongAgainstGS { get; set; }
@@ -70,7 +67,7 @@ namespace Strategy_game.Data
 
         public string GetToString()
         {
-            return "Participant info: " + " Vertical Movement: " + VMoveGS + ", Horizontal Movement: " + HMoveGS + "\n" +
+            return "Participant info: " + " Allowed steps to Move: " + MoveGS + "\n" +
             "Name: " + NameGS + ", Health: " + HealthGS + ", Offence: " + OffenceGS + ", Defence: " + DefenceGS + ", Xpoint: " + PointGS.XPoint + ", Ypoint: " + PointGS.YPoint + "\n"
             + "Team: " + TeamGS + ", Strong Against: " + StrongAgainstGS[0] + "," + StrongAgainstGS[1] + ", Weak Against: " +
             WeakAgainstGS[0] + "," + WeakAgainstGS[1] + ", Immune Against: " + ImmuneAgainstGS[0] + "," + ImmuneAgainstGS[1];

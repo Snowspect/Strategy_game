@@ -75,9 +75,8 @@ namespace Strategy_game.Func
         }
 
         //When you move to a field, overwrite it's status so that you occupy it
-        public void UpdateMovingToArenaFieldStatus(int xMovingTo, int yMovingTo, string arena)
+        public void UpdateMovingToArenaFieldStatus(ArenaFieldPoint_DTO AFP_DTO, string arena)
         {
-            ArenaFieldPoint_DTO AFP_DTO = GetArenaField(xMovingTo, yMovingTo);
             if (AFP_DTO.PDTO != null)
             {
                 if (AFP_DTO.PDTO.TeamColorGS.Equals("Blue"))
@@ -97,58 +96,74 @@ namespace Strategy_game.Func
         }
 
         //Checks for what is on the field at this given time.
-        public bool CheckField(int x, int y, Participant_DTO pDTO)
+        public bool CheckField(ArenaFieldPoint_DTO AFP_DTO_param, Participant_DTO pDTO)
         {
+            MessageBoxResult res;
             foreach (ArenaFieldPoint_DTO AFP_DTO in Arena_DTO.field)
             {
-                if (AFP_DTO.XPoint == x && AFP_DTO.YPoint == y)
+                if(AFP_DTO == AFP_DTO_param)
+  //              if (AFP_DTO.XPoint == x && AFP_DTO.YPoint == y)
                 {
                     if (AFP_DTO.FieldPointStatusGS.Equals(FieldStatus_DTO.FieldStatus.notOccupied))
                     {
-                        MessageBoxResult res = MessageBox.Show("You have moved");
+                        res = MessageBox.Show("You have moved");
                         //The player can move here
                         return true;
                     }
                     else if (AFP_DTO.FieldPointStatusGS.Equals(FieldStatus_DTO.FieldStatus.selfOccupied))
                     {
-                        if(pDTO.TeamColorGS.Equals("purple"))
+                        if (pDTO.TeamColorGS.Equals("purple"))
                         {
-                            MessageBoxResult res = MessageBox.Show("An ally is already here");
+                            res = MessageBox.Show("An Alliance member is here");
                             return false;
                         }
                         else
                         {
-                            MessageBoxResult res = MessageBox.Show("The enemy destroyed your player");
+                            res = MessageBox.Show("The Horde has killed an Alliance player");
                             return true;
                         }
                     }
                     else if (AFP_DTO.FieldPointStatusGS.Equals(FieldStatus_DTO.FieldStatus.selfOwned))
                     {
-                        MessageBoxResult res = MessageBox.Show("Moved to purple team owned field");
-                        return true;
-                        //Just move to the coords
-                    }
-                    else if (AFP_DTO.FieldPointStatusGS.Equals(FieldStatus_DTO.FieldStatus.enemyOccupied))
-                    {
-                        //in case either ally or enemy attempts to move to that spot
-                        if(pDTO.TeamColorGS.Equals("purple"))
+                        if (pDTO.TeamColorGS.Equals("blue"))
                         {
-
-                            MessageBoxResult result = MessageBox.Show("You destroyed the enemy");
+                            res = MessageBox.Show("You are getting a debuff by moving to an Alliance field");
                             return true;
                         }
                         else
                         {
-                            MessageBoxResult result = MessageBox.Show("An enemy ally is here");
+                            res = MessageBox.Show("Moved to Alliance field");
+                            return true;
+                        }
+                    }
+                    else if (AFP_DTO.FieldPointStatusGS.Equals(FieldStatus_DTO.FieldStatus.enemyOccupied))
+                    {
+                        //in case either ally or enemy attempts to move to that spot
+                        if (pDTO.TeamColorGS.Equals("purple"))
+                        {
+
+                            MessageBoxResult result = MessageBox.Show("You destroyed a horde player");
+                            return true;
+                        }
+                        else
+                        {
+                            MessageBoxResult result = MessageBox.Show("An Horde member is here");
                             return false;
                         }
-                        //just move there
 
                     }
                     else if (AFP_DTO.FieldPointStatusGS.Equals(FieldStatus_DTO.FieldStatus.enemyOwned))
                     {
-                        MessageBoxResult res = MessageBox.Show("You are getting a debuff by taking blue team spot, but only for 1 turn.. Not yet impl");
-                        return true;
+                        if (pDTO.TeamColorGS.Equals("purple"))
+                        {
+                            res = MessageBox.Show("You are getting a debuff by taking blue team spot, but only for 1 turn.. Not yet impl");
+                            return true;
+                        }
+                        else
+                        {
+                            res = MessageBox.Show("Moved to horde field");
+                            return true;
+                        }
                     }
                 }
             }

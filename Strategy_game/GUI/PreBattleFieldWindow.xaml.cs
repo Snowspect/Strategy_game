@@ -256,10 +256,10 @@ namespace Strategy_game.GUI
             pDTO.TeamColorGS = "purple";
             int x = int.Parse(txtXCoord.Text);
             int y = int.Parse(txtYCoord.Text);
-
+            ArenaFieldPoint_DTO AFP_DTO = fPImpl.GetArenaField(x, y);
 
             /** MOVING **/
-            bool run = fPImpl.CheckField(x, y, pDTO); //checks the field we are trying to go to
+            bool run = fPImpl.CheckField(AFP_DTO, pDTO); //checks the field we are trying to go to
 
             if (run)
             {
@@ -270,7 +270,7 @@ namespace Strategy_game.GUI
 
                 pImpl.MoveParticipant(pDTO, fPImpl.GetArenaField(x, y));
 
-                fPImpl.UpdateMovingToArenaFieldStatus(x, y, "preArena");
+                fPImpl.UpdateMovingToArenaFieldStatus(AFP_DTO, "preArena");
 
                 SetsImage(pDTO);
             }
@@ -292,6 +292,43 @@ namespace Strategy_game.GUI
         //Triggered when clicking "Start fight"
         //configures team to be purple team and adds a skin to each of them
         private void StartBattle_Button(object sender, RoutedEventArgs e)
+        {
+            StartBattle();
+        }
+
+        // Accesses the previous window
+        private void ToPreviousWindow_Click(object sender, RoutedEventArgs e)
+        { /*do not close mw.*/ exitApp = false; /*loads mainWindow*/ if (w is MainWindow) { this.w.Show(); this.Close(); } /*loads any other window */ else { w = new Window(); w.Show(); this.Close(); } }
+
+        //Loads mainwindow
+        private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
+
+        #endregion
+
+        private void Preset_Click(object sender, RoutedEventArgs e)
+        {
+            List<ArenaFieldPoint_DTO> RandomArenaFields = GenerateCoordsList("preArena");
+            if (RandomArenaFields.Count != 0) //to make sure we don't go to next window.
+            {
+                string allyTeam = tImpl.GetAllyTeamName();
+                int coordCounter = 0; //used to give each player a set of coords
+                skinCounter = 0;
+                foreach (Participant_DTO pDTO in tImpl.GetAllyTeam(allyTeam))
+                {
+                    pDTO.TeamColorGS = "purple";
+                    //Gets field from arena based on x and y coords from random field list.
+                    pDTO.PointGS = fPImpl.GetArenaField(RandomArenaFields[coordCounter].XPoint, RandomArenaFields[coordCounter].YPoint);
+                    pDTO.ImageGS = Storage.PlayerSkins[skinCounter];
+                    ArenaImpl.AddParticipantToField(pDTO);
+                    fPImpl.UpdateMovingToArenaFieldStatus(pDTO.PointGS, "preArena"); //moves to field and occupies that field
+                    skinCounter++;
+                    coordCounter++;
+                }
+            }
+            StartBattle();
+        }
+
+        public void StartBattle()
         {
             List<ArenaFieldPoint_DTO> tmpFPList = new List<ArenaFieldPoint_DTO>();
             tmpFPList = GenerateCoordsList("actualArena");
@@ -331,36 +368,6 @@ namespace Strategy_game.GUI
                 fw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 fw.Show();
                 this.Hide();
-            }
-        }
-
-        // Accesses the previous window
-        private void ToPreviousWindow_Click(object sender, RoutedEventArgs e)
-        { /*do not close mw.*/ exitApp = false; /*loads mainWindow*/ if (w is MainWindow) { this.w.Show(); this.Close(); } /*loads any other window */ else { w = new Window(); w.Show(); this.Close(); } }
-
-        //Loads mainwindow
-        private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
-
-        #endregion
-
-        private void Preset_Click(object sender, RoutedEventArgs e)
-        {
-            List<ArenaFieldPoint_DTO> tmp = GenerateCoordsList("preArena");
-            if (tmp.Count != 0) //to make sure we don't go to next window.
-            {
-                string allyTeam = tImpl.GetAllyTeamName();
-                int coordCounter = 0; //used to give each player a set of coords
-                skinCounter = 0;
-                foreach (Participant_DTO pDTO in tImpl.GetAllyTeam(allyTeam))
-                {
-                    pDTO.TeamColorGS = "purple";
-                    pDTO.PointGS = tmp[coordCounter];
-                    pDTO.ImageGS = Storage.PlayerSkins[skinCounter];
-                    ArenaImpl.AddParticipantToField(pDTO);
-                    fPImpl.UpdateMovingToArenaFieldStatus(tmp[coordCounter].XPoint, tmp[coordCounter].YPoint, "preArena"); //moves to field and occupies that field
-                    skinCounter++;
-                    coordCounter++;
-                }
             }
         }
 

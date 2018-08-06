@@ -14,9 +14,7 @@
                 
             </UniformGrid>
         </Canvas>
-        <DataGrid x:Name="dg" Margin="15,381,657,10" BorderBrush="black" BorderThickness="1">
-            
-        </DataGrid>
+
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="316,86,0,0" TextWrapping="Wrap" Text="6" VerticalAlignment="Top" Width="11" Height="13"/>
         <TextBlock x:Name="textBlock_Copy" HorizontalAlignment="Left" Margin="316,133,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="11" Height="13"/>
         <TextBlock x:Name="textBlock_Copy1" HorizontalAlignment="Left" Margin="316,187,0,0" TextWrapping="Wrap" Text="4" VerticalAlignment="Top" Width="11" Height="12"/>
@@ -61,11 +59,12 @@
         <TextBlock x:Name="HintXCoord" Margin="15,252,688,195" IsHitTestVisible="False"><Run Text=" "/><Run Text="XCoord ex. = 1"/></TextBlock>
         <TextBlock x:Name="HintYCoord" Margin="140,252,562,195" IsHitTestVisible="False"><Run Text=" "/><Run Text="YCoord ex. = 4"/></TextBlock>
         <Canvas Margin="28,70,532,243">
-            <ListBox x:Name="ListOfParticipants" BorderThickness="1" BorderBrush="black" Height="157" Width="232"></ListBox>
+            <ListBox x:Name="ListOfParticipants" IsHitTestVisible="True" BorderThickness="1" BorderBrush="black" Height="157" Width="232" ></ListBox>
         </Canvas>
         <Button x:Name="MainMenu_Button" Content="MainWindow" HorizontalAlignment="Left" Margin="28,32,0,0" VerticalAlignment="Top" Width="76" Click="ToMenuWindow_Click"/>
         <Button x:Name="Prev_window_Button" Content="PreviousWindow" HorizontalAlignment="Left" Margin="122,32,0,0" VerticalAlignment="Top" Width="75" Click="ToPreviousWindow_Click"/>
         <Button x:Name="SubmitMove_Button" Content="Submit move request" HorizontalAlignment="Left" Margin="15,296,0,0" VerticalAlignment="Top" Width="245" Click="SubmitMove_Button_Click"/>
         <TextBlock x:Name="PlayingDisplayBox" HorizontalAlignment="Left" Margin="15,346,0,0" TextWrapping="Wrap" TextAlignment="Center" FontSize="14" Text="x Playing" VerticalAlignment="Top" Height="35" Width="245"/>
+        <Button Content="activate Enemy" HorizontalAlignment="Left" Margin="15,419,0,0" VerticalAlignment="Top" Width="89" Click="ActivateEnemy_Click"/>
     </Grid>
 </Window>
