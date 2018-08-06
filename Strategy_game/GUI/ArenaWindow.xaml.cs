@@ -100,7 +100,11 @@ namespace Strategy_game.GUI
             { Console.WriteLine("The boxes was empty"); }
             else
             {
-                MoveToSpot();
+                int x = int.Parse(xCoord.Text);
+                int y = int.Parse(yCoord.Text);
+                ArenaFieldPoint_DTO AFP_DTO = new ArenaFieldPoint_DTO();
+                AFP_DTO = fPImpl.GetArenaField(x, y);
+                InitiateMovement(AFP_DTO);
 
                 xCoord.Clear();
                 yCoord.Clear();
