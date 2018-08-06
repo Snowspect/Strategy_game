@@ -50,10 +50,9 @@ namespace Strategy_game.Func
             return pDTO;
         }
 
-        public void MoveParticipant(Participant_DTO pDTO, int x, int y)
+        public void MoveParticipant(Participant_DTO pDTO, ArenaFieldPoint_DTO AFP_DTO)
         {
-            pDTO.PointGS.XPoint = x;
-            pDTO.PointGS.YPoint = y;
+            pDTO.PointGS = AFP_DTO; //updates point reference
             AssignPicture(pDTO);
             ArenaImpl.AddParticipantToField(pDTO); //creates a reference binding between active participant and the field it is moving to
         }

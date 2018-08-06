@@ -235,7 +235,7 @@ namespace Strategy_game.GUI
                 //updates the point we are leaving.
                 fPImpl.UpdateLeavingArenaFieldPoint(pDTO, "preArena");  //Updating the fieldstatus since we are leaving to another field.
 
-                pImpl.MoveParticipant(pDTO, x, y);
+                pImpl.MoveParticipant(pDTO, fPImpl.GetArenaField(x,y));
 
                 fPImpl.UpdateMovingToArenaFieldStatus(x, y);
 

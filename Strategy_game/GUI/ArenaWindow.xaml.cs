@@ -48,10 +48,11 @@ namespace Strategy_game.GUI
 
             //ALREADY CREATED ARENA IN PREARENA
             //Creates the playground (currently of 6,6)
-            //CreateArena();
+            CreateArena();
 
             //Adds prefieldbattle team to list and adds them to their respective fields on the battleField
             InsertParticipantsToField();
+
         }
         #endregion
 
@@ -136,9 +137,9 @@ namespace Strategy_game.GUI
 
                 //updates the point we are leaving.
                 fPImpl.UpdateLeavingArenaFieldPoint(pDTO, "actualArena");  //Updating the fieldstatus since we are leaving to another field.
-
-                pImpl.MoveParticipant(pDTO, x, y);
-
+                Console.WriteLine(Arena_DTO.field);
+                pImpl.MoveParticipant(pDTO, fPImpl.GetArenaField(x, y));
+                Console.WriteLine(Arena_DTO.field);
                 fPImpl.UpdateMovingToArenaFieldStatus(x, y);
 
                 SetsImage(pDTO);
@@ -245,10 +246,6 @@ namespace Strategy_game.GUI
             throw new NotImplementedException();
         }
 
-        public void CreateArena()
-        {
-            throw new NotImplementedException();
-        }
         #endregion
     }
 }

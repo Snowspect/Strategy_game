@@ -45,6 +45,7 @@ namespace Strategy_game.Func
                     {
                         if (AFP_DTO.PDTO.TeamColorGS.Equals("Blue"))
                         {
+                            //AFP_DTO.PDTO.PointGS = null;
                             AFP_DTO.PDTO = null;
                             AFP_DTO.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.enemyOwned;
                             MessageBoxResult res = MessageBox.Show("The enemy now owns this field");
@@ -63,10 +64,14 @@ namespace Strategy_game.Func
                     if (AFP_DTO.PDTO != null)
                     {
                         AFP_DTO.PDTO = null;
-                        AFP_DTO.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.notOccupied;
+
+                        if (AFP_DTO.FieldPointStatusGS == FieldStatus_DTO.FieldStatus.selfOccupied)
+                            AFP_DTO.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.selfOwned;
+                        else
+                            AFP_DTO.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.enemyOwned;
                     }
                 }
-            }
+            }//CHECK THIS LATER
         }
 
         //When you move to a field, overwrite it's status so that you occupy it
@@ -108,13 +113,12 @@ namespace Strategy_game.Func
                     }
                     else if (AFP_DTO.FieldPointStatusGS.Equals(FieldStatus_DTO.FieldStatus.selfOwned))
                     {
-                        MessageBoxResult res = MessageBox.Show("Moved to self-owned field");
+                        MessageBoxResult res = MessageBox.Show("Moved to purple team owned field");
                         return true;
                         //Just move to the coords
                     }
                     else if (AFP_DTO.FieldPointStatusGS.Equals(FieldStatus_DTO.FieldStatus.enemyOccupied))
                     {
-
                         MessageBoxResult result = MessageBox.Show("You destroyed the enemy");
                         return true;
                         //just move there
@@ -122,7 +126,7 @@ namespace Strategy_game.Func
                     }
                     else if (AFP_DTO.FieldPointStatusGS.Equals(FieldStatus_DTO.FieldStatus.enemyOwned))
                     {
-                        MessageBoxResult res = MessageBox.Show("You are getting a debuff by taking an enemies spot, but only for 1 turn.. Not yet impl");
+                        MessageBoxResult res = MessageBox.Show("You are getting a debuff by taking blue team spot, but only for 1 turn.. Not yet impl");
                         return true;
                     }
                 }
