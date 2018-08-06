@@ -25,6 +25,15 @@ namespace Strategy_game.Func
         {
             return team.GetTeamImage(teamName);
         }
+        public string GetAllyTeamName()
+        {
+            return team.GetAllyTeam();
+        }
+        public List<Participant_DTO> GetAllyTeam(string allyTeamName)
+        {
+            return team.GetAllyTeamList(allyTeamName);
+        }
+
         public string GetEnemyTeamName()
         {
             return team.GetEnemyTeam();

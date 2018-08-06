@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Strategy_game.GUI"
+        xmlns:data="clr-namespace:System.Data;assembly=System.Data"
         mc:Ignorable="d"
         Title="ArenaWindow" Height="500" Width="800">
     
@@ -13,7 +14,9 @@
                 
             </UniformGrid>
         </Canvas>
-
+        <DataGrid x:Name="dg" Margin="15,381,657,10" BorderBrush="black" BorderThickness="1">
+            
+        </DataGrid>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="316,86,0,0" TextWrapping="Wrap" Text="6" VerticalAlignment="Top" Width="11" Height="13"/>
         <TextBlock x:Name="textBlock_Copy" HorizontalAlignment="Left" Margin="316,133,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="11" Height="13"/>
         <TextBlock x:Name="textBlock_Copy1" HorizontalAlignment="Left" Margin="316,187,0,0" TextWrapping="Wrap" Text="4" VerticalAlignment="Top" Width="11" Height="12"/>

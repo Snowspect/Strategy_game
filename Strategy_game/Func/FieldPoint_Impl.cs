@@ -75,26 +75,29 @@ namespace Strategy_game.Func
         }
 
         //When you move to a field, overwrite it's status so that you occupy it
-        public void UpdateMovingToArenaFieldStatus(int xMovingTo, int yMovingTo)
+        public void UpdateMovingToArenaFieldStatus(int xMovingTo, int yMovingTo, string arena)
         {
             ArenaFieldPoint_DTO AFP_DTO = GetArenaField(xMovingTo, yMovingTo);
-            if(AFP_DTO.PDTO != null)
+            if (AFP_DTO.PDTO != null)
             {
                 if (AFP_DTO.PDTO.TeamColorGS.Equals("Blue"))
                 {
                     AFP_DTO.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.enemyOccupied;
                     MessageBoxResult res = MessageBox.Show("The enemy is now on this field");
                 }
-                else if(AFP_DTO.PDTO.TeamColorGS.Equals("purple"))
+                else if (AFP_DTO.PDTO.TeamColorGS.Equals("purple"))
                 {
                     AFP_DTO.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.selfOccupied;
-                    MessageBoxResult res = MessageBox.Show("You are now on this field");
+                    if (!arena.Equals("preArena"))
+                    {
+                        MessageBoxResult res = MessageBox.Show("You are now on this field");
+                    }
                 }
             }
         }
 
         //Checks for what is on the field at this given time.
-        public bool CheckField(int x, int y)
+        public bool CheckField(int x, int y, Participant_DTO pDTO)
         {
             foreach (ArenaFieldPoint_DTO AFP_DTO in Arena_DTO.field)
             {
@@ -108,8 +111,16 @@ namespace Strategy_game.Func
                     }
                     else if (AFP_DTO.FieldPointStatusGS.Equals(FieldStatus_DTO.FieldStatus.selfOccupied))
                     {
-                        MessageBoxResult res = MessageBox.Show("An ally is already here");
-                        return false;
+                        if(pDTO.TeamColorGS.Equals("purple"))
+                        {
+                            MessageBoxResult res = MessageBox.Show("An ally is already here");
+                            return false;
+                        }
+                        else
+                        {
+                            MessageBoxResult res = MessageBox.Show("The enemy destroyed your player");
+                            return true;
+                        }
                     }
                     else if (AFP_DTO.FieldPointStatusGS.Equals(FieldStatus_DTO.FieldStatus.selfOwned))
                     {
@@ -119,8 +130,18 @@ namespace Strategy_game.Func
                     }
                     else if (AFP_DTO.FieldPointStatusGS.Equals(FieldStatus_DTO.FieldStatus.enemyOccupied))
                     {
-                        MessageBoxResult result = MessageBox.Show("You destroyed the enemy");
-                        return true;
+                        //in case either ally or enemy attempts to move to that spot
+                        if(pDTO.TeamColorGS.Equals("purple"))
+                        {
+
+                            MessageBoxResult result = MessageBox.Show("You destroyed the enemy");
+                            return true;
+                        }
+                        else
+                        {
+                            MessageBoxResult result = MessageBox.Show("An enemy ally is here");
+                            return false;
+                        }
                         //just move there
 
                     }

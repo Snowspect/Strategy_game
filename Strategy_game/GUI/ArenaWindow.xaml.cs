@@ -4,6 +4,7 @@ using Strategy_game.Data.Interface_windows;
 using Strategy_game.Func;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -129,7 +130,7 @@ namespace Strategy_game.GUI
             Participant_DTO pDTO = pImpl.GetParticipant(participantToMove);
 
             /** MOVING **/
-            bool run = fPImpl.CheckField(x, y); //checks the field we are trying to go to
+            bool run = fPImpl.CheckField(x, y, pDTO); //checks the field we are trying to go to
 
             if (run)
             {
@@ -140,7 +141,7 @@ namespace Strategy_game.GUI
                 Console.WriteLine(Arena_DTO.field);
                 pImpl.MoveParticipant(pDTO, fPImpl.GetArenaField(x, y));
                 Console.WriteLine(Arena_DTO.field);
-                fPImpl.UpdateMovingToArenaFieldStatus(x, y);
+                fPImpl.UpdateMovingToArenaFieldStatus(x, y, "actualArena");
 
                 SetsImage(pDTO);
             }
