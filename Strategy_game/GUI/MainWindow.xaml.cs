@@ -1,4 +1,6 @@
 ﻿using Strategy_game.Data;
+using Strategy_game.Data.DAO;
+using Strategy_game.Data.DTO;
 using Strategy_game.Func;
 using Strategy_game.GUI;
 using System;
@@ -23,24 +25,55 @@ namespace Strategy_game
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region localVariables
         Participant_DTO pDTO;
-        Participant_DTO pDTO2;
         Participant_Impl pImpl;
+        
+        Team_Impl tImpl;
+        #endregion
+
+        #region constructors
         public MainWindow()
         {
             InitializeComponent();
-            pDTO = new Participant_DTO(100, 4, 4, 2, 2, "Destroyer");
-            pDTO2 = new Participant_DTO(100, 4, 4, 2, 2, "Cooker");
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
             pImpl = new Participant_Impl();
+            tImpl = new Team_Impl();
+           
+            //Creates an enemy team of 6
+            for (int i = 0; i < 6; i++)
+            {
+                pDTO = new Participant_DTO(100, 4, 4, 2, 2, "Destroyer" + i, "Tupac", "a", "b", "c", "d", "e", "f");
+                pImpl.AddParticipantToList(pDTO);
+            }
+            //creates ally team and enemy team
+            tImpl.AddAllyTeam("Wolf", "1");
+            pDTO = new Participant_DTO(100, 4, 4, 2, 2, "Dan", "Wolf", "a", "b", "c", "d", "e", "f");
+            pImpl.AddParticipantToList(pDTO);
+            tImpl.AddEnemyTeam("Tupac", "1");
 
-            //Console.WriteLine(pImpl.ToString); //prints to screen
-            pImpl.AddToList(pDTO);
-            pImpl.AddToList(pDTO2);
+            //add participantSkins to game
+            #region skins
+            //Adds possible player images.
+            Storage.PlayerSkins.Add("pinkPlayer.png");
+            Storage.PlayerSkins.Add("tealPlayer.png");
+            Storage.PlayerSkins.Add("redPlayer.png");
+            Storage.PlayerSkins.Add("greenPlayer.png");
+            Storage.PlayerSkins.Add("orangePlayer.png");
+            Storage.PlayerSkins.Add("yellowPlayer.png");
+            #endregion
         }
+        #endregion
 
-        //Shows add user window and hides mainwindow
-        //Can't close mainwindow as that will bug the app out.
-        private void Create_Click(object sender, RoutedEventArgs e)
+        /*
+         * Create_Click (access participantCreateWindow)
+         * GetList (Prints out all participants in console.. for debugging))
+         * Field_Click (access fieldWindow)
+         * PreBattlebutton (access prefield window)
+         */
+        #region buttons
+        private void CreateParticipantbutton_Click(object sender, RoutedEventArgs e)
         {
             ParticipantCreateWindow pcw = new ParticipantCreateWindow(this, this); //sends mainWindow to both parameters as we are in mainwindow
             pcw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -49,12 +82,21 @@ namespace Strategy_game
         }
 
         //Prints out user lists in console output.
-        private void GetList_Click(object sender, RoutedEventArgs e)
+        private void GetListbutton_Click(object sender, RoutedEventArgs e)
         {
             foreach (var item in pImpl.GetCurrentList())
             {
-                Console.WriteLine(item.ToString);
+                Console.WriteLine(item.GetToString());
             }
         }
+
+        private void PreBattlebutton_Click(object sender, RoutedEventArgs e)
+        {
+            PreBattleFieldWindow pbw = new PreBattleFieldWindow(this,this, pImpl);
+            pbw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            pbw.Show();
+            this.Hide();
+        }
+        #endregion
     }
 }

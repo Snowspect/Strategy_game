@@ -1,0 +1,68 @@
+﻿<Window x:Class="Strategy_game.GUI.ArenaWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Strategy_game.GUI"
+        mc:Ignorable="d"
+        Title="ArenaWindow" Height="500" Width="800">
+    
+    <Grid Margin="0,-3,0,3">
+        <Canvas Margin="339,70,0,0" Width="435" HorizontalAlignment="Left" Height="290" VerticalAlignment="Top">
+            <UniformGrid x:Name="FieldGrid" Height="285" Width="435" Canvas.Top="3">
+                
+            </UniformGrid>
+        </Canvas>
+
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="316,86,0,0" TextWrapping="Wrap" Text="6" VerticalAlignment="Top" Width="11" Height="13"/>
+        <TextBlock x:Name="textBlock_Copy" HorizontalAlignment="Left" Margin="316,133,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="11" Height="13"/>
+        <TextBlock x:Name="textBlock_Copy1" HorizontalAlignment="Left" Margin="316,187,0,0" TextWrapping="Wrap" Text="4" VerticalAlignment="Top" Width="11" Height="12"/>
+        <TextBlock x:Name="textBlock_Copy2" HorizontalAlignment="Left" Margin="316,234,0,0" TextWrapping="Wrap" Text="3" VerticalAlignment="Top" Width="11" Height="12"/>
+        <TextBlock x:Name="textBlock_Copy3" HorizontalAlignment="Left" Margin="316,283,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Width="11" Height="18"/>
+        <TextBlock x:Name="textBlock_Copy4" HorizontalAlignment="Left" Margin="316,335,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="11" Height="12"/>
+        <TextBlock x:Name="textBlock_Copy5" HorizontalAlignment="Left" Margin="276,86,0,0" TextWrapping="Wrap" Text="Y" VerticalAlignment="Top" Width="11" Height="13"/>
+        <TextBlock x:Name="textBlock_Copy6" HorizontalAlignment="Left" Margin="375,378,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="8"/>
+        <TextBlock x:Name="textBlock_Copy7" HorizontalAlignment="Left" Margin="447,378,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Width="8"/>
+        <TextBlock x:Name="textBlock_Copy8" HorizontalAlignment="Left" Margin="521,378,0,0" TextWrapping="Wrap" Text="3" VerticalAlignment="Top" Width="8"/>
+        <TextBlock x:Name="textBlock_Copy9" HorizontalAlignment="Left" Margin="590,378,0,0" TextWrapping="Wrap" Text="4" VerticalAlignment="Top" Width="8"/>
+        <TextBlock x:Name="textBlock_Copy10" HorizontalAlignment="Left" Margin="665,378,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="8"/>
+        <TextBlock x:Name="textBlock_Copy11" HorizontalAlignment="Left" Margin="739,378,0,0" TextWrapping="Wrap" Text="6" VerticalAlignment="Top" Width="8"/>
+        <TextBlock x:Name="textBlock_Copy12" HorizontalAlignment="Left" Margin="769,403,0,0" TextWrapping="Wrap" Text="X" VerticalAlignment="Top" Width="8"/>
+        <Canvas HorizontalAlignment="Left" Height="29" Margin="478,32,0,0" VerticalAlignment="Top" Width="296">
+            <UniformGrid Rows="1" Columns="6" Height="29" Width="296">
+                <Border BorderBrush="black" BorderThickness="1">
+                    <Image x:Name="ParticipantDisplay1"></Image>
+                </Border>
+                <Border BorderBrush="black" BorderThickness="1">
+                    <Image x:Name="ParticipantDisplay2"></Image>
+                </Border>
+                <Border BorderBrush="black" BorderThickness="1">
+                    <Image x:Name="ParticipantDisplay3"></Image>
+                </Border>
+                <Border BorderBrush="black" BorderThickness="1">
+                    <Image x:Name="ParticipantDisplay4"></Image>
+                </Border>
+                <Border BorderBrush="black" BorderThickness="1">
+                    <Image x:Name="ParticipantDisplay5"></Image>
+                </Border>
+                <Border BorderBrush="black" BorderThickness="1">
+                    <Image x:Name="ParticipantDisplay6"></Image>
+                </Border>
+            </UniformGrid>
+        </Canvas>
+        <Border Margin="478,8,121,392">
+            <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Participants" VerticalAlignment="Top" Width="193"/>
+        </Border>
+        <TextBox x:Name="xCoord" HorizontalAlignment="Left" Height="22" Margin="15,252,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="XCoord_TextChanged"/>
+        <TextBox x:Name="yCoord" HorizontalAlignment="Left" Height="22" Margin="140,252,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="YCoord_TextChanged"/>
+        <TextBlock x:Name="HintXCoord" Margin="15,252,688,195" IsHitTestVisible="False"><Run Text=" "/><Run Text="XCoord ex. = 1"/></TextBlock>
+        <TextBlock x:Name="HintYCoord" Margin="140,252,562,195" IsHitTestVisible="False"><Run Text=" "/><Run Text="YCoord ex. = 4"/></TextBlock>
+        <Canvas Margin="28,70,532,243">
+            <ListBox x:Name="ListOfParticipants" BorderThickness="1" BorderBrush="black" Height="157" Width="232"></ListBox>
+        </Canvas>
+        <Button x:Name="MainMenu_Button" Content="MainWindow" HorizontalAlignment="Left" Margin="28,32,0,0" VerticalAlignment="Top" Width="76" Click="ToMenuWindow_Click"/>
+        <Button x:Name="Prev_window_Button" Content="PreviousWindow" HorizontalAlignment="Left" Margin="122,32,0,0" VerticalAlignment="Top" Width="75" Click="ToPreviousWindow_Click"/>
+        <Button x:Name="SubmitMove_Button" Content="Submit move request" HorizontalAlignment="Left" Margin="15,296,0,0" VerticalAlignment="Top" Width="245" Click="SubmitMove_Button_Click"/>
+        <TextBlock x:Name="PlayingDisplayBox" HorizontalAlignment="Left" Margin="15,346,0,0" TextWrapping="Wrap" TextAlignment="Center" FontSize="14" Text="x Playing" VerticalAlignment="Top" Height="35" Width="245"/>
+    </Grid>
+</Window>

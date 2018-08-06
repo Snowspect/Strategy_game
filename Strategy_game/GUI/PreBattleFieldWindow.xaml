@@ -1,0 +1,35 @@
+﻿<Window x:Class="Strategy_game.GUI.PreBattleFieldWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Strategy_game.GUI"
+        mc:Ignorable="d"
+        Title="PreBattleFieldWindow" Height="450" Width="800">
+    <Grid>
+
+        <TextBlock x:Name="TeamTexTBox" HorizontalAlignment="Left" Margin="10,48,0,0" TextWrapping="Wrap" Text="Choose team" VerticalAlignment="Top" Width="84"/>
+        <Border BorderBrush="Black" BorderThickness="1" Margin="406,36,78,25">
+            <Canvas HorizontalAlignment="Left" Height="349" VerticalAlignment="Top" Width="299" Margin="0,0,-1,-1">
+                <UniformGrid x:Name="PreArena" Height="349" Width="299">
+
+                </UniformGrid>
+            </Canvas>
+        </Border>
+        <Button x:Name="ToMenubutton" Content="To Menu" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="ToMenuWindow_Click"/>
+        <Button x:Name="ToPreviousWindowbutton" Content="Back To Previous" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="105" Click="ToPreviousWindow_Click"/>
+        <ListBox x:Name="MemberListBox" HorizontalAlignment="Left" Height="126" Margin="174,70,0,0" VerticalAlignment="Top" Width="148"/>
+        <ListBox x:Name="TeamListBox" HorizontalAlignment="Left" Height="126" Margin="10,70,0,0" VerticalAlignment="Top" Width="148" SelectionChanged="TeamListBox_SelectionChanged"/>
+        <TextBlock x:Name="MemberTextBox" HorizontalAlignment="Left" Margin="174,48,0,0" TextWrapping="Wrap" Text="Team members" VerticalAlignment="Top" Width="84"/>
+        <TextBox x:Name="txtXCoord" HorizontalAlignment="Left" Height="22" Margin="174,201,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="XCoord_TextChanged"/>
+        <TextBox x:Name="txtYCoord" HorizontalAlignment="Left" Height="22" Margin="174,228,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="YCoord_TextChanged"/>
+        <TextBlock x:Name="HintXCoord" Margin="174,201,529,196" IsHitTestVisible="False"><Run Text=" "/><Run Text="XCoord ex. = 1"/></TextBlock>
+        <TextBlock x:Name="HintYCoord" Margin="174,228,528,169" IsHitTestVisible="False"><Run Text=" "/><Run Text="YCoord ex. = 4"/></TextBlock>
+        <Button x:Name="SubmitMove" Content="place member" HorizontalAlignment="Left" Margin="174,255,0,0" VerticalAlignment="Top" Width="120" Click="SubmitMove_Button"/>
+        <Button Content="Clear field" HorizontalAlignment="Left" Margin="267,366,0,0" VerticalAlignment="Top" Width="120" Click="ClearField_Button"/>
+        <Button Content="Begin fight" HorizontalAlignment="Left" Margin="19,366,0,0" VerticalAlignment="Top" Width="75" Click="StartBattle_Button"/>
+        <Border Margin="10,201,698,144" BorderBrush="black" BorderThickness="1">
+            <Image x:Name="TeamImage" HorizontalAlignment="Left" Height="74" Margin="-1" VerticalAlignment="Top" Width="84"/>
+        </Border>
+    </Grid>
+</Window>

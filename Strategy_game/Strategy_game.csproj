@@ -54,6 +54,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="GUI\ArenaWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GUI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -64,10 +68,30 @@
     </Compile>
     <Compile Include="Data\DAO\Participant_DAO.cs" />
     <Compile Include="Data\DAO\Storage.cs" />
+    <Compile Include="Data\DAO\Team_DAO.cs" />
+    <Compile Include="Data\DTO\ArenaFieldPoint_DTO.cs" />
+    <Compile Include="Data\DTO\FieldStatus_DTO.cs" />
+    <Compile Include="Data\DTO\Arena_DTO.cs" />
     <Compile Include="Data\DTO\Participant_DTO.cs" />
     <Compile Include="Data\Interface_DAO\IParticipant_IntDAO_Generic.cs" />
+    <Compile Include="Data\Interface_DAO\ITeam_intDAO_generic.cs" />
+    <Compile Include="Data\Interface_Impl\IArena_Impl.cs" />
+    <Compile Include="Data\Interface_Impl\IGameLogic_Impl.cs" />
     <Compile Include="Data\Interface_Impl\IParticipant_IntImpl_Generic.cs" />
+    <Compile Include="Data\Interface_Impl\ITeam_Impl.cs" />
+    <Compile Include="Data\Interface_windows\ICreateParticipantWindow_Impl.cs" />
+    <Compile Include="Data\Interface_windows\IFieldWindow_Impl.cs" />
+    <Compile Include="Data\Interface_windows\IPreBattleFieldWindow_Impl.cs" />
+    <Compile Include="Exceptions\DuplicateImage.cs" />
+    <Compile Include="Exceptions\EmptyArray.cs" />
+    <Compile Include="Exceptions\NotInteger.cs" />
+    <Compile Include="Func\FieldPoint_Impl.cs" />
+    <Compile Include="Func\Arena_Impl.cs" />
     <Compile Include="Func\Participant_Impl.cs" />
+    <Compile Include="Func\Team_Impl.cs" />
+    <Compile Include="GUI\ArenaWindow.xaml.cs">
+      <DependentUpon>ArenaWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -76,10 +100,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="GUI\PreBattleFieldWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GUI\ParticipantCreateWindow.xaml.cs">
       <DependentUpon>ParticipantCreateWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PreBattleFieldWindow.xaml.cs">
+      <DependentUpon>PreBattleFieldWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -97,6 +128,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -106,6 +138,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Sources\SlimeBlack.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
