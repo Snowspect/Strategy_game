@@ -12,7 +12,10 @@ namespace Strategy_game.Data.DTO
     public class Arena_DTO
     {
         public static List<ArenaFieldPoint_DTO> field = new List<ArenaFieldPoint_DTO>();
-        private static List<Participant_DTO> participantsInField;
+        //private static List<Participant_DTO> participantsInField;
+
+        public static List<Participant_DTO> allyTeam;
+        public static List<Participant_DTO> enemyTeam;
 
         public Arena_DTO()
         {

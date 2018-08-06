@@ -95,9 +95,8 @@ namespace Strategy_game.GUI
         private void HealthTextBox_TextChanged(object sender, TextChangedEventArgs e) { if(HealthTextBox.Text.Length > 0) HintHealth.Visibility = Visibility.Hidden; else HintHealth.Visibility = Visibility.Visible; }
         private void OffenceTextBox_TextChanged(object sender, TextChangedEventArgs e) { if (OffenceTextBox.Text.Length > 0) HintOffence.Visibility = Visibility.Hidden; else HintOffence.Visibility = Visibility.Visible; }
         private void DefenceTextBox_TextChanged(object sender, TextChangedEventArgs e) { if (DefenceTextBox.Text.Length > 0) HintDefence.Visibility = Visibility.Hidden; else HintDefence.Visibility = Visibility.Visible; }
-        private void HMoveTextBox_TextChanged(object sender, TextChangedEventArgs e) { if (HMoveTextBox.Text.Length > 0) HintHMove.Visibility = Visibility.Hidden; else HintHMove.Visibility = Visibility.Visible; }
-        private void VMoveTextBox_TextChanged(object sender, TextChangedEventArgs e) { if (VMoveTextBox.Text.Length > 0) HintVMove.Visibility = Visibility.Hidden; else HintVMove.Visibility = Visibility.Visible; }
-        #endregion
+        private void HMoveTextBox_TextChanged(object sender, TextChangedEventArgs e) { if (MoveTextBox.Text.Length > 0) HintMove.Visibility = Visibility.Hidden; else HintMove.Visibility = Visibility.Visible; }
+              #endregion
 
         #endregion
 
@@ -118,13 +117,12 @@ namespace Strategy_game.GUI
             tp.Add(HealthTextBox.Text);
             tp.Add(OffenceTextBox.Text);
             tp.Add(DefenceTextBox.Text);
-            tp.Add(HMoveTextBox.Text);
-            tp.Add(VMoveTextBox.Text);
+            tp.Add(MoveTextBox.Text);
 
             parsedTP = ParseInts(tp);
 
             if (NameTextBox.Text == "" || HealthTextBox.Text == "" || OffenceTextBox.Text == "" || DefenceTextBox.Text == ""
-            || HMoveTextBox.Text == "" || VMoveTextBox.Text == "" || StrongAgainstFirstChoice.SelectedIndex == -1 || StrongAgainstSecondChoice.SelectedIndex == -1
+            || MoveTextBox.Text == "" || StrongAgainstFirstChoice.SelectedIndex == -1 || StrongAgainstSecondChoice.SelectedIndex == -1
             || WeakAgainstFirstChoice.SelectedIndex == -1 || WeakAgainstSecondChoice.SelectedIndex == -1 || ImmuneAgainstFirstChoice.SelectedIndex == -1
             || ImmuneAgainstSecondChoice.SelectedIndex == -1 || TeamNameChoice.SelectedIndex == -1)
             {
@@ -267,8 +265,7 @@ namespace Strategy_game.GUI
             pDTO.HealthGS = parsedTP[0];
             pDTO.OffenceGS = parsedTP[1];
             pDTO.DefenceGS = parsedTP[2];
-            pDTO.HMoveGS = parsedTP[3];
-            pDTO.VMoveGS = parsedTP[4];
+            pDTO.MoveGS = parsedTP[3];
             pDTO.TeamGS = TeamNameChoice.SelectedItem.ToString();
             pDTO.StrongAgainstGS.Add(StrongAgainstFirstChoice.SelectedItem.ToString());
             pDTO.StrongAgainstGS.Add(StrongAgainstSecondChoice.SelectedItem.ToString());
@@ -287,8 +284,7 @@ namespace Strategy_game.GUI
             HealthTextBox.Clear();
             OffenceTextBox.Clear();
             DefenceTextBox.Clear();
-            HMoveTextBox.Clear();
-            VMoveTextBox.Clear();
+            MoveTextBox.Clear();
             StrongAgainstFirstChoice.SelectedIndex = -1;
             StrongAgainstSecondChoice.SelectedIndex = -1;
             WeakAgainstFirstChoice.SelectedIndex = -1;

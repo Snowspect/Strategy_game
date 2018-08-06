@@ -4,6 +4,7 @@ using Strategy_game.Data.Interface_windows;
 using Strategy_game.Func;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -52,7 +53,7 @@ namespace Strategy_game.GUI
 
             //Adds prefieldbattle team to list and adds them to their respective fields on the battleField
             InsertParticipantsToField();
-
+            
         }
         #endregion
 
@@ -99,7 +100,11 @@ namespace Strategy_game.GUI
             { Console.WriteLine("The boxes was empty"); }
             else
             {
-                MoveToSpot();
+                int x = int.Parse(xCoord.Text);
+                int y = int.Parse(yCoord.Text);
+                ArenaFieldPoint_DTO AFP_DTO = new ArenaFieldPoint_DTO();
+                AFP_DTO = fPImpl.GetArenaField(x, y);
+                InitiateMovement(AFP_DTO);
 
                 xCoord.Clear();
                 yCoord.Clear();
@@ -118,33 +123,28 @@ namespace Strategy_game.GUI
         #region Methods
         //Moves participant in fieldDTO List
         //sets and clears images as well
-        public void MoveToSpot()
-        {
-            int x = int.Parse(xCoord.Text);
-            int y = int.Parse(yCoord.Text);
+        public void InitiateMovement(ArenaFieldPoint_DTO AFP_DTO) 
+        { 
+
 
             //moves participant in storage and on field list 
-            //Updates participantDTO in storage
+            //Updates participantDTO in storage 
             string participantToMove = ListOfParticipants.SelectedItem.ToString(); //retrieves name 
-            Participant_DTO pDTO = pImpl.GetParticipant(participantToMove);
+            Participant_DTO pDTO = pImpl.GetParticipant(participantToMove); 
 
-            /** MOVING **/
-            bool run = fPImpl.CheckField(x, y); //checks the field we are trying to go to
+            /** MOVING **/ 
+            bool movementOkay = pImpl.CheckMovement(pDTO, AFP_DTO); //first checks if movement is okay
 
-            if (run)
+            if (movementOkay == true) 
             {
-                ClearsImage(pDTO); //removes image
+                bool checkField = fPImpl.CheckField(AFP_DTO, pDTO); //checks the field we are trying to go to
 
-                //updates the point we are leaving.
-                fPImpl.UpdateLeavingArenaFieldPoint(pDTO, "actualArena");  //Updating the fieldstatus since we are leaving to another field.
-                Console.WriteLine(Arena_DTO.field);
-                pImpl.MoveParticipant(pDTO, fPImpl.GetArenaField(x, y));
-                Console.WriteLine(Arena_DTO.field);
-                fPImpl.UpdateMovingToArenaFieldStatus(x, y);
-
-                SetsImage(pDTO);
+                if (checkField == true) 
+                { 
+                    ActivateMovement(pDTO, AFP_DTO); 
+                } 
+                /** MOVING ENDS **/
             }
-            /** MOVING ENDS **/
         }
         public void ClearsImage(Participant_DTO pDTO)
         {
@@ -241,11 +241,101 @@ namespace Strategy_game.GUI
         {
             throw new NotImplementedException();
         }
+
+        private void ActivateEnemy_Click(object sender, RoutedEventArgs e)
+        {
+            //check felter omkring
+            //vælge en modstander tilfældigt af dem som er tilgængelige hvis der er nogle.
+            //flyt til det felt
+            string participant_name = ListOfParticipants.SelectedItem.ToString();
+            Participant_DTO pDTO = pImpl.GetParticipant(participant_name);
+            List<ArenaFieldPoint_DTO> FieldsWithAllianceToAttack = pImpl.CheckSurroundingFields(pDTO);
+            Random r = new Random();
+            ArenaFieldPoint_DTO AFP_DTO;
+
+            if (FieldsWithAllianceToAttack.Count != 0)
+            {
+                int chosenenemy = r.Next(0, FieldsWithAllianceToAttack.Count);
+                AFP_DTO = FieldsWithAllianceToAttack[chosenenemy];
+                InitiateMovement(AFP_DTO);
+            }
+            else
+            {
+                //Gets fields that no horde member is on
+                List<ArenaFieldPoint_DTO> EmptyNearbyArenaFields = new List<ArenaFieldPoint_DTO>();
+                foreach (ArenaFieldPoint_DTO AFP_DTO_local in pImpl.GetMovementRange(pDTO))
+                {
+                    if(AFP_DTO_local.FieldPointStatusGS != FieldStatus_DTO.FieldStatus.enemyOccupied)
+                    {
+                        EmptyNearbyArenaFields.Add(AFP_DTO_local);
+                    }
+                }
+                if(EmptyNearbyArenaFields.Count != 0)
+                {
+                    AFP_DTO = EmptyNearbyArenaFields[r.Next(0, EmptyNearbyArenaFields.Count)];
+                    InitiateMovement(AFP_DTO);
+                }
+                else
+                {
+                    MessageBoxResult res = MessageBox.Show("all nearby fields are occupied");
+                }
+            }
+        }
+
+        public void ActivateMovement(Participant_DTO pDTO, ArenaFieldPoint_DTO AFP_DTO)
+        {
+            ClearsImage(pDTO); //removes image
+
+            //updates the point we are leaving.
+            fPImpl.UpdateLeavingArenaFieldPoint(pDTO, "actualArena");  //Updating the fieldstatus since we are leaving to another field.
+            Console.WriteLine(Arena_DTO.field);
+            pImpl.MoveParticipant(pDTO, AFP_DTO);
+            Console.WriteLine(Arena_DTO.field);
+            fPImpl.UpdateMovingToArenaFieldStatus(AFP_DTO, "actualArena");
+
+            SetsImage(pDTO);
+        }
+
         public void SetsImage(int xCoord, int yCoord, string participant_name)
         {
             throw new NotImplementedException();
         }
 
+        public void InitiateMovement()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void StartTurnBasedBattle()
+        {
+            List<Participant_DTO> turnBasedMovementList = new List<Participant_DTO>();
+            foreach (ArenaFieldPoint_DTO AFP_DTO in arenaImpl.GetField())
+            {
+                if(AFP_DTO.PDTO != null)
+                {
+                    turnBasedMovementList.Add(AFP_DTO.PDTO); //list of participants in their "random order"
+                    //Get list of participants on battlefielda
+                }
+            }
+            turnBasedMovementList = Shuffle(turnBasedMovementList);
+
+        }
+        //Shuffles a list and returns it
+        public List<Participant_DTO> Shuffle(List<Participant_DTO> turnBasedMovementList)
+        {
+            Random rng = new Random();
+            int n = turnBasedMovementList.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                Participant_DTO value = turnBasedMovementList[k];
+                turnBasedMovementList[k] = turnBasedMovementList[n];
+                turnBasedMovementList[n] = value;
+            }
+            return turnBasedMovementList;
+        }
         #endregion
     }
 }

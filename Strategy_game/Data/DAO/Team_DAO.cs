@@ -62,6 +62,30 @@ namespace Strategy_game.Data.DAO
             throw new NotImplementedException();
         }
 
+        public string GetAllyTeam()
+        {
+            int limit = teamList.Count;
+            Random rand = new Random();
+            string allyTeam = "";
+            List<string> values = new List<string>();
+            foreach (var item in teamList.Keys)
+            {
+                values.Add(item);
+            }
+            try
+            {
+                if (limit != 0) limit = limit - 1; //to make sure we don't get 0 to -1 range
+                allyTeam = values[rand.Next(0, limit)];
+            }
+            catch (Exception exec)
+            {
+                Console.WriteLine(exec.StackTrace.ToString());
+                Console.WriteLine(exec);
+                MessageBoxResult result = MessageBox.Show("The ally Team List is empty");
+            }
+            return allyTeam;
+        }
+
         public string GetEnemyTeam()
         {
             int limit = enemyTeamList.Count;
@@ -99,6 +123,18 @@ namespace Strategy_game.Data.DAO
                 if(item.TeamGS.Equals(enemyTeamName))
                 {
                     tmp.Add(item);
+                }
+            }
+            return tmp;
+        }
+        public List<Participant_DTO> GetAllyTeamList(string allyTeamName)
+        {
+            List<Participant_DTO> tmp = new List<Participant_DTO>();
+            foreach (Participant_DTO pDTO in Storage.StParticipant)
+            {
+                if (pDTO.TeamGS.Equals(allyTeamName))
+                {
+                    tmp.Add(pDTO);
                 }
             }
             return tmp;
