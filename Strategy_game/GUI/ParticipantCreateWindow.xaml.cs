@@ -16,13 +16,13 @@ namespace Strategy_game.GUI
     /// <summary>
     /// Interaction logic for ParticipantCreateWindow.xaml
     /// </summary>
-    public partial class ParticipantCreateWindow : Window, ICreateParticipantWindow_Impl<string, int, Participant_DTO>
+    public partial class ParticipantCreateWindow : Window, ICreateParticipantWindow_Impl<string, int, Member_DTO>
     {
         #region localVariables
         private MainWindow mw;
         private Window w;
         private Boolean exitApp;
-        Participant_Impl pImpl;
+        Member_Impl pImpl;
         Team_Impl tImpl;
         private string TeamImageName;
         #endregion
@@ -33,7 +33,7 @@ namespace Strategy_game.GUI
         //Constructor to take two kinds of windows
         public ParticipantCreateWindow(MainWindow mw, Window w)
         {
-            pImpl = new Participant_Impl();
+            pImpl = new Member_Impl();
             tImpl = new Team_Impl();
             exitApp = true; //used for closing app
             this.w = w;
@@ -135,7 +135,7 @@ namespace Strategy_game.GUI
             }
             else
             {
-                Participant_DTO pDTO = new Participant_DTO(); //only needed here locally
+                Member_DTO pDTO = new Member_DTO(); //only needed here locally
                 RetrieveInput(pDTO, parsedTP);
                 foreach (var item in pImpl.GetCurrentList())
                 {
@@ -259,7 +259,7 @@ namespace Strategy_game.GUI
         }
 
         //Retrieves input and listbox fields from the create window
-        public void RetrieveInput(Participant_DTO pDTO, List<int> parsedTP)
+        public void RetrieveInput(Member_DTO pDTO, List<int> parsedTP)
         {
             pDTO.NameGS = NameTextBox.Text;
             pDTO.HealthGS = parsedTP[0];

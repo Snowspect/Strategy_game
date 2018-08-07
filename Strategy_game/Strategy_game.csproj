@@ -72,7 +72,7 @@
     <Compile Include="Data\DTO\ArenaFieldPoint_DTO.cs" />
     <Compile Include="Data\DTO\FieldStatus_DTO.cs" />
     <Compile Include="Data\DTO\Arena_DTO.cs" />
-    <Compile Include="Data\DTO\Participant_DTO.cs" />
+    <Compile Include="Data\DTO\Member_DTO.cs" />
     <Compile Include="Data\Interface_DAO\IParticipant_IntDAO_Generic.cs" />
     <Compile Include="Data\Interface_DAO\ITeam_intDAO_generic.cs" />
     <Compile Include="Data\Interface_Impl\IArena_Impl.cs" />
