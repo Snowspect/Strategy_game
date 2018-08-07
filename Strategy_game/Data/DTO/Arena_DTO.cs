@@ -22,11 +22,9 @@ namespace Strategy_game.Data.DTO
 //            FieldGS = new List<ArenaFieldPoint_DTO>();
         }
 
-        #region property accessers
-        public static List<Participant_DTO> ParticipantsInField { get => participantsInField; set => participantsInField = value; }
-
+        
         //get / set (add or remove as well) from dictionary
         public List<ArenaFieldPoint_DTO> FieldGS { get => field; set => field = value; }
-        #endregion
+      
     }
 }
