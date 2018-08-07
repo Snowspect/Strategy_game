@@ -26,8 +26,8 @@ namespace Strategy_game
     public partial class MainWindow : Window
     {
         #region localVariables
-        Member_DTO pDTO;
-        Member_Impl pImpl;
+        Participant_DTO pDTO;
+        Participant_Impl pImpl;
         
         Team_Impl tImpl;
         #endregion
@@ -38,21 +38,21 @@ namespace Strategy_game
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-            pImpl = new Member_Impl();
+            pImpl = new Participant_Impl();
             tImpl = new Team_Impl();
 
             //Creates an enemy team of 6
             tImpl.AddEnemyTeam("Tupac", "1");
             for (int i = 0; i < 6; i++)
             {
-                pDTO = new Member_DTO(100, 4, 4, 2, "Destroyer" + i, "Tupac", "a", "b", "c", "d", "e", "f");
+                pDTO = new Participant_DTO(100, 4, 4, 2, "Destroyer" + i, "Tupac", "a", "b", "c", "d", "e", "f");
                 pImpl.AddParticipantToList(pDTO);
             }
             //creates ally team and enemy team
             tImpl.AddAllyTeam("Wolf", "1");
             for (int i = 0; i < 6; i++)
             {
-                pDTO = new Member_DTO(100, 4, 4, 2, "Dan" + i, "Wolf", "a", "b", "c", "d", "e", "f");
+                pDTO = new Participant_DTO(100, 4, 4, 2, "Dan" + i, "Wolf", "a", "b", "c", "d", "e", "f");
                 pImpl.AddParticipantToList(pDTO);
             }
 
@@ -98,7 +98,7 @@ namespace Strategy_game
 
         private void PreBattlebutton_Click(object sender, RoutedEventArgs e)
         {
-            SetupArenaWindow pbw = new SetupArenaWindow(this,this, pImpl);
+            PreBattleFieldWindow pbw = new PreBattleFieldWindow(this,this, pImpl);
             pbw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             pbw.Show();
             this.Hide();

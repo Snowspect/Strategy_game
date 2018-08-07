@@ -20,6 +20,6 @@ namespace Strategy_game.Data.Interface_DAO
         void UpdateFieldToParticipant(P pDTO);
 
         //returns a participant from storage
-        Member_DTO GetParticipant_DTODB(S participant_name);
+        Participant_DTO GetParticipant_DTODB(S participant_name);
     }
 }

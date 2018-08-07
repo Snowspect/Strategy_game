@@ -24,8 +24,8 @@ namespace Strategy_game.GUI
         private Window w;
         private Boolean exitApp, backtrack;
         Arena_Impl arenaImpl;
-        Member_Impl pImpl;
-        ArenaFieldPoint_Impl fPImpl;
+        Participant_Impl pImpl;
+        FieldPoint_Impl fPImpl;
         #endregion
 
         #region constructors
@@ -34,13 +34,13 @@ namespace Strategy_game.GUI
 
         public ArenaWindow(Window w, Arena_Impl arenaImpl)
         {
-            pImpl = new Member_Impl();
-            fPImpl = new ArenaFieldPoint_Impl();
+            pImpl = new Participant_Impl();
+            fPImpl = new FieldPoint_Impl();
             this.arenaImpl = arenaImpl;
             this.w = w;
 
             //is triggered when coming from prefield window
-            if (w is SetupArenaWindow)
+            if (w is PreBattleFieldWindow)
             {
                 backtrack = true;
             }
@@ -130,7 +130,7 @@ namespace Strategy_game.GUI
             //moves participant in storage and on field list 
             //Updates participantDTO in storage 
             string participantToMove = ListOfParticipants.SelectedItem.ToString(); //retrieves name 
-            Member_DTO pDTO = pImpl.GetParticipant(participantToMove); 
+            Participant_DTO pDTO = pImpl.GetParticipant(participantToMove); 
 
             /** MOVING **/ 
             bool movementOkay = pImpl.CheckMovement(pDTO, AFP_DTO); //first checks if movement is okay
@@ -146,7 +146,7 @@ namespace Strategy_game.GUI
                 /** MOVING ENDS **/
             }
         }
-        public void ClearsImage(Member_DTO pDTO)
+        public void ClearsImage(Participant_DTO pDTO)
         {
             Image ima = new Image();
             ima = (Image)FieldGrid.FindName(pDTO.PointGS.ToString()); //finds image with x:Name that matches coords 
@@ -166,7 +166,7 @@ namespace Strategy_game.GUI
                 ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
             }
         }
-        public void SetsImage(Member_DTO pDTO)
+        public void SetsImage(Participant_DTO pDTO)
         {
             Image ima = new Image();
             //gets image from participant to move.
@@ -248,7 +248,7 @@ namespace Strategy_game.GUI
             //vælge en modstander tilfældigt af dem som er tilgængelige hvis der er nogle.
             //flyt til det felt
             string participant_name = ListOfParticipants.SelectedItem.ToString();
-            Member_DTO pDTO = pImpl.GetParticipant(participant_name);
+            Participant_DTO pDTO = pImpl.GetParticipant(participant_name);
             List<ArenaFieldPoint_DTO> FieldsWithAllianceToAttack = pImpl.CheckSurroundingFields(pDTO);
             Random r = new Random();
             ArenaFieldPoint_DTO AFP_DTO;
@@ -282,7 +282,7 @@ namespace Strategy_game.GUI
             }
         }
 
-        public void ActivateMovement(Member_DTO pDTO, ArenaFieldPoint_DTO AFP_DTO)
+        public void ActivateMovement(Participant_DTO pDTO, ArenaFieldPoint_DTO AFP_DTO)
         {
             ClearsImage(pDTO); //removes image
 
@@ -309,7 +309,7 @@ namespace Strategy_game.GUI
 
         public void StartTurnBasedBattle()
         {
-            List<Member_DTO> turnBasedMovementList = new List<Member_DTO>();
+            List<Participant_DTO> turnBasedMovementList = new List<Participant_DTO>();
             foreach (ArenaFieldPoint_DTO AFP_DTO in arenaImpl.GetField())
             {
                 if(AFP_DTO.PDTO != null)
@@ -322,7 +322,7 @@ namespace Strategy_game.GUI
 
         }
         //Shuffles a list and returns it
-        public List<Member_DTO> Shuffle(List<Member_DTO> turnBasedMovementList)
+        public List<Participant_DTO> Shuffle(List<Participant_DTO> turnBasedMovementList)
         {
             Random rng = new Random();
             int n = turnBasedMovementList.Count;
@@ -330,7 +330,7 @@ namespace Strategy_game.GUI
             {
                 n--;
                 int k = rng.Next(n + 1);
-                Member_DTO value = turnBasedMovementList[k];
+                Participant_DTO value = turnBasedMovementList[k];
                 turnBasedMovementList[k] = turnBasedMovementList[n];
                 turnBasedMovementList[n] = value;
             }

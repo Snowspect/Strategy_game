@@ -32,7 +32,7 @@ namespace Strategy_game.Func
         //checks if it has participant object pointed at it
         //removes active participant by replacing with new default one.
         //When you leave a field, overwrite its status so that you own it.
-        public void UpdateLeavingArenaFieldPoint(Member_DTO pDTO, string arena)
+        public void UpdateLeavingArenaFieldPoint(Participant_DTO pDTO, string arena)
         {
             int xComingFrom = pDTO.PointGS.XPoint;
             int yComingFrom = pDTO.PointGS.YPoint;
@@ -96,7 +96,7 @@ namespace Strategy_game.Func
         }
 
         //Checks for what is on the field at this given time.
-        public bool CheckField(ArenaFieldPoint_DTO AFP_DTO_param, Member_DTO pDTO)
+        public bool CheckField(ArenaFieldPoint_DTO AFP_DTO_param, Participant_DTO pDTO)
         {
             MessageBoxResult res;
             foreach (ArenaFieldPoint_DTO AFP_DTO in Arena_DTO.field)

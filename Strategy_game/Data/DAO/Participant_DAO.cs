@@ -9,33 +9,33 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data
 {  
-    class Member_DAO : IParticipant_IntDAO_Generic<Member_DTO, ArenaFieldPoint_DTO, string>
+    class Participant_DAO : IParticipant_IntDAO_Generic<Participant_DTO, ArenaFieldPoint_DTO, string>
     {
-        Member_DTO pDTO;
+        Participant_DTO pDTO;
         Storage st = new Storage();
 
-        public Member_DAO()
+        public Participant_DAO()
         {
-            pDTO = new Member_DTO();
+            pDTO = new Participant_DTO();
         }
 
         //Adds participant to layer (currently only one storage class)
-        public void AddToStorage(Member_DTO pDTO)
+        public void AddToStorage(Participant_DTO pDTO)
         {            
             st.AddToLayer(pDTO);
         }
         //gets lists of participants (currently just accessing storage class)
-        public List<Member_DTO> GetParticipantList()
+        public List<Participant_DTO> GetParticipantList()
         {
             return st.GetParticipantList();
         }
         //Adds field to a specific particpants (currently just accessing storage class
-        public void UpdateFieldToParticipant(Member_DTO pDTO)
+        public void UpdateFieldToParticipant(Participant_DTO pDTO)
         {
             st.UpdateFieldToParticipant(pDTO, pDTO.PointGS);
         }
         //Gets participant from storage (ment to do database retrieval)
-        public Member_DTO GetParticipant_DTODB(string participant_name)
+        public Participant_DTO GetParticipant_DTODB(string participant_name)
         {
             pDTO = st.GetParticipant_DTOST(participant_name); //placeholder for database access
             return pDTO;

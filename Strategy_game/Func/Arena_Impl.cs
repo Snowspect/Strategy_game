@@ -10,16 +10,16 @@ using System.Windows;
 
 namespace Strategy_game.Func
 {
-    public class Arena_Impl : IArena_Impl<int, Member_DTO, ArenaFieldPoint_DTO>
+    public class Arena_Impl : IArena_Impl<int, Participant_DTO, ArenaFieldPoint_DTO>
     {
         
-        ArenaFieldPoint_Impl fImpl;
+        FieldPoint_Impl fImpl;
         public Arena_Impl()
         {
-            fImpl = new ArenaFieldPoint_Impl();
+            fImpl = new FieldPoint_Impl();
         }
 
-        public void AddParticipantToField(Member_DTO pDTO)
+        public void AddParticipantToField(Participant_DTO pDTO)
         {
             pDTO.PointGS = fImpl.GetArenaField(pDTO.PointGS.XPoint, pDTO.PointGS.YPoint); //Adds correct point object to participant
             pDTO.PointGS.PDTO = pDTO; //Adds participant to Arena
@@ -30,7 +30,7 @@ namespace Strategy_game.Func
             Arena_DTO.field.Add(fpDTO);
         }
 
-        public void CreateFullArena() //Burde tag et argument af AFP_DTO så der ikke er tilknytning mellem den her og ArenaFieldPoint_Impl
+        public void CreateFullArena()
         {
             int height = 6;
             int length = 6;

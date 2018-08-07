@@ -115,9 +115,9 @@ namespace Strategy_game.Data.DAO
             throw new NotImplementedException();
         }
 
-        public List<Member_DTO> GetEnemyTeamList(string enemyTeamName)
+        public List<Participant_DTO> GetEnemyTeamList(string enemyTeamName)
         {
-            List<Member_DTO> tmp = new List<Member_DTO>();
+            List<Participant_DTO> tmp = new List<Participant_DTO>();
             foreach (var item in Storage.StParticipant)
             {
                 if(item.TeamGS.Equals(enemyTeamName))
@@ -127,10 +127,10 @@ namespace Strategy_game.Data.DAO
             }
             return tmp;
         }
-        public List<Member_DTO> GetAllyTeamList(string allyTeamName)
+        public List<Participant_DTO> GetAllyTeamList(string allyTeamName)
         {
-            List<Member_DTO> tmp = new List<Member_DTO>();
-            foreach (Member_DTO pDTO in Storage.StParticipant)
+            List<Participant_DTO> tmp = new List<Participant_DTO>();
+            foreach (Participant_DTO pDTO in Storage.StParticipant)
             {
                 if (pDTO.TeamGS.Equals(allyTeamName))
                 {

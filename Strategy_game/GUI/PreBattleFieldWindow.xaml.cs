@@ -17,30 +17,30 @@ namespace Strategy_game.GUI
     /// <summary>
     /// Interaction logic for PreBattleFieldWindow.xaml
     /// </summary>
-    public partial class SetupArenaWindow : Window, IPreBattleFieldWindow_Impl<string, ArenaFieldPoint_DTO, Member_DTO>
+    public partial class PreBattleFieldWindow : Window, IPreBattleFieldWindow_Impl<string, ArenaFieldPoint_DTO, Participant_DTO>
     {
         #region localVariables
         MainWindow mw;
         Window w;
         private Boolean exitApp;
-        Member_Impl pImpl = new Member_Impl();
+        Participant_Impl pImpl = new Participant_Impl();
         Arena_Impl ArenaImpl;
         Team_Impl tImpl;
         ArenaWindow fw;
         NameScope ScopeName = new NameScope();
         int skinCounter = 0;
-        ArenaFieldPoint_Impl fPImpl;
+        FieldPoint_Impl fPImpl;
         #endregion
 
         #region constructors
-        public SetupArenaWindow()
+        public PreBattleFieldWindow()
         {
             InitializeComponent();
         }
-        public SetupArenaWindow(MainWindow mw, Window w, Member_Impl pImpl)
+        public PreBattleFieldWindow(MainWindow mw, Window w, Participant_Impl pImpl)
         {
             this.ArenaImpl = new Arena_Impl();
-            fPImpl = new ArenaFieldPoint_Impl();
+            fPImpl = new FieldPoint_Impl();
             this.pImpl = pImpl;
             this.w = w;
             this.mw = mw;
@@ -144,7 +144,7 @@ namespace Strategy_game.GUI
             }
         }
 
-        public void ClearsImage(Member_DTO pDTO)
+        public void ClearsImage(Participant_DTO pDTO)
         {
             if (pDTO != null) //checks if parsed participant is actually existing
             {
@@ -161,7 +161,7 @@ namespace Strategy_game.GUI
                }
             }
         }
-        public void SetsImage(Member_DTO pDTO)
+        public void SetsImage(Participant_DTO pDTO)
         {
             Image ima = new Image();
             //gets image from participant to move.
@@ -254,7 +254,7 @@ namespace Strategy_game.GUI
         private void SubmitMove_Button(object sender, RoutedEventArgs e)
         {
             string participantToMove = MemberListBox.SelectedItem.ToString(); //retrieves name
-            Member_DTO pDTO = pImpl.GetParticipant(participantToMove);
+            Participant_DTO pDTO = pImpl.GetParticipant(participantToMove);
             pDTO.TeamColorGS = "purple";
             int x = int.Parse(txtXCoord.Text);
             int y = int.Parse(txtYCoord.Text);
@@ -315,7 +315,7 @@ namespace Strategy_game.GUI
                 string allyTeam = tImpl.GetAllyTeamName();
                 int coordCounter = 0; //used to give each player a set of coords
                 skinCounter = 0;
-                foreach (Member_DTO pDTO in tImpl.GetAllyTeam(allyTeam))
+                foreach (Participant_DTO pDTO in tImpl.GetAllyTeam(allyTeam))
                 {
                     pDTO.TeamColorGS = "purple";
                     //Gets field from arena based on x and y coords from random field list.
@@ -357,13 +357,13 @@ namespace Strategy_game.GUI
                         if (AFP_DTO.PDTO.TeamGS.Equals(TeamListBox.SelectedValue.ToString()))
                         {
                             AFP_DTO.PDTO.TeamColorGS = "purple";
-                            //Arena_DTO.allyTeam.Add(AFP_DTO.PDTO);
+                            Arena_DTO.allyTeam.Add(AFP_DTO.PDTO);
                         }
                         else
                         {
                             AFP_DTO.PDTO.TeamColorGS = "Blue";
                             AFP_DTO.PDTO.PointGS.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.enemyOccupied;
-                            //Arena_DTO.enemyTeam.Add(AFP_DTO.PDTO);
+                            Arena_DTO.enemyTeam.Add(AFP_DTO.PDTO);
                         }
                     }
                 }

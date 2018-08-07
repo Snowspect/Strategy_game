@@ -14,8 +14,8 @@ namespace Strategy_game.Data.DTO
         public static List<ArenaFieldPoint_DTO> field = new List<ArenaFieldPoint_DTO>();
         //private static List<Participant_DTO> participantsInField;
 
-        public static List<Member_DTO> allyTeam;
-        public static List<Member_DTO> enemyTeam;
+        public static List<Participant_DTO> allyTeam;
+        public static List<Participant_DTO> enemyTeam;
 
         public Arena_DTO()
         {
@@ -23,6 +23,7 @@ namespace Strategy_game.Data.DTO
         }
 
         #region property accessers
+        public static List<Participant_DTO> ParticipantsInField { get => participantsInField; set => participantsInField = value; }
 
         //get / set (add or remove as well) from dictionary
         public List<ArenaFieldPoint_DTO> FieldGS { get => field; set => field = value; }

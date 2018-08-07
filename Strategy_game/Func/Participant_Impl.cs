@@ -14,21 +14,21 @@ namespace Strategy_game.Func
     /// <summary>
     /// Handles the implementation logic related to participants
     /// </summary>
-    public class Member_Impl : IParticipant_IntImpl_Generic<Member_DTO, string>
+    public class Participant_Impl : IParticipant_IntImpl_Generic<Participant_DTO, string>
     {
         #region localVariables
-        Member_DAO pDAO;
-        Member_DTO pDTO;
+        Participant_DAO pDAO;
+        Participant_DTO pDTO;
         Arena_Impl ArenaImpl;
         FieldPoint_Impl fPImpl;
         Team_DAO team;
         #endregion
 
         #region constructor
-        public Member_Impl()
+        public Participant_Impl()
         {
-            pDAO = new Member_DAO();
-            pDTO = new Member_DTO();
+            pDAO = new Participant_DAO();
+            pDTO = new Participant_DTO();
             team = new Team_DAO();
             ArenaImpl = new Arena_Impl();
             fPImpl = new FieldPoint_Impl();
@@ -44,21 +44,21 @@ namespace Strategy_game.Func
          */
         #region methods
         //returns a participant based on a name
-        public Member_DTO GetParticipant(string participant_name)
+        public Participant_DTO GetParticipant(string participant_name)
         {
             //Access DAO, return Participant.
             pDTO = pDAO.GetParticipant_DTODB(participant_name);
             return pDTO;
         }
 
-        public void MoveParticipant(Member_DTO pDTO, ArenaFieldPoint_DTO AFP_DTO)
+        public void MoveParticipant(Participant_DTO pDTO, ArenaFieldPoint_DTO AFP_DTO)
         {
             pDTO.PointGS = AFP_DTO; //updates point reference
             AssignPicture(pDTO);
             ArenaImpl.AddParticipantToField(pDTO); //creates a reference binding between active participant and the field it is moving to
         }
 
-        public void AssignPicture(Member_DTO pDTO)
+        public void AssignPicture(Participant_DTO pDTO)
         {
             if (pDTO.ImageGS.Equals("NoPicture"))
             {
@@ -67,18 +67,18 @@ namespace Strategy_game.Func
             }
         }
         //Adds a participant to storage
-        public void AddParticipantToList(Member_DTO pDTO) /*adds it to static layer in storage class*/ { pDAO.AddToStorage(pDTO); }
+        public void AddParticipantToList(Participant_DTO pDTO) /*adds it to static layer in storage class*/ { pDAO.AddToStorage(pDTO); }
         
         //adds a field to a participant
-        public void UpdateFieldToParticipant(Member_DTO pDTO) {
+        public void UpdateFieldToParticipant(Participant_DTO pDTO) {
             /*Access DTO in database, add field information*/
             pDAO.UpdateFieldToParticipant(pDTO); }
 
         //returns current Participant DTO
-        public List<Member_DTO> GetCurrentList() => pDAO.GetParticipantList(); //gets from static layer in st
+        public List<Participant_DTO> GetCurrentList() => pDAO.GetParticipantList(); //gets from static layer in st
 
         //calls DAO to get image filepath from participant
-        public string getImageFromParticipant(Member_DTO pDTO)
+        public string getImageFromParticipant(Participant_DTO pDTO)
         {
             return pDTO.ImageGS;
             //return pDAO.GetParticipant_DTODB(pDTO.NameGS).ImageGS;
@@ -86,7 +86,7 @@ namespace Strategy_game.Func
 
         //gets fields within range and checks if player can move to them
         //returns true if so otherwize false
-        public bool CheckMovement(Member_DTO pDTO, ArenaFieldPoint_DTO AFP_DTO)
+        public bool CheckMovement(Participant_DTO pDTO, ArenaFieldPoint_DTO AFP_DTO)
         {
             List<ArenaFieldPoint_DTO> allowedMovementRange = GetMovementRange(pDTO);
 
@@ -103,7 +103,7 @@ namespace Strategy_game.Func
         }
 
         //
-        public List<ArenaFieldPoint_DTO> GetMovementRange(Member_DTO pDTO)
+        public List<ArenaFieldPoint_DTO> GetMovementRange(Participant_DTO pDTO)
         {
             int allowedSteps = pDTO.MoveGS;
             int medioX = pDTO.PointGS.XPoint;
@@ -146,7 +146,7 @@ namespace Strategy_game.Func
         }
 
         //gets a list of possible ally members to attack, can return empty.
-        public List<ArenaFieldPoint_DTO> CheckSurroundingFields(Member_DTO pDTO)
+        public List<ArenaFieldPoint_DTO> CheckSurroundingFields(Participant_DTO pDTO)
         {
             List<ArenaFieldPoint_DTO> allowedMovementRange = GetMovementRange(pDTO);
             List<ArenaFieldPoint_DTO> allyMembersToAttack = new List<ArenaFieldPoint_DTO>();
@@ -167,16 +167,16 @@ namespace Strategy_game.Func
         #region subregion - wkA,stA,immA
         //Has the role of inserting into the participant and in that case also contacting database and changing participant information.
         //also returns participant directly to call so the participant is ready for battle directly (could even be with a buff that lets you change that attribute)
-        public Member_DTO AddStrongAgainst(string pName_StAgainst, Member_DTO pDTO) { throw new NotImplementedException(); }
-        public Member_DTO RemoveStrongAgainst(string pName_StAgainst, Member_DTO pDTO) { throw new NotImplementedException(); }
+        public Participant_DTO AddStrongAgainst(string pName_StAgainst, Participant_DTO pDTO) { throw new NotImplementedException(); }
+        public Participant_DTO RemoveStrongAgainst(string pName_StAgainst, Participant_DTO pDTO) { throw new NotImplementedException(); }
         public string GetStrongAgainst() { throw new NotImplementedException(); }
 
-        public Member_DTO AddWeakAgainst(string pName_WkAgainst, Member_DTO pDTO) { throw new NotImplementedException(); }
-        public Member_DTO RemoveWeakAgainst(string pName_WkAgainst, Member_DTO pDTO) { throw new NotImplementedException(); }
+        public Participant_DTO AddWeakAgainst(string pName_WkAgainst, Participant_DTO pDTO) { throw new NotImplementedException(); }
+        public Participant_DTO RemoveWeakAgainst(string pName_WkAgainst, Participant_DTO pDTO) { throw new NotImplementedException(); }
         public string GetWeakAgainast() { throw new NotImplementedException(); }
 
-        public Member_DTO AddImmuneAgainst(string pNameImmAgainast, Member_DTO pDTO) { throw new NotImplementedException(); }
-        public Member_DTO RemoveImmuneAgainst(string pNameImmAgainast, Member_DTO pDTO) { throw new NotImplementedException(); }
+        public Participant_DTO AddImmuneAgainst(string pNameImmAgainast, Participant_DTO pDTO) { throw new NotImplementedException(); }
+        public Participant_DTO RemoveImmuneAgainst(string pNameImmAgainast, Participant_DTO pDTO) { throw new NotImplementedException(); }
         public string GetImmuneAgainst() { throw new NotImplementedException(); }
         #endregion
         #endregion 
