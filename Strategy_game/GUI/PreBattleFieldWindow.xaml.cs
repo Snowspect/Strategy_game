@@ -357,13 +357,13 @@ namespace Strategy_game.GUI
                         if (AFP_DTO.PDTO.TeamGS.Equals(TeamListBox.SelectedValue.ToString()))
                         {
                             AFP_DTO.PDTO.TeamColorGS = "purple";
-                            //Arena_DTO.allyTeam.Add(AFP_DTO.PDTO);
+                            Arena_DTO.allyTeam.Add(AFP_DTO.PDTO);
                         }
                         else
                         {
                             AFP_DTO.PDTO.TeamColorGS = "Blue";
                             AFP_DTO.PDTO.PointGS.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.enemyOccupied;
-                            //Arena_DTO.enemyTeam.Add(AFP_DTO.PDTO);
+                            Arena_DTO.enemyTeam.Add(AFP_DTO.PDTO);
                         }
                     }
                 }

@@ -169,5 +169,20 @@ namespace Strategy_game.Func
             }
             return false;
         }
+
+        /// <summary>
+        /// Removes a warrior from their teams list
+        /// </summary>
+        /// <param name="pDTO"></param>
+        public void DeletePLayerFromArena(Participant_DTO pDTO)
+        {
+            if(pDTO.TeamColorGS.Equals("purple"))
+            {
+                Arena_DTO.allyTeam.Remove(pDTO);
+            }else
+            {
+                Arena_DTO.enemyTeam.Remove(pDTO);
+            }
+        }
     }
 }

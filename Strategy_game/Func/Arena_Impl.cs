@@ -50,8 +50,6 @@ namespace Strategy_game.Func
             tmp1.GetField();
         }
 
-
-
         public void EmptyField()
         {
             Arena_DTO.field.Clear();
