@@ -6,33 +6,29 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data.Interface_Impl
 {
-    interface IParticipant_IntImpl_Generic<P,S>
+    interface IParticipant_IntImpl_Generic<S,I,F,AF>
     {
-        /// <summary>
-        /// Replace T with desired parameter
-        /// Use to access DAO in data layer (that then will add to storage
-        /// </summary>
-        void AddParticipantToList(P pDTO);
-        /// <summary>
-        /// Use to access DAO and data layer that will then retrieve from storage
-        /// </summary>
-        List<P> GetCurrentList();
+        F GetParticipant(S participant_name);
 
-        void UpdateFieldToParticipant(P pDTO);
+        void MoveParticipant(F pDTO, AF AFP_DTO);
 
-        P GetParticipant(S participant_name);
+        void AssignPicture(F pDTO);
 
-        /// Replace T with desired parameter
-        /// THe intended is a string
-        /// Getters and setters for enemies
-        P AddStrongAgainst(S participant_name, P pDTO);
-        P RemoveStrongAgainst(S participant_name, P pDTO);
-        S GetStrongAgainst();
-        P AddWeakAgainst(S participant_name, P pDTO);
-        P RemoveWeakAgainst(S participant_name, P pDTO);
-        S GetWeakAgainast();
-        P AddImmuneAgainst(S participant_name , P pDTO);
-        P RemoveImmuneAgainst(S participant_name , P pDTO);
-        S GetImmuneAgainst();
+        void AddParticipantToList(F pDTO);
+
+        void UpdateFieldToParticipant(F pDTO);
+
+        List<F> GetCurrentList();
+
+        S getImageFromParticipant(F pDTO);
+
+        bool CheckMovement(F pDTO, AF AFP_DTO);
+
+        List<AF> GetMovementRange(F pDTO);
+
+        List<AF> CheckSurroundingFields(F pDTO);
+
+        List<I> ParseInts(List<S> tp);
+
     }
 }

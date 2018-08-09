@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data.Interface_Impl
 {
-    interface ITeam_Impl<Z,P>
+    interface ITeam_Impl<S,F>
     {
-        //ally team
-        void AddAllyTeam(Z teamName, Z imageName);
-        Dictionary<Z, Z> GetAllyTeamList();
-        Z GetAllyTeamImage(Z teamName);
+        void AddAllyTeam(S teamName, S imageName);
+        Dictionary<S, S> GetAllyTeamList();
+        S GetAllyTeamImage(S teamName);
+        S GetAllyTeamName();
+        List<F> GetAllyTeam(S allyTeamName);
+        string GetEnemyTeamName();
+        List<F> GetEnemyTeam(S enemyTeamName);
+        void AddEnemyTeam(S enemyTeamName, S enemyTeamImage);
 
-        //enemy team
-        Z GetEnemyTeamName();
-        List<P> GetEnemyTeam(Z enemyTeamName);
-        void AddEnemyTeam(Z enemyTeamName, Z enemyTeamImage);
     }
 }

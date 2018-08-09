@@ -2,6 +2,7 @@
 using Strategy_game.Data.DAO;
 using Strategy_game.Data.DTO;
 using Strategy_game.Data.Interface_Impl;
+using Strategy_game.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,24 +15,28 @@ namespace Strategy_game.Func
     /// <summary>
     /// Handles the implementation logic related to participants
     /// </summary>
-    public class Participant_Impl : IParticipant_IntImpl_Generic<Participant_DTO, string>
+    public class Fighter_Impl : IParticipant_IntImpl_Generic<string, int, Fighter_DTO, ArenaFieldPoint_DTO>
     {
         #region localVariables
         Participant_DAO pDAO;
-        Participant_DTO pDTO;
         Arena_Impl ArenaImpl;
-        FieldPoint_Impl fPImpl;
         Team_DAO team;
+        int skinCounter = 0;
         #endregion
 
         #region constructor
-        public Participant_Impl()
+        public Fighter_Impl()
         {
-            pDAO = new Participant_DAO();
-            pDTO = new Participant_DTO();
-            team = new Team_DAO();
-            ArenaImpl = new Arena_Impl();
-            fPImpl = new FieldPoint_Impl();
+            this.pDAO = new Participant_DAO();
+            this.team = new Team_DAO();
+            this.ArenaImpl = new Arena_Impl();
+        }
+        
+        public Fighter_Impl(Participant_DAO pDAO, Team_DAO team_DAO, Arena_Impl ArenaImpl)
+        {
+            this.pDAO = pDAO;
+            team = team_DAO;
+            this.ArenaImpl = ArenaImpl;
         }
         #endregion
 
@@ -43,42 +48,52 @@ namespace Strategy_game.Func
          * GetImageFromParticipant
          */
         #region methods
-        //returns a participant based on a name
-        public Participant_DTO GetParticipant(string participant_name)
+        /// <summary>
+        /// gets a fighter based on a name
+        /// </summary>
+        /// <param name="participant_name"></param>
+        /// <returns></returns>
+        public Fighter_DTO GetParticipant(string participant_name)
         {
-            //Access DAO, return Participant.
-            pDTO = pDAO.GetParticipant_DTODB(participant_name);
+            Fighter_DTO pDTO = pDAO.GetParticipant_DTODB(participant_name);
             return pDTO;
         }
 
-        public void MoveParticipant(Participant_DTO pDTO, ArenaFieldPoint_DTO AFP_DTO)
+        /// <summary>
+        /// Sets is coords of the field to move to
+        /// Assigns the fighter a skin
+        /// Finally adds the participant to the new field
+        /// </summary>
+        /// <param name="pDTO"></param>
+        /// <param name="AFP_DTO"></param>
+        public void MoveParticipant(Fighter_DTO pDTO, ArenaFieldPoint_DTO AFP_DTO)
         {
             pDTO.PointGS = AFP_DTO; //updates point reference
             AssignPicture(pDTO);
             ArenaImpl.AddParticipantToField(pDTO); //creates a reference binding between active participant and the field it is moving to
         }
 
-        public void AssignPicture(Participant_DTO pDTO)
+        public void AssignPicture(Fighter_DTO pDTO)
         {
             if (pDTO.ImageGS.Equals("NoPicture"))
             {
-                pDTO.ImageGS = Storage.AllianceSkins[Storage.skinCounter];
-                Storage.skinCounter++;
+                pDTO.ImageGS = pDAO.GetAllianceSkin(skinCounter);
+                skinCounter++;
             }
         }
         //Adds a participant to storage
-        public void AddParticipantToList(Participant_DTO pDTO) /*adds it to static layer in storage class*/ { pDAO.AddToStorage(pDTO); }
+        public void AddParticipantToList(Fighter_DTO pDTO) /*adds it to static layer in storage class*/ { pDAO.AddToStorage(pDTO); }
         
         //adds a field to a participant
-        public void UpdateFieldToParticipant(Participant_DTO pDTO) {
+        public void UpdateFieldToParticipant(Fighter_DTO pDTO) {
             /*Access DTO in database, add field information*/
             pDAO.UpdateFieldToParticipant(pDTO); }
 
         //returns current Participant DTO
-        public List<Participant_DTO> GetCurrentList() => pDAO.GetParticipantList(); //gets from static layer in st
+        public List<Fighter_DTO> GetCurrentList() => pDAO.GetParticipantList(); //gets from static layer in st
 
         //calls DAO to get image filepath from participant
-        public string getImageFromParticipant(Participant_DTO pDTO)
+        public string getImageFromParticipant(Fighter_DTO pDTO)
         {
             return pDTO.ImageGS;
             //return pDAO.GetParticipant_DTODB(pDTO.NameGS).ImageGS;
@@ -86,7 +101,7 @@ namespace Strategy_game.Func
 
         //gets fields within range and checks if player can move to them
         //returns true if so otherwize false
-        public bool CheckMovement(Participant_DTO pDTO, ArenaFieldPoint_DTO AFP_DTO)
+        public bool CheckMovement(Fighter_DTO pDTO, ArenaFieldPoint_DTO AFP_DTO)
         {
             List<ArenaFieldPoint_DTO> allowedMovementRange = GetMovementRange(pDTO);
 
@@ -102,7 +117,7 @@ namespace Strategy_game.Func
         }
 
         //
-        public List<ArenaFieldPoint_DTO> GetMovementRange(Participant_DTO pDTO)
+        public List<ArenaFieldPoint_DTO> GetMovementRange(Fighter_DTO pDTO)
         {
             int allowedSteps = pDTO.MoveGS;
             int medioX = pDTO.PointGS.XPoint;
@@ -113,14 +128,14 @@ namespace Strategy_game.Func
             {
                 if (i <= 6) //makes sure we don't exceed the highest x coord
                 {
-                    allowedMovementRange.Add(fPImpl.GetArenaField(i, medioY)); //Adds number of "right" allowedSteps AFP_DTOs to allowedMovementRange
+                    allowedMovementRange.Add(ArenaImpl.GetArenaField(i, medioY)); //Adds number of "right" allowedSteps AFP_DTOs to allowedMovementRange
                 }
             }
             for (int i = medioX - 1; i >= medioX - allowedSteps; i--) //goes from x coord minus 1 to medioX-allowedsteps
             {
                 if (i > 0) //makes sure we don't exceeed the lowest xcoord
                 {
-                    allowedMovementRange.Add(fPImpl.GetArenaField(i, medioY)); //Adds number of "left" allowedSteps AFP_DTOs to allowedMovementRange
+                    allowedMovementRange.Add(ArenaImpl.GetArenaField(i, medioY)); //Adds number of "left" allowedSteps AFP_DTOs to allowedMovementRange
                 }
             }
             #endregion
@@ -129,14 +144,14 @@ namespace Strategy_game.Func
             {
                 if (i <= 6)
                 {
-                    allowedMovementRange.Add(fPImpl.GetArenaField(medioX, i)); //Adds number of "upper" allowedSteps AFP_DTOs to allowedMovementRange
+                    allowedMovementRange.Add(ArenaImpl.GetArenaField(medioX, i)); //Adds number of "upper" allowedSteps AFP_DTOs to allowedMovementRange
                 }
             }
             for (int i = medioY - 1; i >= medioY - allowedSteps; i--) //goes from y coord - 1 to y coord - allowedSteps
             {
                 if (i > 0)
                 {
-                    allowedMovementRange.Add(fPImpl.GetArenaField(medioX, i)); //Adds number of "lower" allowedSteps AFP_DTOs to allowedMovementRange
+                    allowedMovementRange.Add(ArenaImpl.GetArenaField(medioX, i)); //Adds number of "lower" allowedSteps AFP_DTOs to allowedMovementRange
                 }
             }
             #endregion
@@ -145,7 +160,7 @@ namespace Strategy_game.Func
         }
 
         //gets a list of possible ally members to attack, can return empty.
-        public List<ArenaFieldPoint_DTO> CheckSurroundingFields(Participant_DTO pDTO)
+        public List<ArenaFieldPoint_DTO> CheckSurroundingFields(Fighter_DTO pDTO)
         {
             List<ArenaFieldPoint_DTO> allowedMovementRange = GetMovementRange(pDTO);
             List<ArenaFieldPoint_DTO> allyMembersToAttack = new List<ArenaFieldPoint_DTO>();
@@ -163,21 +178,44 @@ namespace Strategy_game.Func
         }
 
 
-        #region subregion - wkA,stA,immA
-        //Has the role of inserting into the participant and in that case also contacting database and changing participant information.
-        //also returns participant directly to call so the participant is ready for battle directly (could even be with a buff that lets you change that attribute)
-        public Participant_DTO AddStrongAgainst(string pName_StAgainst, Participant_DTO pDTO) { throw new NotImplementedException(); }
-        public Participant_DTO RemoveStrongAgainst(string pName_StAgainst, Participant_DTO pDTO) { throw new NotImplementedException(); }
-        public string GetStrongAgainst() { throw new NotImplementedException(); }
-
-        public Participant_DTO AddWeakAgainst(string pName_WkAgainst, Participant_DTO pDTO) { throw new NotImplementedException(); }
-        public Participant_DTO RemoveWeakAgainst(string pName_WkAgainst, Participant_DTO pDTO) { throw new NotImplementedException(); }
-        public string GetWeakAgainast() { throw new NotImplementedException(); }
-
-        public Participant_DTO AddImmuneAgainst(string pNameImmAgainast, Participant_DTO pDTO) { throw new NotImplementedException(); }
-        public Participant_DTO RemoveImmuneAgainst(string pNameImmAgainast, Participant_DTO pDTO) { throw new NotImplementedException(); }
-        public string GetImmuneAgainst() { throw new NotImplementedException(); }
-        #endregion
         #endregion 
+        public List<int> ParseInts(List<string> tp)
+        {
+            List<int> parsedInts = new List<int>();
+            //Tests if one of the items are not an integer
+            foreach (var item in tp)
+            {
+                try
+                {
+                    if (int.TryParse(item, out int result) == false) //result is not used, returns 0 since it fails.
+                    {
+                        throw new NotInteger("This is not a number: " + item);
+                    }
+                    else
+                    {
+                        parsedInts.Add(int.Parse(item));
+                    }
+                }
+                catch (NotInteger b)
+                {
+                    Console.WriteLine(b);
+                    Console.WriteLine(b.StackTrace.ToString());
+                }
+                catch (Exception exec)
+                {
+                    Console.WriteLine(exec.StackTrace.ToString());
+                    MessageBox.Show("Exception not related to integerParsing");
+                }
+            }
+            return parsedInts;
+        }
+        public string GetAllianceSkin(int counter)
+        {
+            return pDAO.GetAllianceSkin(counter);
+        }
+        public string GetHordeskin(int counter)
+        {
+            return pDAO.GetHordeSkin(counter);
+        }
     }
 }

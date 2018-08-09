@@ -66,17 +66,18 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Data\DAO\Arena_DAO.cs" />
     <Compile Include="Data\DAO\Participant_DAO.cs" />
     <Compile Include="Data\DAO\Storage.cs" />
     <Compile Include="Data\DAO\Team_DAO.cs" />
     <Compile Include="Data\DTO\ArenaFieldPoint_DTO.cs" />
     <Compile Include="Data\DTO\FieldStatus_DTO.cs" />
     <Compile Include="Data\DTO\Arena_DTO.cs" />
-    <Compile Include="Data\DTO\Participant_DTO.cs" />
+    <Compile Include="Data\DTO\Fighter_DTO.cs" />
+    <Compile Include="Data\Interface_DAO\IArena_DAO.cs" />
     <Compile Include="Data\Interface_DAO\IParticipant_IntDAO_Generic.cs" />
     <Compile Include="Data\Interface_DAO\ITeam_intDAO_generic.cs" />
     <Compile Include="Data\Interface_Impl\IArena_Impl.cs" />
-    <Compile Include="Data\Interface_Impl\IGameLogic_Impl.cs" />
     <Compile Include="Data\Interface_Impl\IParticipant_IntImpl_Generic.cs" />
     <Compile Include="Data\Interface_Impl\ITeam_Impl.cs" />
     <Compile Include="Data\Interface_windows\ICreateParticipantWindow_Impl.cs" />
@@ -85,9 +86,8 @@
     <Compile Include="Exceptions\DuplicateImage.cs" />
     <Compile Include="Exceptions\EmptyArray.cs" />
     <Compile Include="Exceptions\NotInteger.cs" />
-    <Compile Include="Func\FieldPoint_Impl.cs" />
     <Compile Include="Func\Arena_Impl.cs" />
-    <Compile Include="Func\Participant_Impl.cs" />
+    <Compile Include="Func\Fighter_Impl.cs" />
     <Compile Include="Func\Team_Impl.cs" />
     <Compile Include="GUI\ArenaWindow.xaml.cs">
       <DependentUpon>ArenaWindow.xaml</DependentUpon>

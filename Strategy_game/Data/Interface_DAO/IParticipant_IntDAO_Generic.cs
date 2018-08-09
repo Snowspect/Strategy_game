@@ -6,20 +6,13 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data.Interface_DAO
 {
-    interface IParticipant_IntDAO_Generic<P,E,S>
+    interface IParticipant_IntDAO_Generic<F,S, I>
     {
-        /// Replace T with desired parameter
-        /// Use to add to Storage
-        void AddToStorage (P pDTO);
-
-        /// Replace T with desired parameter
-        /// Use to retrieve from storage
-        List<P> GetParticipantList();
-
-        //Adds a fieldPoint_DTO to a participant dto.
-        void UpdateFieldToParticipant(P pDTO);
-
-        //returns a participant from storage
-        Participant_DTO GetParticipant_DTODB(S participant_name);
+        void AddToStorage(F pDTO);
+        List<F> GetParticipantList();
+        void UpdateFieldToParticipant(F pDTO);
+        F GetParticipant_DTODB(S participant_name);
+        S GetAllianceSkin(I counter);
+        S GetHordeSkin(I counter);
     }
 }

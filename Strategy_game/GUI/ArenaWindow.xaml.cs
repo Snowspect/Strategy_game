@@ -15,31 +15,28 @@ using System.Windows.Media.Imaging;
 namespace Strategy_game.GUI
 {
 
-    public partial class ArenaWindow : Window//, IFieldWindow_Impl<int, string>
+    public partial class ArenaWindow : Window, IFieldWindow_Impl<Fighter_DTO, ArenaFieldPoint_DTO>
     {
         #region localVariables
-        NameScope ScopeName = new NameScope();
-        private MainWindow mw;
+        private NameScope ScopeName = new NameScope();
         private Window w;
         private Boolean exitApp, backtrack;
-        private bool runGame = true;
-        private bool newGame = true;
-        private bool loop = true;
+
         private string hordeTxt = "Horde is playing, please press the 'Activate Horde' button";
         private string allianceTxt = "Alliance is playing, please enter coords and submit your move";
-        Arena_Impl arenaImpl;
-        Participant_Impl pImpl;
-        FieldPoint_Impl fPImpl;
+        private Arena_Impl arenaImpl;
+        private Fighter_Impl pImpl;
+
         #endregion
 
         #region constructors
         //Not used either
         public ArenaWindow() => InitializeComponent();
 
-        public ArenaWindow(Window w, Arena_Impl arenaImpl)
+        public ArenaWindow(Window w, Arena_Impl arenaImpl, Fighter_Impl pImpl)
         {
-            pImpl = new Participant_Impl();
-            fPImpl = new FieldPoint_Impl();
+            this.pImpl = pImpl; 
+
             this.arenaImpl = arenaImpl;
             this.w = w;
 
@@ -59,8 +56,8 @@ namespace Strategy_game.GUI
             InsertParticipantsToField();
 
             ListOfParticipants.SelectedIndex = 0;
-            Participant_DTO firstFighter = pImpl.GetParticipant(ListOfParticipants.SelectedValue.ToString());
-            if (firstFighter.TeamColorGS.Equals("Blue")) //only triggered if the first fighter is Horde
+            Fighter_DTO firstFighter = pImpl.GetParticipant(ListOfParticipants.SelectedValue.ToString()); //is allowed due to not otherwize being able to access it.
+            if (firstFighter.TeamColorGS.Equals("blue")) //only triggered if the first fighter is Horde
             {
                 xCoord.IsHitTestVisible = false;
                 yCoord.IsHitTestVisible = false;
@@ -85,10 +82,6 @@ namespace Strategy_game.GUI
 
         private void YCoord_TextChanged(object sender, TextChangedEventArgs e) { if (yCoord.Text.Length > 0) HintYCoord.Visibility = Visibility.Hidden; else HintYCoord.Visibility = Visibility.Visible; }
 
-        // Accesses the previous window
-        private void ToPreviousWindow_Click(object sender, RoutedEventArgs e)
-        { /*do not close mw.*/ exitApp = false; /*loads mainWindow*/ if (w is MainWindow) { this.w.Show(); this.Close(); } /*loads any other window */ else { w = new Window(); w.Show(); this.Close(); } }
-
         //Loads mainwindow if not coming from preField otherwize backtracks. ((refer to prefield closed event handler))
         private void ToMenuWindow_Click(object sender, RoutedEventArgs e)
         {
@@ -98,7 +91,6 @@ namespace Strategy_game.GUI
 
                 //do nothing
             }
-            else { mw.Show(); exitApp = false; this.Close(); }
         }
         #endregion
 
@@ -132,7 +124,7 @@ namespace Strategy_game.GUI
             //Updates participantDTO in storage 
             string participantToMove = ListOfParticipants.SelectedItem.ToString(); //retrieves name 
 
-            Participant_DTO pDTO = pImpl.GetParticipant(participantToMove);
+            Fighter_DTO pDTO = pImpl.GetParticipant(participantToMove);
 
             bool movementOkay = pImpl.CheckMovement(pDTO, AFP_DTO); //first checks if movement is okay
 
@@ -148,22 +140,21 @@ namespace Strategy_game.GUI
         }
 
         //is called by both alliance and horde
-        public void ActivateMovement(Participant_DTO pDTO, ArenaFieldPoint_DTO AFP_DTO)
+        public void ActivateMovement(Fighter_DTO pDTO, ArenaFieldPoint_DTO AFP_DTO)
         {
             ClearsImage(pDTO); //removes image
 
             //updates the point we are leaving.
-            fPImpl.UpdateLeavingArenaFieldPoint(pDTO, "actualArena");  //Updating the fieldstatus since we are leaving to another field.
-            Console.WriteLine(Arena_DTO.field);
+            arenaImpl.UpdateLeavingArenaFieldPoint(pDTO, "actualArena");  //Updating the fieldstatus since we are leaving to another field.
+
             pImpl.MoveParticipant(pDTO, AFP_DTO);
-            Console.WriteLine(Arena_DTO.field);
-            fPImpl.UpdateMovingToArenaFieldStatus(AFP_DTO, "actualArena");
+
+            arenaImpl.UpdateMovingToArenaFieldStatus(AFP_DTO, "actualArena");
 
             SetsImage(pDTO);
         }
 
-
-        public void ClearsImage(Participant_DTO pDTO)
+        public void ClearsImage(Fighter_DTO pDTO)
         {
             Image ima = new Image();
             ima = (Image)FieldGrid.FindName(pDTO.PointGS.ToString()); //finds image with x:Name that matches coords 
@@ -177,13 +168,13 @@ namespace Strategy_game.GUI
                 ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
 
             }
-            else if (teamColor == "Blue")
+            else if (teamColor == "blue")
             {
                 string image = "blueField.png";
                 ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
             }
         }
-        public void SetsImage(Participant_DTO pDTO)
+        public void SetsImage(Fighter_DTO pDTO)
         {
             Image ima = new Image();
             //gets image from participant to move.
@@ -233,8 +224,8 @@ namespace Strategy_game.GUI
         //only called initially
         public void InsertParticipantsToField()
         {
-            Arena_DTO.ActiveFighters = Shuffle(GetActivePlayers());
-            foreach (Participant_DTO pDTO in Arena_DTO.ActiveFighters)
+            arenaImpl.SetActivePlayers(Shuffle(GetActivePlayers()));
+            foreach (Fighter_DTO pDTO in Arena_DTO.ActiveFighters)
             {
                 ListOfParticipants.Items.Add(pDTO.NameGS);
                 //gets image from participant to insert visually
@@ -252,8 +243,8 @@ namespace Strategy_game.GUI
         //is called on first run if enemy is horde
         private void ActivateEnemy_Click(object sender, RoutedEventArgs e)
         {
-            //ActivateHordeTurn();
-//            StartTurnBasedBattle();
+            Fighter_DTO currentFighter = pImpl.GetParticipant(ListOfParticipants.SelectedValue.ToString());
+            ActivateHordeTurn(currentFighter);
         }
 
         /// <summary>
@@ -265,8 +256,8 @@ namespace Strategy_game.GUI
         public void CheckNextParticipant()
         {
             ListOfParticipants.SelectedIndex = 0; //Selects first index
-            Participant_DTO currentFighter = pImpl.GetParticipant(ListOfParticipants.SelectedValue.ToString());
-            if (currentFighter.TeamColorGS.Equals("Blue"))
+            Fighter_DTO currentFighter = pImpl.GetParticipant(ListOfParticipants.SelectedValue.ToString());
+            if (currentFighter.TeamColorGS.Equals("blue"))
             {
                 ActivateHordeTurn(currentFighter);
                 UpdateList();
@@ -275,8 +266,7 @@ namespace Strategy_game.GUI
             else
             {
                 xCoord.IsHitTestVisible = true;
-                yCoord.IsHitTestVisible = true;
-                //ActivateEnemy_buttonName.IsHitTestVisible = false;
+                yCoord.IsHitTestVisible = true; 
             }
         }
 
@@ -299,7 +289,7 @@ namespace Strategy_game.GUI
                 ListOfParticipants.SelectedIndex = i;
                 bool allowedToRemove = false;
                 int confirmCounter = 0;
-                foreach (Participant_DTO fighter in Arena_DTO.ActiveFighters)
+                foreach (Fighter_DTO fighter in Arena_DTO.ActiveFighters)
                 {
 
                     string test = ListOfParticipants.SelectedItem.ToString();
@@ -323,9 +313,9 @@ namespace Strategy_game.GUI
         /// Gets list of active players (only used at the beginning of the fight)
         /// </summary>
         /// <returns></returns>
-        public List<Participant_DTO> GetActivePlayers()
+        public List<Fighter_DTO> GetActivePlayers()
         {
-            List<Participant_DTO> ActivePlayers = new List<Participant_DTO>();
+            List<Fighter_DTO> ActivePlayers = new List<Fighter_DTO>();
             foreach (ArenaFieldPoint_DTO AFP_DTO in arenaImpl.GetField())
             {
                 if (AFP_DTO.PDTO != null)
@@ -336,8 +326,6 @@ namespace Strategy_game.GUI
             return ActivePlayers;
         }
 
-
-        #endregion
 
         //Takes entered coords and moves alliance player
         public void ActivateAllianceTurn()
@@ -351,7 +339,7 @@ namespace Strategy_game.GUI
                 int x = int.Parse(xCoord.Text);
                 int y = int.Parse(yCoord.Text);
                 ArenaFieldPoint_DTO AFP_DTO = new ArenaFieldPoint_DTO();
-                AFP_DTO = fPImpl.GetArenaField(x, y);
+                AFP_DTO = arenaImpl.GetArenaField(x, y);
                 InitiateMovement(AFP_DTO); //this AFP_DTO is the field we wish to move to
 
                 xCoord.Clear();
@@ -365,7 +353,7 @@ namespace Strategy_game.GUI
         /// if there is none to attack, move to a random spot within your range
         /// cannot move to a field where another horde fighter is.
         /// </summary>
-        public void ActivateHordeTurn(Participant_DTO currentFighter)
+        public void ActivateHordeTurn(Fighter_DTO currentFighter)
         {
             //check felter omkring
             //vælge en modstander tilfældigt af dem som er tilgængelige hvis der er nogle.
@@ -404,7 +392,7 @@ namespace Strategy_game.GUI
         }
 
         //Shuffles a list and returns it
-        public List<Participant_DTO> Shuffle(List<Participant_DTO> turnBasedMovementList)
+        public List<Fighter_DTO> Shuffle(List<Fighter_DTO> turnBasedMovementList)
         {
             Random rng = new Random();
             int n = turnBasedMovementList.Count;
@@ -412,11 +400,13 @@ namespace Strategy_game.GUI
             {
                 n--;
                 int k = rng.Next(n + 1);
-                Participant_DTO value = turnBasedMovementList[k];
+                Fighter_DTO value = turnBasedMovementList[k];
                 turnBasedMovementList[k] = turnBasedMovementList[n];
                 turnBasedMovementList[n] = value;
             }
             return turnBasedMovementList;
         }
+        #endregion
+
     }
 }

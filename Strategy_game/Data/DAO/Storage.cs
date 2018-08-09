@@ -12,37 +12,40 @@ namespace Strategy_game.Data.DAO
 {
     class Storage
     {
-        public static int skinCounter = 0;
-        public static List<Participant_DTO> StParticipant = new List<Participant_DTO>();
+        public static List<Fighter_DTO> StParticipant = new List<Fighter_DTO>();
         public static Dictionary<string, string> teams = new Dictionary<string, string>();
         //private static List<string> playerSkins = new List<string>();
         public static List<string> AllianceSkins = new List<string>();
         public static List<string> HordeSkins = new List<string>();
+        public static Dictionary<string, string> teamList = new Dictionary<string, string>();
+        public static Dictionary<string, string> enemyTeamList = new Dictionary<string, string>();
 
-      //  public static List<string> PlayerSkins { get => playerSkins; set => playerSkins = value; }
+
+
+        //  public static List<string> PlayerSkins { get => playerSkins; set => playerSkins = value; }
 
         //adds a participant to the storage /participant represnet one fighter on the field"
-        public void AddToLayer(Participant_DTO pDTO)
+        public void AddToLayer(Fighter_DTO pDTO)
         {
                 StParticipant.Add(pDTO);
         }
         //Gets lists of participants
-        public List<Participant_DTO> GetParticipantList()
+        public List<Fighter_DTO> GetParticipantList()
         {
             return StParticipant;
         }
         //Adds field to a specific participant in storage
-        public void AddFieldToParticipant(Participant_DTO pDTO, ArenaFieldPoint_DTO fpDTO)
+        public void AddFieldToParticipant(Fighter_DTO pDTO, ArenaFieldPoint_DTO fpDTO)
         {
            
         }
 
-        internal void UpdateFieldToParticipant(Participant_DTO pDTO, ArenaFieldPoint_DTO fpDTO)
+        internal void UpdateFieldToParticipant(Fighter_DTO pDTO, ArenaFieldPoint_DTO fpDTO)
         {
             foreach (var element in StParticipant) if (element.NameGS.Equals(pDTO.NameGS)) element.PointGS = fpDTO;
         }
 
-        public Participant_DTO GetParticipant_DTOST(string participant_name) //ST = storage
+        public Fighter_DTO GetParticipant_DTOST(string participant_name) //ST = storage
         {
             foreach (var item in StParticipant)
             {
@@ -51,6 +54,5 @@ namespace Strategy_game.Data.DAO
             }
             return null;
         }
-        
     }
 }

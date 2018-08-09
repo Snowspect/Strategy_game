@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Strategy_game.Data.Interface_DAO
 {
-    interface ITeam_intDAO_generic<S>
+    interface ITeam_intDAO_generic<S, F>
     {
         void CreateTeam(S teamName, S teamImage);
         Dictionary<S,S> ReadTeams();
@@ -19,5 +19,8 @@ namespace Strategy_game.Data.Interface_DAO
         void DeleteEnemyTeam(S teamName);
         S GetEnemyTeam();
         S GetEnemyTeamImage(S teamName);
+        S GetAllyTeam();
+        List<F> GetEnemyTeamList(S enemyTeamName);
+        List<F> GetAllyTeamList(S allyTeamName);
     }
 }

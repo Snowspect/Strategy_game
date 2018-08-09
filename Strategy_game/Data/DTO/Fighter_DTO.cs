@@ -10,11 +10,11 @@ namespace Strategy_game.Data
     /// <summary>
     /// Holds info regarding one participant
     /// </summary>
-    public class Participant_DTO
+    public class Fighter_DTO
     {
         #region constructors
 
-        public Participant_DTO()
+        public Fighter_DTO()
         {
             HealthGS = 1;
             DefenceGS = 1;
@@ -30,7 +30,7 @@ namespace Strategy_game.Data
             WeakAgainstGS = new List<string>();
             ImmuneAgainstGS = new List<string>();
         }
-        public Participant_DTO(int h, int d, int o, int movement, string n, string teamName, string stA1, string stA2, string wkA1, string wkA2, string imA1, string imA2)
+        public Fighter_DTO(int h, int d, int o, int movement, string n, string teamName, string stA1, string stA2, string wkA1, string wkA2, string imA1, string imA2)
         {
             HealthGS = h;
             DefenceGS = d;

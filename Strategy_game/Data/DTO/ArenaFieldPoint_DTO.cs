@@ -13,7 +13,7 @@ namespace Strategy_game.Data.DTO
     public class ArenaFieldPoint_DTO : System.Attribute
     {
         #region localVariables
-        Participant_DTO pDTO = null;
+        Fighter_DTO pDTO = null;
         private FieldStatus_DTO.FieldStatus FieldPointStatus = FieldStatus_DTO.FieldStatus.notOccupied;
         #endregion
 
@@ -36,7 +36,7 @@ namespace Strategy_game.Data.DTO
 
         
         public FieldStatus_DTO.FieldStatus FieldPointStatusGS { get => FieldPointStatus; set => FieldPointStatus = value; }
-        public Participant_DTO PDTO { get => pDTO; set => pDTO = value; }
+        public Fighter_DTO PDTO { get => pDTO; set => pDTO = value; }
 
         public override string ToString()
         {

@@ -17,19 +17,18 @@ namespace Strategy_game.GUI
     /// <summary>
     /// Interaction logic for PreBattleFieldWindow.xaml
     /// </summary>
-    public partial class PreBattleFieldWindow : Window, IPreBattleFieldWindow_Impl<string, ArenaFieldPoint_DTO, Participant_DTO>
+    public partial class PreBattleFieldWindow : Window, IPreBattleFieldWindow_Impl<string, ArenaFieldPoint_DTO, Fighter_DTO>
     {
         #region localVariables
-        MainWindow mw;
-        Window w;
+        private string AllianceTeamColor = "purple";
+        private string HordeTeamColor = "blue";
+        private MainWindow mw;
         private Boolean exitApp;
-        Participant_Impl pImpl = new Participant_Impl();
-        Arena_Impl ArenaImpl;
-        Team_Impl tImpl;
-        ArenaWindow fw;
+        private Fighter_Impl pImpl;
+        private Arena_Impl ArenaImpl;
+        private Team_Impl tImpl;
         NameScope ScopeName = new NameScope();
         int skinCounter = 0;
-        FieldPoint_Impl fPImpl;
         #endregion
 
         #region constructors
@@ -37,14 +36,13 @@ namespace Strategy_game.GUI
         {
             InitializeComponent();
         }
-        public PreBattleFieldWindow(MainWindow mw, Window w, Participant_Impl pImpl)
+        public PreBattleFieldWindow(MainWindow mw, Fighter_Impl pImpl, Arena_Impl arenaImpl, Team_Impl tImpl)
         {
-            this.ArenaImpl = new Arena_Impl();
-            fPImpl = new FieldPoint_Impl();
+            this.ArenaImpl = arenaImpl;
+
             this.pImpl = pImpl;
-            this.w = w;
             this.mw = mw;
-            tImpl = new Team_Impl();
+            this.tImpl = tImpl;
             Closed += new EventHandler(App_exit); //subscribing to closed event
             exitApp = true; //used for closing app
             InitializeComponent();
@@ -53,16 +51,13 @@ namespace Strategy_game.GUI
         }
         #endregion
 
-        /**
-         * app_exit, Reference
-         * SelectionChanged
-         * TextChanged
-         */
-        #region event triggered Methods
-        //Triggers when window is closed.
-        void App_exit(object sender, EventArgs e) /*App_exit is my own defined method.*/ { if (exitApp == true) { w.Close(); } /*closes mainWindow*/ }
+        #region event triggered Methods Excluding buttons
 
-        // Event related to fieldWindow Closed event.
+        //Triggers when window is closed.
+        void App_exit(object sender, EventArgs e) /*App_exit is my own defined method.*/ { if (exitApp == true) {} /*closes mainWindow*/ }
+
+
+        // Event related to ArenaWindow Closed event.
         //makes sure mainwindow doesn't gets closed when backtracking.
         void Reference(object sender, EventArgs e) { mw.Show(); exitApp = false; this.Close(); }
 
@@ -83,17 +78,60 @@ namespace Strategy_game.GUI
 
         #endregion
 
-        /**
-         * CreatePreField
-         * ShowTeamList
-         * ShowTeamMemberList
-         * MoveToSpot
-         * ClearsImage
-         * SetsImage
-         * GenerateCoordsList
-         */
         #region methods
-        //Fills created grid
+        /// <summary>
+        /// Fills out Horde team with coords and skins
+        /// Distributes all members in fields to either alliance or horde team ("purple or blue team respectively")
+        /// Starts up the Arena Window
+        /// </summary>
+        public void StartBattle()
+        {
+            List<ArenaFieldPoint_DTO> tmpFPList = new List<ArenaFieldPoint_DTO>();
+            tmpFPList = GenerateCoordsList("actualArena");
+
+            if (tmpFPList.Count != 0) //to make sure we don't go to next window.
+            {
+                string enemyTeam = tImpl.GetEnemyTeamName();
+                int coordCounter = 0; //used to give each player a set of coords
+                skinCounter = 0;
+                foreach (var item in tImpl.GetEnemyTeam(enemyTeam))
+                {
+                    item.PointGS = tmpFPList[coordCounter];
+                    item.ImageGS = pImpl.GetHordeskin(skinCounter);// Storage.HordeSkins[skinCounter];
+                    ArenaImpl.AddParticipantToField(item);
+                    skinCounter++;
+                    coordCounter++;
+                }
+                //test for team name and then color respectively, also here, find random enemy team.
+                List<ArenaFieldPoint_DTO> tmp = ArenaImpl.GetField(); //DEBUGGING
+                foreach (ArenaFieldPoint_DTO AFP_DTO in ArenaImpl.GetField())
+                {
+                    if (AFP_DTO.PDTO != null)
+                    {
+                        if (AFP_DTO.PDTO.TeamGS.Equals(TeamListBox.SelectedValue.ToString()))
+                        {
+                            AFP_DTO.PDTO.TeamColorGS = AllianceTeamColor;
+                            Arena_DTO.AllianceTeam.Add(AFP_DTO.PDTO);
+                        }
+                        else
+                        {
+                            AFP_DTO.PDTO.TeamColorGS = HordeTeamColor;
+                            AFP_DTO.PDTO.PointGS.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.HordeOccupied;
+                            Arena_DTO.HordeTeam.Add(AFP_DTO.PDTO);
+                        }
+                    }
+                }
+                ArenaWindow fw = new ArenaWindow(this, ArenaImpl, pImpl);
+                fw.Closed += new EventHandler(Reference);
+                fw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                fw.Show();
+                this.Hide();
+            }
+        }
+
+        /// <summary>
+        /// visuallly fills pre-arena grid with UnoccupiedField images
+        /// </summary
         public void CreatePreArena()
         {
             UserControl u;
@@ -129,6 +167,10 @@ namespace Strategy_game.GUI
 
             ArenaImpl.CreateFullArena();
         }
+
+        /// <summary>
+        /// shows lists of teams
+        /// </summary>
         public void ShowTeamList()
         {
             foreach (var item in tImpl.GetAllyTeamList())
@@ -136,6 +178,11 @@ namespace Strategy_game.GUI
                 TeamListBox.Items.Add(item.Key);
             }
         }
+
+        /// <summary>
+        /// when a team is selected, it will display the members in it
+        /// </summary>
+        /// <param name="team"></param>
         public void ShowTeamMemberLists(string team)
         {
             foreach (var item in pImpl.GetCurrentList())
@@ -144,7 +191,12 @@ namespace Strategy_game.GUI
             }
         }
 
-        public void ClearsImage(Participant_DTO pDTO)
+        /// <summary>
+        /// replaces the image with an unoccupiedField image on the field that a fighter is leaving.
+        /// ((Not identical to ClearsImage in ArenaWindow))
+        /// </summary>
+        /// <param name="pDTO"> The fighter that is moving </param>
+        public void ClearsImage(Fighter_DTO pDTO)
         {
             if (pDTO != null) //checks if parsed participant is actually existing
             {
@@ -152,16 +204,21 @@ namespace Strategy_game.GUI
                 {
                     string fieldCoord = pDTO.PointGS.ToString();
                     Image ima = (Image)PreArena.FindName(fieldCoord); //finds image with x:Name that matches coords 
-                    if(ima != null)
+                    if (ima != null)
                     {
                         ima.ClearValue(Image.SourceProperty); //clears the image 
                         string image = "UnoccupiedField.png";
                         ima.Source = new BitmapImage(new Uri(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
                     }
-               }
+                }
             }
         }
-        public void SetsImage(Participant_DTO pDTO)
+
+        /// <summary>
+        /// Sets the image of the field the fighter is moving to to it's own image
+        /// </summary>
+        /// <param name="pDTO"> The fighter that is moving </param>
+        public void SetsImage(Fighter_DTO pDTO)
         {
             Image ima = new Image();
             //gets image from participant to move.
@@ -175,90 +232,73 @@ namespace Strategy_game.GUI
             ima.Source = new BitmapImage(new Uri(System.IO.Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\" + image));
         }
 
-        //Generates list of coords for enemy team
+        /// <summary>
+        /// Generates a list of random coordinates within the allowed range.
+        /// </summary>
+        /// <param name="arena"> a simply string to check whether we are in pre-arena or the actual arena</param>
+        /// <returns> a list of random coordinates within an allowed range </returns>
         public List<ArenaFieldPoint_DTO> GenerateCoordsList(string arena)
         {
             List<ArenaFieldPoint_DTO> tmpList = new List<ArenaFieldPoint_DTO>();
             Random rand;
             bool run = true, AllowedAdd = true;
             int counter = 0;
-
-            //the if statement = coords for horde team
-            if (!arena.Equals("preArena")) 
+            
+            while (run)
             {
-                while (run)
+                ArenaFieldPoint_DTO AFP = new ArenaFieldPoint_DTO();
+                if (!arena.Equals("preArena")) //triggered if for Horde half
                 {
-                    ArenaFieldPoint_DTO AFP = new ArenaFieldPoint_DTO();
                     rand = new Random();
-                    AFP.XPoint = rand.Next(4,7);
+                    AFP.XPoint = rand.Next(4, 7);
                     AFP.YPoint = rand.Next(1, 7);
-                    if (tmpList.Count != 0)
-                    {
-                        foreach (var item in tmpList)
-                        {
-                            if (item.XPoint == AFP.XPoint && item.YPoint == AFP.YPoint) //checks to see if the designated coord is already taken.
-                            {
-                                AllowedAdd = false;
-                            }
-                        }
-                        if (AllowedAdd == true) { tmpList.Add(AFP); counter++; }
-                        if (counter == 6)
-                        {
-                            run = false;
-                        }
-                    }
-                    AllowedAdd = true;
-                    if (counter == 0) { counter++; tmpList.Add(AFP); }
                 }
-            }
-            //the else statement = coords for alliance team
-            else
-            {
-                while (run)
+                else //triggered if for Alliance half
                 {
-                    ArenaFieldPoint_DTO AFP = new ArenaFieldPoint_DTO();
                     rand = new Random();
                     AFP.XPoint = rand.Next(1, 4);
                     AFP.YPoint = rand.Next(1, 6);
-                    if (tmpList.Count != 0)
+                }
+
+                if (tmpList.Count != 0)
+                {
+                    foreach (var item in tmpList)
                     {
-                        foreach (var item in tmpList)
+                        if (item.XPoint == AFP.XPoint && item.YPoint == AFP.YPoint) //checks to see if the designated coord is already taken.
                         {
-                            if (item.XPoint == AFP.XPoint && item.YPoint == AFP.YPoint) //checks to see if the designated coord is already taken.
-                            {
-                                AllowedAdd = false;
-                            }
-                        }
-                        if (AllowedAdd == true) { tmpList.Add(AFP); counter++; }
-                        if (counter == 6)
-                        {
-                            run = false;
+                            AllowedAdd = false;
                         }
                     }
-                    AllowedAdd = true;
-                    if (counter == 0) { counter++; tmpList.Add(AFP); }
+                    if (AllowedAdd == true) { tmpList.Add(AFP); counter++; }
+                    if (counter == 6)
+                    {
+                        run = false;
+                    }
                 }
-            } 
-            return tmpList; 
+                AllowedAdd = true;
+                if (counter == 0) { counter++; tmpList.Add(AFP); }
+            }
+            return tmpList;
         }
         #endregion
 
-        /**
-         * SubmitMove
-         * ClearField
-         * StartBattle
-         * ToPreviousWindow
-         * ToMenuWindow
-         */
         #region buttons
+
+        /// <summary>
+        /// event triggered when player submitting a fighter to the pre-arena.
+        /// "a combination of other methods primarily"
+        /// ((Not used if pressing the "preset" button))
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SubmitMove_Button(object sender, RoutedEventArgs e)
         {
-            string participantToMove = MemberListBox.SelectedItem.ToString(); //retrieves name
-            Participant_DTO pDTO = pImpl.GetParticipant(participantToMove);
-            pDTO.TeamColorGS = "purple";
+            string participantToMove = MemberListBox.SelectedItem.ToString();
+            Fighter_DTO pDTO = pImpl.GetParticipant(participantToMove);                     
+            pDTO.TeamColorGS = AllianceTeamColor;                                                        
             int x = int.Parse(txtXCoord.Text);
             int y = int.Parse(txtYCoord.Text);
-            ArenaFieldPoint_DTO AFP_DTO = fPImpl.GetArenaField(x, y);
+            ArenaFieldPoint_DTO AFP_DTO = ArenaImpl.GetArenaField(x, y);
 
             /** MOVING **/
             bool run = ArenaImpl.CheckField(AFP_DTO, pDTO); //checks the field we are trying to go to
@@ -268,116 +308,77 @@ namespace Strategy_game.GUI
                 ClearsImage(pDTO); //removes image
 
                 //updates the point we are leaving.
-                fPImpl.UpdateLeavingArenaFieldPoint(pDTO, "preArena");  //Updating the fieldstatus since we are leaving to another field.
+                ArenaImpl.UpdateLeavingArenaFieldPoint(pDTO, "preArena");  //Updating the fieldstatus since we are leaving to another field.
 
-                pImpl.MoveParticipant(pDTO, fPImpl.GetArenaField(x, y));
+                pImpl.MoveParticipant(pDTO, ArenaImpl.GetArenaField(x, y));
 
-                fPImpl.UpdateMovingToArenaFieldStatus(AFP_DTO, "preArena");
+                ArenaImpl.UpdateMovingToArenaFieldStatus(AFP_DTO, "preArena");
 
                 SetsImage(pDTO);
             }
             /** MOVING ENDS **/
         }
 
+        /// <summary>
+        /// replaces all images with an unoccupiedField image and sets all arena_field fighter references to null
+        /// resets skincounter as we need it when submitting them manually
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClearField_Button(object sender, RoutedEventArgs e)
         {
             foreach (ArenaFieldPoint_DTO AFP_DTO in ArenaImpl.GetField())
             {
                 ClearsImage(AFP_DTO.PDTO);
-                if (AFP_DTO.PDTO != null)  AFP_DTO.PDTO.PointGS = null;
+                if (AFP_DTO.PDTO != null) AFP_DTO.PDTO.PointGS = null;
                 AFP_DTO.PDTO = null;
             }
             //ArenaImpl.EmptyField();
             skinCounter = 0;
             //TODO Lock team select while one member from a team is placed on the field.
         }
-        //Triggered when clicking "Start fight"
-        //configures team to be purple team and adds a skin to each of them
+
+        /// <summary>
+        /// Starts the battle with the team that has been manually put in by the player 
+        /// ((not using preset button))
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void StartBattle_Button(object sender, RoutedEventArgs e)
         {
             StartBattle();
         }
 
-        // Accesses the previous window
-        private void ToPreviousWindow_Click(object sender, RoutedEventArgs e)
-        { /*do not close mw.*/ exitApp = false; /*loads mainWindow*/ if (w is MainWindow) { this.w.Show(); this.Close(); } /*loads any other window */ else { w = new Window(); w.Show(); this.Close(); } }
-
         //Loads mainwindow
         private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
 
-        #endregion
-
+        /// <summary>
+        /// Auto fills the alliance team and gives each fighter a skin
+        /// triggers the StartBattle() method that also triggers the horde team initialization
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Preset_Click(object sender, RoutedEventArgs e)
         {
             List<ArenaFieldPoint_DTO> RandomArenaFields = GenerateCoordsList("preArena");
-            if (RandomArenaFields.Count != 0) //to make sure we don't go to next window.
+            string allyTeam = tImpl.GetAllyTeamName();
+            int coordCounter = 0; //used to give each player a set of coords
+            skinCounter = 0; //used to iterate through skins
+
+            // gives skins and coords to each member on the Alliance team
+            foreach (Fighter_DTO pDTO in tImpl.GetAllyTeam(allyTeam))
             {
-                string allyTeam = tImpl.GetAllyTeamName();
-                int coordCounter = 0; //used to give each player a set of coords
-                skinCounter = 0;
-                foreach (Participant_DTO pDTO in tImpl.GetAllyTeam(allyTeam))
-                {
-                    pDTO.TeamColorGS = "purple";
-                    //Gets field from arena based on x and y coords from random field list.
-                    pDTO.PointGS = fPImpl.GetArenaField(RandomArenaFields[coordCounter].XPoint, RandomArenaFields[coordCounter].YPoint);
-                    pDTO.ImageGS = Storage.AllianceSkins[skinCounter];
-                    ArenaImpl.AddParticipantToField(pDTO);
-                    fPImpl.UpdateMovingToArenaFieldStatus(pDTO.PointGS, "preArena"); //moves to field and occupies that field
-                    skinCounter++;
-                    coordCounter++;
-                }
+                pDTO.TeamColorGS = AllianceTeamColor;
+                //Gets field from arena based on x and y coords from random field list.
+                pDTO.PointGS = ArenaImpl.GetArenaField(RandomArenaFields[coordCounter].XPoint, RandomArenaFields[coordCounter].YPoint);
+                pDTO.ImageGS = pImpl.GetAllianceSkin(skinCounter);
+                ArenaImpl.AddParticipantToField(pDTO);
+                ArenaImpl.UpdateMovingToArenaFieldStatus(pDTO.PointGS, "preArena"); //moves to field and occupies that field
+                skinCounter++;
+                coordCounter++;
             }
             StartBattle();
         }
-
-        public void StartBattle()
-        {
-            List<ArenaFieldPoint_DTO> tmpFPList = new List<ArenaFieldPoint_DTO>();
-            tmpFPList = GenerateCoordsList("actualArena");
-
-            if (tmpFPList.Count != 0) //to make sure we don't go to next window.
-            {
-                string enemyTeam = tImpl.GetEnemyTeamName();
-                int coordCounter = 0; //used to give each player a set of coords
-                skinCounter = 0;
-                foreach (var item in tImpl.GetEnemyTeam(enemyTeam))
-                {
-                    item.PointGS = tmpFPList[coordCounter];
-                    item.ImageGS = Storage.HordeSkins[skinCounter];
-                    ArenaImpl.AddParticipantToField(item);
-                    skinCounter++;
-                    coordCounter++;
-                }
-                //test for team name and then color respectively, also here, find random enemy team.
-                List<ArenaFieldPoint_DTO> tmp = ArenaImpl.GetField(); //DEBUGGING
-                foreach (ArenaFieldPoint_DTO AFP_DTO in ArenaImpl.GetField())
-                {
-                    if (AFP_DTO.PDTO != null)
-                    {
-                        if (AFP_DTO.PDTO.TeamGS.Equals(TeamListBox.SelectedValue.ToString()))
-                        {
-                            AFP_DTO.PDTO.TeamColorGS = "purple";
-                            Arena_DTO.AllianceTeam.Add(AFP_DTO.PDTO);
-                        }
-                        else
-                        {
-                            AFP_DTO.PDTO.TeamColorGS = "Blue";
-                            AFP_DTO.PDTO.PointGS.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.HordeOccupied;
-                            Arena_DTO.HordeTeam.Add(AFP_DTO.PDTO);
-                        }
-                    }
-                }
-                fw = new ArenaWindow(this, ArenaImpl);
-                fw.Closed += new EventHandler(Reference);
-                fw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                fw.Show();
-                this.Hide();
-            }
-        }
-
-        public List<ArenaFieldPoint_DTO> GenerateCoordsList()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
 }

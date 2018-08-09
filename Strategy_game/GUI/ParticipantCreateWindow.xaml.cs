@@ -16,14 +16,14 @@ namespace Strategy_game.GUI
     /// <summary>
     /// Interaction logic for ParticipantCreateWindow.xaml
     /// </summary>
-    public partial class ParticipantCreateWindow : Window, ICreateParticipantWindow_Impl<string, int, Participant_DTO>
+    public partial class ParticipantCreateWindow : Window, ICreateParticipantWindow_Impl<int, Fighter_DTO>
     {
         #region localVariables
         private MainWindow mw;
         private Window w;
         private Boolean exitApp;
-        Participant_Impl pImpl;
-        Team_Impl tImpl;
+        private Fighter_Impl pImpl;
+        private Team_Impl tImpl;
         private string TeamImageName;
         #endregion
 
@@ -31,10 +31,10 @@ namespace Strategy_game.GUI
         public ParticipantCreateWindow() => InitializeComponent();
         
         //Constructor to take two kinds of windows
-        public ParticipantCreateWindow(MainWindow mw, Window w)
+        public ParticipantCreateWindow(MainWindow mw, Window w, Fighter_Impl pImpl, Team_Impl tImpl)
         {
-            pImpl = new Participant_Impl();
-            tImpl = new Team_Impl();
+            this.pImpl = pImpl;
+            this.tImpl = tImpl;
             exitApp = true; //used for closing app
             this.w = w;
             this.mw = mw;
@@ -96,7 +96,7 @@ namespace Strategy_game.GUI
         private void OffenceTextBox_TextChanged(object sender, TextChangedEventArgs e) { if (OffenceTextBox.Text.Length > 0) HintOffence.Visibility = Visibility.Hidden; else HintOffence.Visibility = Visibility.Visible; }
         private void DefenceTextBox_TextChanged(object sender, TextChangedEventArgs e) { if (DefenceTextBox.Text.Length > 0) HintDefence.Visibility = Visibility.Hidden; else HintDefence.Visibility = Visibility.Visible; }
         private void HMoveTextBox_TextChanged(object sender, TextChangedEventArgs e) { if (MoveTextBox.Text.Length > 0) HintMove.Visibility = Visibility.Hidden; else HintMove.Visibility = Visibility.Visible; }
-              #endregion
+        #endregion
 
         #endregion
 
@@ -109,7 +109,13 @@ namespace Strategy_game.GUI
          * ToMenuWindow
          */
         #region buttons
-        //retrieves content from boxes and adds to a DTO directly. 
+
+
+        /// <summary>
+        /// Takes all inputs and creates a participant and adds it to a team
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SubmitParticipant_Click(object sender, RoutedEventArgs e)
         {
             List<int> parsedTP = new List<int>();
@@ -119,7 +125,7 @@ namespace Strategy_game.GUI
             tp.Add(DefenceTextBox.Text);
             tp.Add(MoveTextBox.Text);
 
-            parsedTP = ParseInts(tp);
+            parsedTP = pImpl.ParseInts(tp);
 
             if (NameTextBox.Text == "" || HealthTextBox.Text == "" || OffenceTextBox.Text == "" || DefenceTextBox.Text == ""
             || MoveTextBox.Text == "" || StrongAgainstFirstChoice.SelectedIndex == -1 || StrongAgainstSecondChoice.SelectedIndex == -1
@@ -128,14 +134,14 @@ namespace Strategy_game.GUI
             {
                 MessageBoxResult result = MessageBox.Show("Please fill out and pick something from all boxes");
             }
-            else if (parsedTP.Count < 5)
+            else if (parsedTP.Count < 4)
             {
                 Console.WriteLine(parsedTP.Count);
                 MessageBoxResult result = MessageBox.Show("Please fix the errors that was shown");
             }
             else
             {
-                Participant_DTO pDTO = new Participant_DTO(); //only needed here locally
+                Fighter_DTO pDTO = new Fighter_DTO(); //only needed here locally
                 RetrieveInput(pDTO, parsedTP);
                 foreach (var item in pImpl.GetCurrentList())
                 {
@@ -149,14 +155,23 @@ namespace Strategy_game.GUI
             }
         }
         
-        //shows the box that let's you create a new team on the run
-        private void NewTeamWindow_Button(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// removes slime image that covers the box where you have the opportunity to create a new team
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewTeamWindow_Click(object sender, RoutedEventArgs e)
         {
             CreateTeamBox.Visibility = Visibility.Visible;
             CoverTeamCanvasImage.Visibility = Visibility.Hidden;
         }
 
-        //submits the team name and an team image to storage
+        /// <summary>
+        /// creates a team based on the arguments, only works if there is a team name and a team image.
+        /// The team image cannot be the same as one already existing, currently.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SubmitTeam_Click(object sender, RoutedEventArgs e)
         {
             if (TeamNameTextBox.Text == "" || NewTeamImage.GetValue(Image.SourceProperty) == null)
@@ -176,6 +191,11 @@ namespace Strategy_game.GUI
         }
 
         // sets image into team window
+        /// <summary>
+        /// Opens dialog box that allows you to pick an image for your team
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void InsertImage_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog op = new OpenFileDialog();
@@ -194,7 +214,7 @@ namespace Strategy_game.GUI
                     NewTeamImage.Source = new BitmapImage(new Uri(op.FileName));
                     Console.WriteLine(op.FileName);
                 }
-                //makes sure to throw custom exception
+                //cathes exception that handles duplicate image
                 catch (Exception exc)
                 {
                     if(exc is IOException)
@@ -220,46 +240,13 @@ namespace Strategy_game.GUI
         private void ToMenuWindow_Click(object sender, RoutedEventArgs e) { mw.Show(); exitApp = false; this.Close(); }
         #endregion
 
-        /*
-         * ParseInts (parses a list of strings to a list of ints)
-         * RetrieveInput (Gets input from all relevant fields and clears fields
-         * ClearFields (clear input fields)
-         */
         #region methods
-        //Parsings a list of strings to a list of ints, and throws exceptions if failed to do so
-        public List<int> ParseInts(List<string> tp)
-        {
-            List<int> parsedInts = new List<int>();
-            //Tests if one of the items are not an integer
-            foreach (var item in tp)
-            {
-                try
-                {
-                    if (int.TryParse(item, out int result) == false) //result is not used, returns 0 since it fails.
-                    {
-                        throw new NotInteger("This is not a number: " + item);
-                    }
-                    else
-                    {
-                        parsedInts.Add(int.Parse(item));
-                    }
-                }
-                catch (NotInteger b)
-                {
-                    Console.WriteLine(b);
-                    Console.WriteLine(b.StackTrace.ToString());
-                }
-                catch (Exception exec)
-                {
-                    Console.WriteLine(exec.StackTrace.ToString());
-                    MessageBox.Show("Exception not related to integerParsing");
-                }
-            }
-            return parsedInts;
-        }
-
-        //Retrieves input and listbox fields from the create window
-        public void RetrieveInput(Participant_DTO pDTO, List<int> parsedTP)
+        /// <summary>
+        /// Retrieves input from all input/selectable fields
+        /// </summary>
+        /// <param name="pDTO"> The fighter we wish to add the information to </param>
+        /// <param name="parsedTP"> The list of parsed integers from strings </param>
+        public void RetrieveInput(Fighter_DTO pDTO, List<int> parsedTP)
         {
             pDTO.NameGS = NameTextBox.Text;
             pDTO.HealthGS = parsedTP[0];
@@ -277,7 +264,9 @@ namespace Strategy_game.GUI
             ClearFields();
         }
 
-        //clear all fields after submitting
+        /// <summary>
+        /// Clears out all fields
+        /// </summary>
         public void ClearFields()
         {
             NameTextBox.Clear();
@@ -293,8 +282,7 @@ namespace Strategy_game.GUI
             ImmuneAgainstSecondChoice.SelectedIndex = -1;
             TeamNameChoice.SelectedIndex = -1;
         }
+
         #endregion
-
-
     }
 }

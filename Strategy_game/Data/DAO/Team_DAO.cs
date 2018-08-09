@@ -5,32 +5,29 @@ using System.Windows;
 
 namespace Strategy_game.Data.DAO
 {
-    class Team_DAO : ITeam_intDAO_generic<string>
+    public class Team_DAO : ITeam_intDAO_generic<string, Fighter_DTO>
     {
-        public static Dictionary<string, string> teamList = new Dictionary<string, string>();
-        public static Dictionary<string, string> enemyTeamList = new Dictionary<string, string>();
-
         #region allyTeamMethods
         public void CreateTeam(string teamName, string teamImage)
         {
-            teamList.Add(teamName, teamImage);
+            Storage.teamList.Add(teamName, teamImage);
         }
 
         public void DeleteTeam(string teamName)
         {
-            teamList.Remove(teamName);
+            Storage.teamList.Remove(teamName);
         }
 
         public Dictionary<string, string> ReadTeams()
         {
-            return teamList;
+            return Storage.teamList;
         }
 
         public void UpdateTeam(string oldTeamName, string newTeamName, string teamImage)
         {
-            foreach (var item in teamList)
+            foreach (var item in Storage.teamList)
             {
-                if (item.Key == oldTeamName) teamList.Remove(item.Key); teamList.Add(newTeamName, teamImage);
+                if (item.Key == oldTeamName) Storage.teamList.Remove(item.Key); Storage.teamList.Add(newTeamName, teamImage);
             }
         }
 
@@ -41,7 +38,7 @@ namespace Strategy_game.Data.DAO
 
         public string GetTeamImage(string teamName)
         {
-            teamList.TryGetValue(teamName, out string result);
+            Storage.teamList.TryGetValue(teamName, out string result);
             return result;
         }
         #endregion
@@ -49,7 +46,7 @@ namespace Strategy_game.Data.DAO
         #region EnemyTeamMethods
         public void CreateEnemyTeam(string teamName, string teamImage)
         {
-            enemyTeamList.Add(teamName, teamImage);
+            Storage.enemyTeamList.Add(teamName, teamImage);
         }
 
         public void UpdateEnemyTeam(string oldTeamName, string newTeamName, string teamImage)
@@ -64,11 +61,11 @@ namespace Strategy_game.Data.DAO
 
         public string GetAllyTeam()
         {
-            int limit = teamList.Count;
+            int limit = Storage.teamList.Count;
             Random rand = new Random();
             string allyTeam = "";
             List<string> values = new List<string>();
-            foreach (var item in teamList.Keys)
+            foreach (var item in Storage.teamList.Keys)
             {
                 values.Add(item);
             }
@@ -88,11 +85,11 @@ namespace Strategy_game.Data.DAO
 
         public string GetEnemyTeam()
         {
-            int limit = enemyTeamList.Count;
+            int limit = Storage.enemyTeamList.Count;
             Random rand = new Random();
             string enemyTeam = "";
             List<string> values = new List<string>();
-            foreach (var item in enemyTeamList.Keys)
+            foreach (var item in Storage.enemyTeamList.Keys)
             {
                     values.Add(item);   
             }
@@ -115,9 +112,9 @@ namespace Strategy_game.Data.DAO
             throw new NotImplementedException();
         }
 
-        public List<Participant_DTO> GetEnemyTeamList(string enemyTeamName)
+        public List<Fighter_DTO> GetEnemyTeamList(string enemyTeamName)
         {
-            List<Participant_DTO> tmp = new List<Participant_DTO>();
+            List<Fighter_DTO> tmp = new List<Fighter_DTO>();
             foreach (var item in Storage.StParticipant)
             {
                 if(item.TeamGS.Equals(enemyTeamName))
@@ -127,10 +124,10 @@ namespace Strategy_game.Data.DAO
             }
             return tmp;
         }
-        public List<Participant_DTO> GetAllyTeamList(string allyTeamName)
+        public List<Fighter_DTO> GetAllyTeamList(string allyTeamName)
         {
-            List<Participant_DTO> tmp = new List<Participant_DTO>();
-            foreach (Participant_DTO pDTO in Storage.StParticipant)
+            List<Fighter_DTO> tmp = new List<Fighter_DTO>();
+            foreach (Fighter_DTO pDTO in Storage.StParticipant)
             {
                 if (pDTO.TeamGS.Equals(allyTeamName))
                 {
