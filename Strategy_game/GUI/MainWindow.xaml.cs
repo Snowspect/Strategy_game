@@ -41,33 +41,46 @@ namespace Strategy_game
             pImpl = new Participant_Impl();
             tImpl = new Team_Impl();
 
+            String[] colors =
+            {
+                "PINK",
+                "TEAL",
+                "RED",
+                "GREEN",
+                "ORANGE",
+                "YELLOW"
+            };
+
             //Creates an enemy team of 6
             tImpl.AddEnemyTeam("Tupac", "1");
             for (int i = 0; i < 6; i++)
             {
-                pDTO = new Participant_DTO(100, 4, 4, 2, "Destroyer" + i, "Tupac", "a", "b", "c", "d", "e", "f");
+                pDTO = new Participant_DTO(100, 4, 4, 2, "Horde" + colors[i], "Tupac", "a", "b", "c", "d", "e", "f");
                 pImpl.AddParticipantToList(pDTO);
             }
             //creates ally team and enemy team
             tImpl.AddAllyTeam("Wolf", "1");
             for (int i = 0; i < 6; i++)
             {
-                pDTO = new Participant_DTO(100, 4, 4, 2, "Dan" + i, "Wolf", "a", "b", "c", "d", "e", "f");
+                pDTO = new Participant_DTO(100, 4, 4, 2, "Alliance" + colors[i], "Wolf", "a", "b", "c", "d", "e", "f");
                 pImpl.AddParticipantToList(pDTO);
             }
-
-
-
 
             //add participantSkins to game
             #region skins
             //Adds possible player images.
-            Storage.PlayerSkins.Add("pinkPlayer.png");
-            Storage.PlayerSkins.Add("tealPlayer.png");
-            Storage.PlayerSkins.Add("redPlayer.png");
-            Storage.PlayerSkins.Add("greenPlayer.png");
-            Storage.PlayerSkins.Add("orangePlayer.png");
-            Storage.PlayerSkins.Add("yellowPlayer.png");
+            Storage.AllianceSkins.Add("AlliancePinkPlayer.png");
+            Storage.AllianceSkins.Add("AllianceTealPlayer.png");
+            Storage.AllianceSkins.Add("AllianceRedPlayer.png");
+            Storage.AllianceSkins.Add("AllianceGreenPlayer.png");
+            Storage.AllianceSkins.Add("AllianceOrangePlayer.png");
+            Storage.AllianceSkins.Add("AllianceYellowPlayer.png");
+            Storage.HordeSkins.Add("HordePinkPlayer.png");
+            Storage.HordeSkins.Add("HordeTealPlayer.png");
+            Storage.HordeSkins.Add("HordeRedPlayer.png");
+            Storage.HordeSkins.Add("HordeGreenPlayer.png");
+            Storage.HordeSkins.Add("HordeOrangePlayer.png");
+            Storage.HordeSkins.Add("HordeYellowPlayer.png");
             #endregion
         }
         #endregion

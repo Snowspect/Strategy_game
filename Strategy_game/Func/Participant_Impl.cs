@@ -62,7 +62,7 @@ namespace Strategy_game.Func
         {
             if (pDTO.ImageGS.Equals("NoPicture"))
             {
-                pDTO.ImageGS = Storage.PlayerSkins[Storage.skinCounter];
+                pDTO.ImageGS = Storage.AllianceSkins[Storage.skinCounter];
                 Storage.skinCounter++;
             }
         }
@@ -94,7 +94,6 @@ namespace Strategy_game.Func
             {
                 if (AFPDTO.XPoint == AFP_DTO.XPoint && AFPDTO.YPoint == AFP_DTO.YPoint) //if given field coords match any coords within allowed range, then return true
                 {
-                    MessageBoxResult res = MessageBox.Show("You can move and will begin moving");
                     return true;
                 }
             }

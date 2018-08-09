@@ -15,9 +15,11 @@ namespace Strategy_game.Data.DAO
         public static int skinCounter = 0;
         public static List<Participant_DTO> StParticipant = new List<Participant_DTO>();
         public static Dictionary<string, string> teams = new Dictionary<string, string>();
-        private static List<string> playerSkins = new List<string>();
+        //private static List<string> playerSkins = new List<string>();
+        public static List<string> AllianceSkins = new List<string>();
+        public static List<string> HordeSkins = new List<string>();
 
-        public static List<string> PlayerSkins { get => playerSkins; set => playerSkins = value; }
+      //  public static List<string> PlayerSkins { get => playerSkins; set => playerSkins = value; }
 
         //adds a participant to the storage /participant represnet one fighter on the field"
         public void AddToLayer(Participant_DTO pDTO)

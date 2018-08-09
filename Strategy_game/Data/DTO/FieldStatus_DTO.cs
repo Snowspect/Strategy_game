@@ -10,10 +10,10 @@ namespace Strategy_game.Data.DTO
     {
         public enum FieldStatus
         {
-            selfOwned = 1,
-            selfOccupied = 2,
-            enemyOwned = 3,
-            enemyOccupied = 4,
+            AllianceOwned = 1,
+            AllianceOccupied = 2,
+            HordeOwned = 3,
+            HordeOccupied = 4,
             notOccupied = 5
         }
     }

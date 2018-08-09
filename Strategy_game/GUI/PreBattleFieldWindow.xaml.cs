@@ -261,7 +261,7 @@ namespace Strategy_game.GUI
             ArenaFieldPoint_DTO AFP_DTO = fPImpl.GetArenaField(x, y);
 
             /** MOVING **/
-            bool run = fPImpl.CheckField(AFP_DTO, pDTO); //checks the field we are trying to go to
+            bool run = ArenaImpl.CheckField(AFP_DTO, pDTO); //checks the field we are trying to go to
 
             if (run)
             {
@@ -320,7 +320,7 @@ namespace Strategy_game.GUI
                     pDTO.TeamColorGS = "purple";
                     //Gets field from arena based on x and y coords from random field list.
                     pDTO.PointGS = fPImpl.GetArenaField(RandomArenaFields[coordCounter].XPoint, RandomArenaFields[coordCounter].YPoint);
-                    pDTO.ImageGS = Storage.PlayerSkins[skinCounter];
+                    pDTO.ImageGS = Storage.AllianceSkins[skinCounter];
                     ArenaImpl.AddParticipantToField(pDTO);
                     fPImpl.UpdateMovingToArenaFieldStatus(pDTO.PointGS, "preArena"); //moves to field and occupies that field
                     skinCounter++;
@@ -343,7 +343,7 @@ namespace Strategy_game.GUI
                 foreach (var item in tImpl.GetEnemyTeam(enemyTeam))
                 {
                     item.PointGS = tmpFPList[coordCounter];
-                    item.ImageGS = Storage.PlayerSkins[skinCounter];
+                    item.ImageGS = Storage.HordeSkins[skinCounter];
                     ArenaImpl.AddParticipantToField(item);
                     skinCounter++;
                     coordCounter++;
@@ -357,13 +357,13 @@ namespace Strategy_game.GUI
                         if (AFP_DTO.PDTO.TeamGS.Equals(TeamListBox.SelectedValue.ToString()))
                         {
                             AFP_DTO.PDTO.TeamColorGS = "purple";
-                            Arena_DTO.allyTeam.Add(AFP_DTO.PDTO);
+                            Arena_DTO.AllianceTeam.Add(AFP_DTO.PDTO);
                         }
                         else
                         {
                             AFP_DTO.PDTO.TeamColorGS = "Blue";
-                            AFP_DTO.PDTO.PointGS.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.enemyOccupied;
-                            Arena_DTO.enemyTeam.Add(AFP_DTO.PDTO);
+                            AFP_DTO.PDTO.PointGS.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.HordeOccupied;
+                            Arena_DTO.HordeTeam.Add(AFP_DTO.PDTO);
                         }
                     }
                 }

@@ -65,6 +65,6 @@
         <Button x:Name="Prev_window_Button" Content="PreviousWindow" HorizontalAlignment="Left" Margin="122,32,0,0" VerticalAlignment="Top" Width="75" Click="ToPreviousWindow_Click"/>
         <Button x:Name="SubmitMove_Button" Content="Submit move request" HorizontalAlignment="Left" Margin="15,296,0,0" VerticalAlignment="Top" Width="245" Click="SubmitMove_Button_Click"/>
         <TextBlock x:Name="PlayingDisplayBox" HorizontalAlignment="Left" Margin="15,346,0,0" TextWrapping="Wrap" TextAlignment="Center" FontSize="14" Text="x Playing" VerticalAlignment="Top" Height="35" Width="245"/>
-        <Button Content="activate Enemy" HorizontalAlignment="Left" Margin="15,419,0,0" VerticalAlignment="Top" Width="89" Click="ActivateEnemy_Click"/>
+        <Button x:Name="ActivateEnemy_buttonName"  Content="activate Enemy" HorizontalAlignment="Left" Margin="15,419,0,0" VerticalAlignment="Top" Width="89" Click="ActivateEnemy_Click"/>
     </Grid>
 </Window>
