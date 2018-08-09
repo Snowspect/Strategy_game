@@ -204,7 +204,7 @@ namespace Strategy_game.Func
                     ArenaFieldPoint_DTO AFP_DTO = GetArenaField(xComingFrom, yComingFrom);
                     if (AFP_DTO.PDTO != null)
                     {
-                        if (AFP_DTO.PDTO.TeamColorGS.Equals("Blue"))
+                        if (AFP_DTO.PDTO.TeamColorGS.Equals("blue"))
                         {
                             AFP_DTO.PDTO = null;
                             AFP_DTO.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.HordeOwned;
@@ -259,6 +259,10 @@ namespace Strategy_game.Func
         public void SetActivePlayers(List<Fighter_DTO> ActivePlayers)
         {
             A_DAO.SetActivePlayers(ActivePlayers);
+        }
+        public bool CheckTeamLists()
+        {
+            return A_DAO.CheckTeamLists();
         }
     }
 }

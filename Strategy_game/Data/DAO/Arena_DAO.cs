@@ -52,5 +52,13 @@ namespace Strategy_game.Data.DAO
         {
             Arena_DTO.ActiveFighters = ActivePlayers;
         }
+        public bool CheckTeamLists()
+        {
+            if(Arena_DTO.AllianceTeam.Count == 0 || Arena_DTO.HordeTeam.Count == 0)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

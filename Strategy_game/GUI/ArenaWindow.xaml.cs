@@ -26,6 +26,7 @@ namespace Strategy_game.GUI
         private string allianceTxt = "Alliance is playing, please enter coords and submit your move";
         private Arena_Impl arenaImpl;
         private Fighter_Impl pImpl;
+        private Boolean gameNotFinished = true;
 
         #endregion
 
@@ -261,7 +262,11 @@ namespace Strategy_game.GUI
             {
                 ActivateHordeTurn(currentFighter);
                 UpdateList();
-                CheckNextParticipant(); //calls itself ((should be avoided), could end up on infinite stack
+                CheckIfGameFinished();
+                if(gameNotFinished == true)
+                {
+                    CheckNextParticipant(); //calls itself ((should be avoided), could end up on infinite stack
+                }
             }
             else
             {
@@ -405,6 +410,14 @@ namespace Strategy_game.GUI
                 turnBasedMovementList[n] = value;
             }
             return turnBasedMovementList;
+        }
+
+        public void CheckIfGameFinished()
+        {
+            if(arenaImpl.CheckTeamLists() == true)
+            {
+                gameNotFinished = false;
+            }
         }
         #endregion
 
