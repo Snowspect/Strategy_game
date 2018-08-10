@@ -360,6 +360,10 @@ namespace Strategy_game.GUI
         /// <param name="e"></param>
         private void Preset_Click(object sender, RoutedEventArgs e)
         {
+            CreatePresetTeam();
+        }
+        public void CreatePresetTeam()
+        {
             List<ArenaFieldPoint_DTO> RandomArenaFields = GenerateCoordsList("preArena");
             string allyTeam = tImpl.GetAllyTeamName();
             int coordCounter = 0; //used to give each player a set of coords

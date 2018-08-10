@@ -241,7 +241,7 @@ namespace Strategy_game.Func
         {
             if (AFP_DTO.PDTO != null)
             {
-                if (AFP_DTO.PDTO.TeamColorGS.Equals("Blue"))
+                if (AFP_DTO.PDTO.TeamColorGS.Equals("blue"))
                 {
                     AFP_DTO.FieldPointStatusGS = FieldStatus_DTO.FieldStatus.HordeOccupied;
                 }
